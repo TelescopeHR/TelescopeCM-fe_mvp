@@ -22,7 +22,7 @@ export default function Sidebar({ isOpen, setOpen }: PropT) {
   }, []);
   return (
     <motion.div
-      animate={{ width: isOpen ? (isMobile ? "100%" : 280) : 0 }}
+      animate={{ width: isOpen ? (isMobile ? "100%" : 300) : 0 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className="bg-slate-900 h-full  fixed lg:relative top-0 left-0 z-50 lg:z-0 overflow-hidden"
     >
@@ -57,7 +57,7 @@ export default function Sidebar({ isOpen, setOpen }: PropT) {
       </div>
       {/* ============== */}
       <div className="h-full flex flex-col relative">
-        <div className="max-h-[60vh] overflow-scroll px-2">
+        <div className="max-h-[65vh] overflow-scroll px-2">
           {SidebarMenuData.map((obj) => (
             <MenuItem
               title={obj.title}
