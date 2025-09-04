@@ -51,7 +51,7 @@ export default function MenuItem({ title, path, Icon, items }: PropT) {
           {items.map((obj) => (
             <NavLink to={obj.path}>
               <div
-                className={` text-white p-2  text-sm transition-transform duration-300 ${
+                className={` text-white p-2 hover:bg-slate-800  text-sm transition-transform duration-300 ${
                   pathname === obj.path ? "bg-slate-800" : "bg-slate-900"
                 }`}
               >
