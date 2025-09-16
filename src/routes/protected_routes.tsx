@@ -10,11 +10,11 @@ export default function ProtectedRoutes() {
       <Route path="dashboard" element={<PortalLayout />}>
         {/* Default child (shown when visiting /dashboard) */}
         <Route index element={<DashboardPage />} />
-
         {/* Child route (shown when visiting /dashboard/settings) */}
         <Route path="settings" element={<SettingsPage />} />
-        <Route path="*" element={<NotfoundPage />} />
+        <Route path="*" element={<NotfoundPage path="/dashboard" />} />
       </Route>
+      <Route path="*" element={<NotfoundPage path="/dashboard" />} />
     </Routes>
   );
 }

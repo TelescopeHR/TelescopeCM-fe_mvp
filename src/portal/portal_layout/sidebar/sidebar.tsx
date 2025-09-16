@@ -1,15 +1,17 @@
-import { XIcon, EggFried } from "lucide-react";
+import { XIcon, Telescope } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { SidebarMenuData, SidebarSecMenuData } from "../../../utils/menu-data";
 import MenuItem from "./menu-item";
 import SidebarProfileTab from "./sidebar-profile-tab";
+import UseAuth from "@/hooks/use-auth";
 
 type PropT = {
   isOpen: boolean;
   setOpen: (x: boolean) => void;
 };
 export default function Sidebar({ isOpen, setOpen }: PropT) {
+  const { Logout } = UseAuth();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -24,17 +26,17 @@ export default function Sidebar({ isOpen, setOpen }: PropT) {
     <motion.div
       animate={{ width: isOpen ? (isMobile ? "100%" : 300) : 0 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="bg-slate-900 h-full  fixed lg:relative top-0 left-0 z-50 lg:z-0 overflow-hidden"
+      className="bg-slate-900 dark:border-r h-full  fixed lg:relative top-0 left-0 z-50 lg:z-0 overflow-hidden"
     >
       {/* ===== sidebar header === */}
       <div className="px-6 py-3 h-14 bg-slate-900 flex items-center justify-start border-none">
         <div className="flex items-center justify-start w-full gap-x-1">
           <div className="hidden lg:block relative w-full">
             <div className="flex items-center gap-x-1 -ml-2">
-              <EggFried className=" text-indigo-50" />
+              <Telescope className=" text-indigo-50" strokeWidth={3} />
               {isOpen && (
                 <span className=" font-extrabold text-xl text-indigo-50">
-                  classut
+                  telescope
                 </span>
               )}
             </div>
@@ -43,10 +45,10 @@ export default function Sidebar({ isOpen, setOpen }: PropT) {
           {/* ====== mobile ==== */}
           <div className="lg:hidden flex justify-between items-center w-full">
             <div className="flex items-center gap-x-1">
-              <EggFried color="white" />
+              <Telescope color="white" strokeWidth={2.5} />
               {isOpen && (
                 <span className=" text-white font-extrabold text-xl">
-                  classut
+                  telescope
                 </span>
               )}
             </div>
@@ -74,6 +76,12 @@ export default function Sidebar({ isOpen, setOpen }: PropT) {
               Icon={obj.Icon}
               path={obj.path}
               items={obj.items}
+              action={obj.action}
+              fn={() => {
+                if (obj.title == "Logout") {
+                  Logout();
+                }
+              }}
             />
           ))}
           <SidebarProfileTab />

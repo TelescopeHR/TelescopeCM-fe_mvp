@@ -13,26 +13,49 @@ type PropT = {
   path: string;
   Icon: LucideIcon;
   items?: ItemT[];
+  action?: boolean;
+  fn?: () => void;
 };
-export default function MenuItem({ title, path, Icon, items }: PropT) {
+export default function MenuItem({
+  title,
+  path,
+  Icon,
+  items,
+  action,
+  fn,
+}: PropT) {
   const [openItems, setopenItems] = useState(false);
   const { pathname } = useLocation();
 
   return (
     <div className="mb-[0.1rem] ">
       <div
-        className={`w-full cursor-pointer transition-all duration-300 ease-in-out flex justify-between  hover:bg-slate-800 px-2 py-4 lg:py-3 text-white ${
+        className={`w-full cursor-pointer transition-all duration-300 ease-in-out flex justify-between  hover:bg-slate-800  text-white ${
           pathname === path ? "bg-slate-800" : "bg-slate-900"
         }`}
       >
-        <NavLink className="flex items-center gap-x-2 w-full" to={path}>
-          <Icon size={16} />
-          <span className="text-sm">{title}</span>
-        </NavLink>
+        {!action ? (
+          <NavLink
+            className="flex items-center gap-x-2 w-full px-2 py-4 lg:py-3"
+            to={path}
+          >
+            <Icon size={16} />
+            <span className="text-sm">{title}</span>
+          </NavLink>
+        ) : (
+          <div
+            className="flex items-center gap-x-2 w-full px-2 py-4 lg:py-3"
+            onClick={fn}
+          >
+            <Icon size={16} />
+            <span className="text-sm">{title}</span>
+          </div>
+        )}
+
         {items?.length ? (
           <div
             onClick={() => setopenItems(!openItems)}
-            className="cursor-pointer"
+            className="cursor-pointer px-2 py-4 lg:py-3"
           >
             <ChevronRight
               size={20}

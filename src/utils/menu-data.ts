@@ -2,13 +2,11 @@ import {
   Grid2X2,
   Bolt,
   Blend,
-  CreditCard,
-  Blocks,
+  // CreditCard,
   Flower,
   Activity,
   UserRound,
   LogOut,
-  School2,
 } from "lucide-react";
 
 export const SidebarMenuData = [
@@ -18,91 +16,44 @@ export const SidebarMenuData = [
     path: "/dashboard",
   },
 
-  {
-    title: "Academics",
-    Icon: School2,
-    path: "/dashboard/academics",
-    items: [
-      {
-        title: "Attendance",
-        path: "/dashboard/academics/attendance",
-      },
-      {
-        title: "Classes",
-        path: "/dashboard/academics/classes",
-      },
-      {
-        title: "Class works",
-        path: "/dashboard/academics/class-works",
-      },
-      {
-        title: "Exams",
-        path: "/dashboard/academics/exams",
-      },
-      {
-        title: "Lessons",
-        path: "/dashboard/academics/lessons",
-      },
-      {
-        title: "Results",
-        path: "/dashboard/academics/results",
-      },
-      {
-        title: "Subjects",
-        path: "/dashboard/academics/subjects",
-      },
-    ],
-  },
+  // {
+  //   title: "Finance",
+  //   Icon: CreditCard,
+  //   path: "/dashboard/finance",
+  // },
 
   {
-    title: "Finance",
-    Icon: CreditCard,
-    path: "/dashboard/finance",
+    title: "Employees",
+    Icon: Blend,
+    path: "/dashboard/employees",
     // items: [
     //   {
-    //     title: "Teachers",
-    //     path: "/dashboard/staff/teachers",
+    //     title: "Onboard",
+    //     path: "/dashboard/settings/onboard",
     //   },
     // ],
   },
+
   {
-    title: "Parents",
+    title: "Clients",
     Icon: Flower,
-    path: "/dashboard/parents",
-  },
-
-  {
-    title: "Students",
-    Icon: Blocks,
-    path: "/dashboard/students",
-    items: [
-      {
-        title: "Teachers",
-        path: "/dashboard/staff/teachers",
-      },
-    ],
-  },
-
-  {
-    title: "Staff",
-    Icon: Blend,
-    path: "/dashboard/staff",
-    items: [
-      {
-        title: "Teachers",
-        path: "/dashboard/staff/teachers",
-      },
-    ],
+    path: "/dashboard/clients",
   },
 
   {
     title: "Settings",
     Icon: Bolt,
-    path: "/dashboard/settings",
+    path: "/dashboard/settings/onboard/employee",
+    // path: "/dashboard/settings",
     items: [
       {
-        title: "Onboard",
-        path: "/dashboard/settings/onboard",
+        title: "Onboard Employee",
+        path: "/dashboard/settings/onboard/employee",
+      },
+
+      {
+        title: "Onboard Client",
+        path: "/dashboard/settings/onboard/client",
       },
     ],
   },
@@ -120,11 +71,13 @@ export const SidebarSecMenuData = [
     Icon: UserRound,
     path: "",
     items: [],
+    action: false,
   },
 
   {
     title: "Logout",
     Icon: LogOut,
     path: "",
+    action: true,
   },
 ];

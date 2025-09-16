@@ -7,6 +7,19 @@
   line-height: 1.5;
   font-weight: 400;
 
+  input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px theme('colors.slate-200') inset;
+      -webkit-text-fill-color: theme('colors.gray.900');
+      transition: background-color 5000s ease-in-out 0s;
+      /* removes flash */
+    }
+  
+    .dark input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px theme('colors.slate.600') inset;
+      -webkit-text-fill-color: theme('colors.slate-600');
+    }
+
+  
   color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -14,7 +27,7 @@
   -moz-osx-font-smoothing: grayscale;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --foreground: oklch(20.328% 0.03187 280.419);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -22,7 +35,7 @@
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --secondary-foreground: oklch(18.978% 0.02825 283.38);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
@@ -48,6 +61,11 @@
 
 body {
 
+}
+
+[data-state="selected"] {
+  background-color: rgba(42, 78, 137, 0.2);
+  /* Tailwind's blue-500/20 */
 }
 
 @theme inline {

@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import "./App.css";
-import ProtectedRoutes from "./routes/protected_routes";
 import { useThemeStore } from "./store/themestore";
-// import PublicRoutes from "./routes/public-routes";
+// import UseAuth from "./hooks/use-auth";
+// import ProtectedRoutes from "./routes/protected_routes";
+import ApplicationRoutes from "./routes/approutes";
 
 function App() {
+  // const { isAuth } = UseAuth();
   const { theme } = useThemeStore();
 
   useEffect(() => {
@@ -15,12 +17,7 @@ function App() {
     }
   }, [theme]);
 
-  return (
-    <>
-      <ProtectedRoutes />
-      {/* <PublicRoutes /> */}
-    </>
-  );
+  return <ApplicationRoutes />;
 }
 
 export default App;
