@@ -3,6 +3,8 @@ import { employeesData } from "@/utils/data";
 import { EmployeedefColumns } from "./employee-columns";
 import { DataTable } from "@/components/data-table";
 import PageHeader from "@/components/ui/page-header/page-header";
+import { useCareGiverStore } from "@/store/caregiverStore";
+import { useNavigate } from "react-router";
 
 export type Payment = {
   id: string;
@@ -12,19 +14,30 @@ export type Payment = {
 };
 
 export function EmployeePage() {
+  const { setCareGiver } = useCareGiverStore();
+
+  const navigate = useNavigate();
+
   const handleViewNavigation = (data: any) => {
-    navigator.clipboard.writeText(JSON.stringify(data));
-    // router.push("./products/product");
+    setCareGiver(data);
+    navigate(`/dashboard/employees/employee/${data.id}`);
   };
-  const triggerDelete = (data: any) => {
-    navigator.clipboard.writeText(JSON.stringify(data));
+  const handleSchedules = (data: any) => {
+    setCareGiver(data);
+    console.log("schedules", data);
+  };
+
+  const handleVisits = (data: any) => {
+    setCareGiver(data);
+    console.log("visits", data);
   };
   const handleStatusUpdate = () => {};
 
   const columns = EmployeedefColumns(
     handleViewNavigation,
-    triggerDelete,
-    handleStatusUpdate
+    handleStatusUpdate,
+    handleSchedules,
+    handleVisits
   );
   return (
     <div className="w-full pb-20">

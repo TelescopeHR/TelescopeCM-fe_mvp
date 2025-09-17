@@ -10,6 +10,7 @@ import { EmployeePage } from "@/portal/employees/page";
 import { ClientsPage } from "@/portal/clients/page";
 import { ClientsLayout } from "@/portal/clients/client-layout";
 import { EmployeeLayout } from "@/portal/employees/employee-layout";
+import EmployeeHome from "@/portal/employee/page";
 
 export default function ApplicationRoutes() {
   return (
@@ -22,7 +23,7 @@ export default function ApplicationRoutes() {
         <Route index element={<DashboardPage />} />
         <Route path="employees" element={<EmployeeLayout />}>
           <Route index element={<EmployeePage />} />
-          <Route path="employee/:id" element={<div>Employee page</div>} />
+          <Route path="employee/:id" element={<EmployeeHome />} />
         </Route>
 
         <Route path="clients" element={<ClientsLayout />}>

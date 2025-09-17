@@ -25,8 +25,9 @@ export type StudentT = {
 
 export const EmployeedefColumns = (
   handleNavigation: (x: any) => void,
-  triggerDelete: (x: any) => void,
-  handleStatus: (x: any) => void
+  handleStatus: (x: any) => void,
+  handleSchedules: (x: any) => void,
+  handleVisits: (x: any) => void
 ): ColumnDef<StudentT>[] => [
   {
     id: "select",
@@ -153,18 +154,24 @@ export const EmployeedefColumns = (
               </DropdownMenuItem>
 
               <DropdownMenuItem
+                onClick={() => handleSchedules(record)}
+                className=" cursor-pointer"
+              >
+                Schedules
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() => handleVisits(record)}
+                className=" cursor-pointer"
+              >
+                Visits
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
                 onClick={() => handleStatus(record)}
                 className=" cursor-pointer"
               >
                 {record.status === "active" ? "Deactivate" : "Activate"}
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className=" cursor-pointer"
-                onClick={() => {
-                  triggerDelete(row);
-                }}
-              >
-                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
