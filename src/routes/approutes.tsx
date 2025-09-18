@@ -11,6 +11,7 @@ import { ClientsPage } from "@/portal/clients/page";
 import { ClientsLayout } from "@/portal/clients/client-layout";
 import { EmployeeLayout } from "@/portal/employees/employee-layout";
 import EmployeeHome from "@/portal/employee/page";
+import ClientHome from "@/portal/client/page";
 
 export default function ApplicationRoutes() {
   return (
@@ -28,7 +29,7 @@ export default function ApplicationRoutes() {
 
         <Route path="clients" element={<ClientsLayout />}>
           <Route index element={<ClientsPage />} />
-          <Route path="client/:id" element={<div>Client page</div>} />
+          <Route path="client/:id" element={<ClientHome />} />
         </Route>
         <Route path="settings" element={<SettingsPage />} />
         <Route path="finance" element={<FinancePage />} />

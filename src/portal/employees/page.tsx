@@ -24,12 +24,10 @@ export function EmployeePage() {
   };
   const handleSchedules = (data: any) => {
     setCareGiver(data);
-    console.log("schedules", data);
   };
 
   const handleVisits = (data: any) => {
     setCareGiver(data);
-    console.log("visits", data);
   };
   const handleStatusUpdate = () => {};
 

@@ -3,6 +3,8 @@ import { clientData } from "@/utils/data";
 import { ClientdefColumns } from "./client-columns";
 import { DataTable } from "@/components/data-table";
 import PageHeader from "@/components/ui/page-header/page-header";
+import { useNavigate } from "react-router";
+import { useClientStore } from "@/store/clientStore";
 
 export type Payment = {
   id: string;
@@ -12,19 +14,29 @@ export type Payment = {
 };
 
 export function ClientsPage() {
+  const { setClient } = useClientStore();
+  const navigate = useNavigate();
+
   const handleViewNavigation = (data: any) => {
-    navigator.clipboard.writeText(JSON.stringify(data));
-    // router.push("./products/product");
+    setClient(data);
+    navigate(`/dashboard/clients/client/${data.id}`);
   };
-  const triggerDelete = (data: any) => {
-    navigator.clipboard.writeText(JSON.stringify(data));
+
+  const handleSchedules = (data: any) => {
+    setClient(data);
   };
+
+  const handleVisits = (data: any) => {
+    setClient(data);
+  };
+
   const handleStatusUpdate = () => {};
 
   const columns = ClientdefColumns(
     handleViewNavigation,
-    triggerDelete,
-    handleStatusUpdate
+    handleStatusUpdate,
+    handleSchedules,
+    handleVisits
   );
   return (
     <div className="w-full">
