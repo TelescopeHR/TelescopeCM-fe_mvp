@@ -14,7 +14,7 @@ export default function EmployeeHome() {
   return (
     <>
       <div className="w-full pb-20">
-        <h2 className="mb-2 font-bold text-cyan-600">EMPLOYEE</h2>
+        <h2 className="mb-2 font-bold text-cyan-600 text-sm">EMPLOYEE</h2>
         <div className="w-full flex flex-col lg:flex-row gap-4 lg:gap-1 lg:items-center">
           <div className="lg:w-4/12">
             <PageHeader
@@ -23,13 +23,13 @@ export default function EmployeeHome() {
             />
           </div>
 
-          <div className="w-full flex gap-x-8 mt-1">
-            <div className="font-bold cursor-pointer flex items-center gap-1">
-              <CalendarCheck2 size={20} />
+          <div className="w-full flex gap-x-4 lg:gap-x-8 mt-1">
+            <div className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm">
+              <CalendarCheck2 className="w-4 lg:w-5" />
               Schedules
             </div>
-            <div className="font-bold cursor-pointer flex items-center gap-1">
-              <LocateFixed />
+            <div className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm">
+              <LocateFixed className="w-4 lg:w-5" />
               Visits
             </div>
           </div>

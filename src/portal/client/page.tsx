@@ -1,6 +1,12 @@
 import PageHeader from "@/components/ui/page-header/page-header";
 import { useClientStore } from "@/store/clientStore";
-import { CalendarCheck2, LocateFixed, Plus, SquarePen } from "lucide-react";
+import {
+  CalendarCheck2,
+  LocateFixed,
+  Plus,
+  SquarePen,
+  Bandage,
+} from "lucide-react";
 import { useEffect } from "react";
 
 export default function ClientHome() {
@@ -15,7 +21,7 @@ export default function ClientHome() {
   return (
     <>
       <div className="w-full pb-20">
-        <h2 className="mb-2 font-bold text-cyan-600">CLIENT</h2>
+        <h2 className="mb-2 font-bold text-cyan-600 text-sm">CLIENT</h2>
         <div className="w-full flex flex-col lg:flex-row gap-4 lg:gap-1 lg:items-center">
           <div className="lg:w-4/12">
             <PageHeader
@@ -24,14 +30,19 @@ export default function ClientHome() {
             />
           </div>
 
-          <div className="w-full flex gap-x-8 mt-1">
-            <div className="font-bold cursor-pointer flex items-center gap-1">
-              <CalendarCheck2 size={20} />
+          <div className="w-full flex gap-x-4 lg:gap-x-8 mt-1">
+            <div className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm">
+              <CalendarCheck2 className="w-4 lg:w-5" />
               Schedules
             </div>
-            <div className="font-bold cursor-pointer flex items-center gap-1">
-              <LocateFixed />
+            <div className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm">
+              <LocateFixed className="w-4 lg:w-5" />
               Visits
+            </div>
+
+            <div className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm">
+              <Bandage className="w-4 lg:w-5" />
+              Care Plans
             </div>
           </div>
         </div>
