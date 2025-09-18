@@ -14,6 +14,7 @@ export default function EmployeeHome() {
   return (
     <>
       <div className="w-full pb-20">
+        <h2 className="mb-2 font-bold text-cyan-600">EMPLOYEE</h2>
         <div className="w-full flex flex-col lg:flex-row gap-4 lg:gap-1 lg:items-center">
           <div className="lg:w-4/12">
             <PageHeader
@@ -35,8 +36,8 @@ export default function EmployeeHome() {
         </div>
         {/* ======== */}
         <div className="w-full min-h-screen mt-4 lg:p-10 border rounded-2xl">
-          <div className="w-full flex justify-center mb-10">
-            <div className="w-32 h-32 rounded-4xl bg-slate-200 overflow-hidden flex items-center justify-center ring-0 ring-blue-300">
+          <div className="w-full flex justify-center mb-10 bg-[#AED6F1] dark:bg-[#15374d] py-10 rounded">
+            <div className="w-32 h-32 border-2 border-[#3c7da7] rounded-4xl bg-slate-200 overflow-hidden flex items-center justify-center ring-0 ring-blue-300">
               {careGiver.photo ? (
                 <img
                   src={careGiver.photo}
