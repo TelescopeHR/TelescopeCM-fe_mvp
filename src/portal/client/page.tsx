@@ -8,10 +8,13 @@ import {
   Bandage,
 } from "lucide-react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export default function ClientHome() {
   const { client } = useClientStore();
   const clientObj = client;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("==> client", clientObj);
@@ -31,7 +34,12 @@ export default function ClientHome() {
           </div>
 
           <div className="w-full flex gap-x-4 lg:gap-x-8 mt-1">
-            <div className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm">
+            <div
+              className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm"
+              onClick={() =>
+                navigate(`/dashboard/clients/schedule/${clientObj.id}`)
+              }
+            >
               <CalendarCheck2 className="w-4 lg:w-5" />
               Schedules
             </div>
@@ -40,7 +48,12 @@ export default function ClientHome() {
               Visits
             </div>
 
-            <div className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm">
+            <div
+              className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm"
+              onClick={() =>
+                navigate(`/dashboard/clients/careplans/${clientObj.id}`)
+              }
+            >
               <Bandage className="w-4 lg:w-5" />
               Care Plans
             </div>

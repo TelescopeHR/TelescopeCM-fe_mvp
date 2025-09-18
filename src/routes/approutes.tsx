@@ -12,6 +12,9 @@ import { ClientsLayout } from "@/portal/clients/client-layout";
 import { EmployeeLayout } from "@/portal/employees/employee-layout";
 import EmployeeHome from "@/portal/employee/page";
 import ClientHome from "@/portal/client/page";
+import EmployeeSchedule from "@/portal/schedules/employee-schedule/employee-schedule";
+import ClientSchedule from "@/portal/schedules/client-schedule/client-schedule";
+import CarePlans from "@/portal/care_plan/page";
 
 export default function ApplicationRoutes() {
   return (
@@ -25,11 +28,14 @@ export default function ApplicationRoutes() {
         <Route path="employees" element={<EmployeeLayout />}>
           <Route index element={<EmployeePage />} />
           <Route path="employee/:id" element={<EmployeeHome />} />
+          <Route path="schedule/:employeeId" element={<EmployeeSchedule />} />
         </Route>
 
         <Route path="clients" element={<ClientsLayout />}>
           <Route index element={<ClientsPage />} />
           <Route path="client/:id" element={<ClientHome />} />
+          <Route path="careplans/:clientId" element={<CarePlans />} />
+          <Route path="schedule/:clientId" element={<ClientSchedule />} />
         </Route>
         <Route path="settings" element={<SettingsPage />} />
         <Route path="finance" element={<FinancePage />} />

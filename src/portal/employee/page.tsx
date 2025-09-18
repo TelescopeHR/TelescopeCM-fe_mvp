@@ -2,9 +2,11 @@ import PageHeader from "@/components/ui/page-header/page-header";
 import { useCareGiverStore } from "@/store/caregiverStore";
 import { CalendarCheck2, LocateFixed, Plus, SquarePen } from "lucide-react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export default function EmployeeHome() {
   const { careGiver } = useCareGiverStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("==>", careGiver);
@@ -24,7 +26,12 @@ export default function EmployeeHome() {
           </div>
 
           <div className="w-full flex gap-x-4 lg:gap-x-8 mt-1">
-            <div className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm">
+            <div
+              className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm"
+              onClick={() =>
+                navigate(`/dashboard/employees/schedule/${careGiver.id}`)
+              }
+            >
               <CalendarCheck2 className="w-4 lg:w-5" />
               Schedules
             </div>
