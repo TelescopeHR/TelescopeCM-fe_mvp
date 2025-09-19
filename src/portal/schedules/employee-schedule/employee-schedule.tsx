@@ -1,10 +1,59 @@
+import { DataTable } from "@/components/data-table";
+import { Button } from "@/components/ui/button";
 import PageHeader from "@/components/ui/page-header/page-header";
+import { useCareGiverStore } from "@/store/caregiverStore";
+import { ScheduleDefColumns } from "./schedule-columns";
+import { ScheduleData } from "./em-schudele-data";
 
 export default function EmployeeSchedule() {
+  const { careGiver } = useCareGiverStore();
+
+  const handleViewNavigation = () => {};
+  const handleEdit = () => {};
+  const handleDelete = () => {};
+  const handleStatus = () => {};
+
+  const columns = ScheduleDefColumns(
+    handleViewNavigation,
+    handleEdit,
+    handleDelete,
+    handleStatus
+  );
+
   return (
     <>
-      <h2 className="text-sm text-cyan-600 font-bold mb-2">EMPLOYEE</h2>
-      <PageHeader title="Schedule" hasBack={true} />
+      <div className="flex items-center mb-2">
+        <h2 className="text-sm text-cyan-600 font-bold mr-2">EMPLOYEE</h2> /
+        <span className="font-bold text-sm ml-2">
+          {" "}
+          {careGiver.firstName + " " + careGiver.lastName}
+        </span>
+      </div>
+
+      <div className="w-full flex items-center justify-between">
+        <PageHeader title="Schedule" hasBack={true} />
+        <div className="mr-2">
+          <Button
+            variant="outline"
+            className=" cursor-pointer bg-slate-800 dark:bg-white text-white dark:text-slate-800"
+          >
+            Add Schedule
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-10">
+        <DataTable
+          columns={columns}
+          data={ScheduleData}
+          searchPlaceholder="Search"
+          filterArray={[]}
+          showSerialNumber={false}
+          withExport={true}
+          withDate={false}
+          searchColumn="productType"
+        />
+      </div>
     </>
   );
 }
