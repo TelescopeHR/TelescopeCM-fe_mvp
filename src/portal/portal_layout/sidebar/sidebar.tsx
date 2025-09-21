@@ -66,6 +66,9 @@ export default function Sidebar({ isOpen, setOpen }: PropT) {
               Icon={obj.Icon}
               path={obj.path}
               items={obj.items}
+              fn={() => {
+                if (isMobile) setOpen(false);
+              }}
             />
           ))}
         </div>
@@ -78,6 +81,7 @@ export default function Sidebar({ isOpen, setOpen }: PropT) {
               items={obj.items}
               action={obj.action}
               fn={() => {
+                if (isMobile) setOpen(false);
                 if (obj.title == "Logout") {
                   Logout();
                 }

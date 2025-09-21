@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router";
 import DashboardPage from "../portal/dashboard/dashboard_page";
-import SettingsPage from "../portal/settings/settings_page";
 import PortalLayout from "../portal/portal_layout/portal_layout";
 import NotfoundPage from "../notound/notfound";
 import PublicLayout from "@/public_layout/public_layout";
@@ -15,6 +14,8 @@ import ClientHome from "@/portal/client/page";
 import EmployeeSchedule from "@/portal/schedules/employee-schedule/employee-schedule";
 import ClientSchedule from "@/portal/schedules/client-schedule/client-schedule";
 import CarePlans from "@/portal/care_plan/page";
+import { SettingsLayout } from "@/portal/settings/settings_layout";
+import OnboardEmployee from "@/portal/settings/onboard-employee/page";
 
 export default function ApplicationRoutes() {
   return (
@@ -37,7 +38,10 @@ export default function ApplicationRoutes() {
           <Route path="careplans/:clientId" element={<CarePlans />} />
           <Route path="schedule/:clientId" element={<ClientSchedule />} />
         </Route>
-        <Route path="settings" element={<SettingsPage />} />
+        <Route path="settings" element={<SettingsLayout />}>
+          <Route index element={<EmployeePage />} />
+          <Route path="onboard/employee" element={<OnboardEmployee />} />
+        </Route>
         <Route path="finance" element={<FinancePage />} />
         <Route path="*" element={<NotfoundPage path="/dashboard" />} />
       </Route>
