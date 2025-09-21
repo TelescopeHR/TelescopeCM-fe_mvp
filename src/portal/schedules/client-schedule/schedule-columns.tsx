@@ -57,11 +57,10 @@ export const ScheduleDefColumns = (
   },
 
   {
-    accessorKey: "clientName",
-    header: "Client",
+    accessorKey: "employee",
+    header: "Employee",
     cell: ({ row }) => {
       const record: any = row.original;
-
       return (
         <span>{record.client.firstName + " " + record.client.lastName}</span>
       );

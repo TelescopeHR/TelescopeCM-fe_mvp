@@ -24,6 +24,7 @@ export function ClientsPage() {
 
   const handleSchedules = (data: any) => {
     setClient(data);
+    navigate(`/dashboard/clients/schedule/${data.id}`);
   };
 
   const handleVisits = (data: any) => {

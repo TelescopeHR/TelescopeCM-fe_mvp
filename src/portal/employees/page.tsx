@@ -24,6 +24,7 @@ export function EmployeePage() {
   };
   const handleSchedules = (data: any) => {
     setCareGiver(data);
+    navigate(`/dashboard/employees/schedule/${data.id}`);
   };
 
   const handleVisits = (data: any) => {
