@@ -156,7 +156,7 @@ export default function Identification() {
                   />
                 </div>
               ) : (
-                <div className="w-40 h-40 rounded-4xl  bg-slate-200 dark:bg-slate-700 overflow-hidden flex items-center justify-center ring-1 ring-slate-300 dark:ring-cyan-300">
+                <div className="w-40 h-40 rounded-4xl  bg-slate-100 dark:bg-slate-700 overflow-hidden flex items-center justify-center ring-1 ring-slate-200 dark:ring-cyan-300">
                   <input
                     required
                     type="file"

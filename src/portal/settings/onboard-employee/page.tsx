@@ -22,7 +22,7 @@ export default function OnboardEmployee() {
     validSteps,
     // setValidSteps
   ] = useState<Record<StepKey, boolean>>({
-    Identification: false,
+    Identification: true,
     Address: false,
     "Phone Numbers": false,
     Background: false,
@@ -45,7 +45,11 @@ export default function OnboardEmployee() {
                 indicator={
                   <StepIndicator
                     variant={activeStep <= index ? "soft" : "solid"}
-                    color={activeStep < index ? "neutral" : "primary"}
+                    className={
+                      activeStep === index
+                        ? "bg-cyan-500 text-white" // active state styles
+                        : "bg-gray-300 text-black" // inactive state styles
+                    }
                   >
                     {/* {activeStep <= index ? index + 1 : <Check />} */}
                     {checkn(step) && <Check />}
