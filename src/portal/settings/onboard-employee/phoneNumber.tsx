@@ -34,7 +34,7 @@ export default function PhoneNumber() {
           <div className="w-full  border p-4" key={idx}>
             <div className="w-full flex justify-end">
               <div className="flex items-center cursor-pointer">
-                <Trash size={16} color="red" />
+                <Trash size={16} color="red" onClick={() => console.log(obj)} />
               </div>
             </div>
             <div className="items center flex flex-col lg:flex-row gap-x-10 w-full">
