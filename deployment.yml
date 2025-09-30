@@ -19,15 +19,10 @@ spec:
       labels:
         app: telescopecmfm
     spec:
-      # imagePullSecrets:
-      # - name: esaini
       containers:
       - name: admin
         image: registry.digitalocean.com/quire-registry/telescopecmfm:latest
         imagePullPolicy: Always
-        # envFrom:
-        # - configMapRef:
-        #     name: sawport-admin-config
         ports:
         - containerPort: 80
         resources:
@@ -41,7 +36,7 @@ kind: Service
 metadata:
   name: telescopecmfm-service
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - name: http
       protocol: TCP
