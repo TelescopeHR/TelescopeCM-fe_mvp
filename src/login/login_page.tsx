@@ -2,30 +2,66 @@ import LoadingSkeleton from "@/components/skeleton/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { loginService } from "@/services/portal-service/portal-service";
 import { useThemeStore } from "@/store/themestore";
 import { useUserStore } from "@/store/userStore";
+import { removeStoredAuthToken, storeAuthToken } from "@/utils/ls";
 import { Sun, Moon } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
-  const [isloading, setisloading] = useState(false);
+  const [email, setemail] = useState<any>(undefined);
+  const [password, setpassword] = useState<any>(undefined);
+  const [isloading, setisLoading] = useState(false);
   const { theme, toggleTheme } = useThemeStore();
   const { setUser } = useUserStore();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setisloading(true);
-
-    setTimeout(() => {
-      setUser({
-        email: "Olabode@gmail.com",
-        name: "Olabode Eto",
-      });
-      setisloading(false);
-      navigate("/dashboard");
-    }, 4000);
+    setisLoading(true);
+    //clear token if there is one already
+    removeStoredAuthToken();
+    loginService({ email, password }).subscribe({
+      next: (response) => {
+        // console.log("response===>", response);
+        if (response) {
+          if (response.statusCode == 422) {
+            setisLoading(false);
+            toast.error(response.error);
+          }
+          if (response.statusCode == 403) {
+            setisLoading(false);
+          }
+          if (response.statusCode == 200) {
+            setisLoading(false);
+            //store toke securely
+            storeAuthToken(response.data.access_token);
+            //dispatch user to state
+            setUser({
+              email: response.data.user.email,
+              name: response.data.user.full_name,
+              userId: response.data.user.id,
+              avatar: response.data.user.avatar_url ?? "",
+            });
+            toast.success(response.message, {
+              autoClose: 5000,
+              position: "top-center",
+            });
+            navigate("/dashboard");
+          }
+        }
+      },
+      error: (err) => {
+        toast.error(err.response.data.error);
+        setisLoading(false);
+      },
+      complete: () => {
+        setisLoading(false);
+      },
+    });
   };
   return (
     <>
@@ -66,6 +102,8 @@ export default function LoginPage() {
                   <Label htmlFor="email">Email</Label>
                   <Input
                     type="email"
+                    value={email}
+                    onChange={(e) => setemail(e.target.value)}
                     required
                     placeholder="Your Email"
                     className=" border h-10"
@@ -76,6 +114,8 @@ export default function LoginPage() {
                   <Label htmlFor="password">Password</Label>
                   <Input
                     type="password"
+                    value={password}
+                    onChange={(e) => setpassword(e.target.value)}
                     required
                     placeholder="Your Password"
                     className=" border h-10"
