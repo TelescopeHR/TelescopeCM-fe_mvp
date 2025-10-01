@@ -45,8 +45,5 @@ jobs:
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/deployment.yml
 
-      # - name: Debug Kubernetes pods
-      #   run: kubectl delete deployments 
-
-      # # - name: Restart deployment
-      # #   run: kubectl rollout restart deployment 
+      - name: Restart deployment
+        run: kubectl rollout restart deployment telescopecmfm 
