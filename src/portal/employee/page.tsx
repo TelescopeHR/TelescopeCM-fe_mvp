@@ -1,5 +1,6 @@
 import PageHeader from "@/components/ui/page-header/page-header";
 import { useCareGiverStore } from "@/store/caregiverStore";
+import { ellipsisText, formatAndCapitalizeString } from "@/utils/utils";
 import { CalendarCheck2, LocateFixed, Plus, SquarePen } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
@@ -7,6 +8,8 @@ import { useNavigate } from "react-router";
 export default function EmployeeHome() {
   const { careGiver } = useCareGiverStore();
   const navigate = useNavigate();
+
+  const name = careGiver.firstName + " " + careGiver.lastName;
 
   useEffect(() => {
     console.log("==>", careGiver);
@@ -19,10 +22,7 @@ export default function EmployeeHome() {
         <h2 className="mb-2 font-bold text-cyan-600 text-sm">EMPLOYEE</h2>
         <div className="w-full flex flex-col lg:flex-row gap-4 lg:gap-1 lg:items-center">
           <div className="lg:w-4/12">
-            <PageHeader
-              title={careGiver.firstName + " " + careGiver.lastName}
-              hasBack
-            />
+            <PageHeader title={ellipsisText(name, 14)} hasBack />
           </div>
 
           <div className="w-full flex gap-x-4 lg:gap-x-8 mt-1">
@@ -225,14 +225,14 @@ export default function EmployeeHome() {
                     <div className="flex items-center">
                       <div className="font-semibold  w-4/12">Type</div>
                       <div className="font-semibold text-gray-500 w-4/12">
-                        {obj.type ?? "--"}
+                        {formatAndCapitalizeString(obj.type) ?? "--"}
                       </div>
                     </div>
 
                     <div className="flex items-center">
                       <div className="font-semibold w-4/12">Number</div>
                       <div className="font-semibold text-gray-500 w-4/12">
-                        {obj.phoneNumber}
+                        {obj.phone_number}
                       </div>
                     </div>
                   </div>

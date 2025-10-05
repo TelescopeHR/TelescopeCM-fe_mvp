@@ -15,7 +15,7 @@ export default function PortalLayout() {
     if ((user && !Object.keys(user).length) || user == null) {
       navigate("/");
     } else {
-      console.log("user login", user);
+      // console.log("user login", user);
     }
   }, [navigate, user]);
 

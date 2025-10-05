@@ -19,7 +19,7 @@ export type StudentT = {
   id: string;
   id_: string;
   dob: string;
-  status: string;
+  tablestatus: string;
   photo?: string;
 };
 
@@ -109,21 +109,23 @@ export const EmployeedefColumns = (
     header: "Birth Date",
   },
   {
-    accessorKey: "status",
+    accessorKey: "tablestatus",
     header: "Status",
     cell: ({ row }) => {
       const record = row.original;
 
       const color =
-        record.status === "active"
+        record.tablestatus === "Active"
           ? "#28A745"
-          : record.status === "inactive"
+          : record.tablestatus === "inactive"
           ? "#DC3545"
           : "#DC3545";
 
       return (
         <span style={{ color }}>
-          <span style={{ textTransform: "capitalize" }}>{record.status}</span>
+          <span style={{ textTransform: "capitalize" }}>
+            {record.tablestatus}
+          </span>
         </span>
       );
     },
@@ -171,7 +173,7 @@ export const EmployeedefColumns = (
                 onClick={() => handleStatus(record)}
                 className=" cursor-pointer"
               >
-                {record.status === "active" ? "Deactivate" : "Activate"}
+                {record.tablestatus === "Active" ? "Deactivate" : "Activate"}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -60,8 +60,9 @@ export default function Sidebar({ isOpen, setOpen }: PropT) {
       {/* ============== */}
       <div className="h-full flex flex-col relative">
         <div className="max-h-[65vh] overflow-scroll px-2">
-          {SidebarMenuData.map((obj) => (
+          {SidebarMenuData.map((obj, idx: number) => (
             <MenuItem
+              key={idx}
               title={obj.title}
               Icon={obj.Icon}
               path={obj.path}
@@ -73,8 +74,9 @@ export default function Sidebar({ isOpen, setOpen }: PropT) {
           ))}
         </div>
         <div className="absolute bottom-20 w-full px-2">
-          {SidebarSecMenuData.map((obj) => (
+          {SidebarSecMenuData.map((obj, idx: number) => (
             <MenuItem
+              key={idx}
               title={obj.title}
               Icon={obj.Icon}
               path={obj.path}

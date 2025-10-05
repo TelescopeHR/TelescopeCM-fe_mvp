@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import { useUserStore } from "../../store/userStore"; //state
 
 import { throwError } from "rxjs";
 import { base_url } from "@/utils/enviroment";
@@ -7,6 +8,8 @@ import { getStoredAuthToken } from "@/utils/ls";
 
 const http = axios.create({
   baseURL: base_url,
+  maxContentLength: 10 * 1024 * 1024, // 10 MB response limit
+  maxBodyLength: 10 * 1024 * 1024,
 });
 
 http.interceptors.request.use(
@@ -47,6 +50,8 @@ export const handleError = (errorResponse: any) => {
         ? errorResponse?.response?.data?.message
         : errorResponse?.response?.data?.error
     );
+
+    useUserStore.getState().setUser(null); // set state
     localStorage.clear();
     window.location.href = "/";
   }
