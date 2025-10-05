@@ -67,81 +67,83 @@ export function EmployeePage() {
 
   // ===== export functions =================================
   const onExport = (exportType: string, details: any) => {
-    setisLoadn(true);
-    const edata: any = [];
-    const _rawData: any = [];
-    const fileName = `Employees - ${getCurrentDate().date} - ${
-      getCurrentDate().time
-    }`;
-    const udt: any = {
-      data: [],
-    };
+    if (exportType === "Excel") {
+      setisLoadn(true);
+      const edata: any = [];
+      const _rawData: any = [];
+      const fileName = `Employees - ${getCurrentDate().date} - ${
+        getCurrentDate().time
+      }`;
+      const udt: any = {
+        data: [],
+      };
 
-    details.forEach((item: any, id: number) => {
-      udt.data.push({
-        "S/N": id + 1,
-        "Employee ID": item.employeeId,
-        "First Name": item.firstName,
-        "Middele Name": item.middleName,
-        "Last Name": item.lastName,
-        Email: item.email,
-        Phone: item?.phone,
-        Gender: item.gender,
-        Status: item.status,
-        DateAdded: `${
-          item?.rowData?.created_at
-            ? formatDate(item?.rowData?.created_at)
-            : "---"
-        }`,
+      details.forEach((item: any, id: number) => {
+        udt.data.push({
+          "S/N": id + 1,
+          "Employee ID": item.employeeId,
+          "First Name": item.firstName,
+          "Middele Name": item.middleName,
+          "Last Name": item.lastName,
+          Email: item.email,
+          Phone: item?.phone,
+          Gender: item.gender,
+          Status: item.status,
+          DateAdded: `${
+            item?.rowData?.created_at
+              ? formatDate(item?.rowData?.created_at)
+              : "---"
+          }`,
+        });
       });
-    });
 
-    edata.push(udt);
-    edata[0].data.forEach((row: any) => {
-      _rawData.push(Object.values(row));
-    });
+      edata.push(udt);
+      edata[0].data.forEach((row: any) => {
+        _rawData.push(Object.values(row));
+      });
 
-    const reportData = {
-      title: "EMPLOYEES",
-      fileName: fileName,
-      data: _rawData,
-      headers: Object.keys(udt.data[0]),
-    };
-    const exportService = new ExportExcelService();
-    exportService.exportExcel(reportData, {
-      adjustColums: [
-        {
-          columnNumber: 2,
-          columWidth: 30,
-        },
-        {
-          columnNumber: 3,
-          columWidth: 45,
-        },
-        {
-          columnNumber: 4,
-          columWidth: 37,
-        },
-        {
-          columnNumber: 5,
-          columWidth: 26,
-        },
-        {
-          columnNumber: 6,
-          columWidth: 22,
-        },
-        {
-          columnNumber: 7,
-          columWidth: 18,
-        },
+      const reportData = {
+        title: "EMPLOYEES",
+        fileName: fileName,
+        data: _rawData,
+        headers: Object.keys(udt.data[0]),
+      };
+      const exportService = new ExportExcelService();
+      exportService.exportExcel(reportData, {
+        adjustColums: [
+          {
+            columnNumber: 2,
+            columWidth: 30,
+          },
+          {
+            columnNumber: 3,
+            columWidth: 45,
+          },
+          {
+            columnNumber: 4,
+            columWidth: 37,
+          },
+          {
+            columnNumber: 5,
+            columWidth: 26,
+          },
+          {
+            columnNumber: 6,
+            columWidth: 22,
+          },
+          {
+            columnNumber: 7,
+            columWidth: 18,
+          },
 
-        {
-          columnNumber: 8,
-          columWidth: 18,
-        },
-      ],
-    });
-    setisLoadn(false);
+          {
+            columnNumber: 8,
+            columWidth: 18,
+          },
+        ],
+      });
+      setisLoadn(false);
+    }
   };
   // =================================================================
 
