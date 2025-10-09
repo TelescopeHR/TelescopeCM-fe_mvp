@@ -44,7 +44,8 @@ export default function LoginPage() {
               email: response.data.user.email,
               name: response.data.user.full_name,
               userId: response.data.user.id,
-              avatar: response.data.user.avatar_url ?? "",
+              avatar: response.data.user.profile_picture ?? "",
+              ...response.data.user,
             });
             toast.success(response.message, {
               autoClose: 5000,

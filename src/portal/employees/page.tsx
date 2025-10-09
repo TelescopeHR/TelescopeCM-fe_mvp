@@ -21,13 +21,6 @@ import { containsActive, formatDate, getCurrentDate } from "@/utils/utils";
 import { ExportExcelService } from "@/services/export-service/export-excel.service";
 // import { useQuery } from "@tanstack/react-query";
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
-
 export function EmployeePage() {
   const [isLoadn, setisLoadn] = useState(false);
   const [statsData, setstatsData] = useState<IEmployeesStatResp>({

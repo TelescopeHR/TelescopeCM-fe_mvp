@@ -8,6 +8,14 @@ export const createEmployee = (payload: any): Observable<any> => {
   );
 };
 
+//get employee data
+export const getEmployee = (id: any): Observable<any> => {
+  return from(http.get(`/employee/${id}`)).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};
+
 //get all employee
 export const getEmployees = (payload: any): Observable<any> => {
   return from(http.get("/employee", { params: { ...payload } })).pipe(

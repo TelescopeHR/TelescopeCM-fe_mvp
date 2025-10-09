@@ -1,8 +1,9 @@
 import { useUserStore } from "@/store/userStore";
+// import { useEffect } from "react";
 
 export default function SidebarProfileTab() {
   const { user } = useUserStore();
-  const { email, name, avatar } = user;
+  const { email, avatar, first_name, last_name } = user;
 
   // useEffect(() => {
   //   console.log("==>", user);
@@ -15,7 +16,9 @@ export default function SidebarProfileTab() {
           <img src={avatar} alt="" className="w-10 h-10" />
         </div>
         <div className=" text-white text-sm">
-          <p className=" font-bold">{name}</p>
+          <p className=" font-bold">
+            {first_name} {last_name}
+          </p>
           <p className=" text-[0.65rem]">{email}</p>
         </div>
       </div>

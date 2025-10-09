@@ -38,7 +38,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DateRangePicker from "./ui/date-range-picker";
 
 type FilterObj = {
@@ -85,7 +85,7 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = useState({});
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 50, // ✅ default 50 rows per page
+    pageSize: 50,
   });
 
   const table = useReactTable({
@@ -98,7 +98,7 @@ export function DataTable<TData, TValue>({
       rowSelection,
       pagination,
     },
-    manualPagination: true, // ✅ tell the table we’ll handle pagination
+    manualPagination: true,
     pageCount: totalCount,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -123,10 +123,6 @@ export function DataTable<TData, TValue>({
   const selectedRows = table
     .getSelectedRowModel()
     .rows.map((obj) => obj.original);
-
-  useEffect(() => {
-    console.log("total data", table.getRowModel().rows?.length);
-  }, []);
 
   return (
     <div className="rounded-md border p-4">

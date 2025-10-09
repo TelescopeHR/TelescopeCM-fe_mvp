@@ -1,20 +1,98 @@
+import LoadingSkeleton from "@/components/skeleton/skeleton";
 import PageHeader from "@/components/ui/page-header/page-header";
+import { getEmployee } from "@/services/employee-service/employee-service";
 import { useCareGiverStore } from "@/store/caregiverStore";
-import { ellipsisText, formatAndCapitalizeString } from "@/utils/utils";
+import Avatar from "@/assets/avatar.png";
+import {
+  containsActive,
+  ellipsisText,
+  formatAndCapitalizeString,
+  formatDate,
+} from "@/utils/utils";
 import { CalendarCheck2, LocateFixed, Plus, SquarePen } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export default function EmployeeHome() {
   const { careGiver } = useCareGiverStore();
+  const [isLoadn, setisLoadn] = useState(false);
   const navigate = useNavigate();
+  const { setCareGiver } = useCareGiverStore();
 
   const name = careGiver.firstName + " " + careGiver.lastName;
 
+  const fetchEmployee = () => {
+    setisLoadn(true);
+    return getEmployee(careGiver.id).subscribe({
+      next: (response) => {
+        if (response) {
+          // console.log("emp data", response.data);
+          const obj: any = response.data;
+          const transformed = {
+            id_: obj.id,
+            id: obj.id,
+            photo: obj.photo ?? Avatar,
+            employeeId: obj.employee_id,
+            firstName: obj.first_name,
+            lastName: obj.last_name,
+            middleName: obj.middle_name ?? "---",
+            gender: obj.gender,
+            phone: obj.phone,
+            email: obj?.email ?? "---",
+            status: obj.employee_status,
+            tablestatus: containsActive(obj.employee_status)
+              ? "Active"
+              : "Inactive",
+            dob: obj.birth_date ? formatDate(obj.birth_date) : "---",
+            SocialSecurity: obj.social_security ?? "---",
+            location: {
+              address: obj.address?.address ?? "---",
+              city: obj.address?.city ?? "---",
+              state: obj.address?.state ?? "---",
+              zip: obj.address?.zip ?? "---",
+            },
+            phones: obj.phone_numbers,
+            backgroundData: {
+              hiredate: obj.background?.hire_date ?? "---",
+              applicationDate: obj.background?.application_date ?? "---",
+              orientationDate: obj.background?.orientation_date ?? "---",
+              signedJobDescriptionDate:
+                obj.background?.signed_job_description_date ?? "---",
+              signedPolicyProcedureDate:
+                obj.background?.signed_policy_procedure_date ?? "---",
+              evaluatedAssignedTaskDate:
+                obj.background?.evaluated_assigned_date ?? "---",
+              lastEvaluationDate: obj.background?.last_evaluation_date ?? "---",
+              terminationDate: obj.background?.termination_date ?? "---",
+              numberOfReferences: obj.background?.number_of_references ?? "---",
+            },
+          };
+
+          setCareGiver(transformed);
+          console.log("employees response===>", transformed);
+        }
+      },
+      error: (err) => {
+        toast.error(err.response.data.error);
+        setisLoadn(false);
+      },
+      complete: () => {
+        setisLoadn(false);
+      },
+    });
+  };
+
   useEffect(() => {
-    console.log("==>", careGiver);
-    return () => {};
-  }, [careGiver]);
+    if (!careGiver) navigate(-1);
+  }, [careGiver, navigate]);
+
+  useEffect(() => {
+    const sub = fetchEmployee();
+    return () => {
+      sub.unsubscribe();
+    };
+  }, []);
 
   return (
     <>
@@ -342,6 +420,8 @@ export default function EmployeeHome() {
           <hr />
         </div>
       </div>
+
+      {isLoadn && <LoadingSkeleton />}
     </>
   );
 }
