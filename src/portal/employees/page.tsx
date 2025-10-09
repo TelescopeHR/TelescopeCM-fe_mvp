@@ -42,12 +42,10 @@ export function EmployeePage() {
   const { setCareGiver } = useCareGiverStore();
 
   const navigate = useNavigate();
-
   const handleViewNavigation = (data: any) => {
     setCareGiver(data);
     navigate(`/dashboard/employees/employee/${data.id}`);
   };
-
   const handleSchedules = (data: any) => {
     setCareGiver(data);
     navigate(`/dashboard/employees/schedule/${data.id}`);
