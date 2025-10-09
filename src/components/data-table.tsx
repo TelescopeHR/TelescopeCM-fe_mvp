@@ -60,7 +60,7 @@ interface DataTableProps<TData, TValue> {
   handleDate?: (obj: any) => void;
   totalCount?: number;
   currentPage?: number;
-  apiCall: (x: number) => void;
+  apiCall?: (x: number) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -371,7 +371,7 @@ export function DataTable<TData, TValue>({
             size="sm"
             onClick={() => {
               table.previousPage();
-              if (currentPage) apiCall(currentPage - 1);
+              if (currentPage && apiCall) apiCall(currentPage - 1);
             }}
             disabled={!table.getCanPreviousPage()}
           >
@@ -383,7 +383,7 @@ export function DataTable<TData, TValue>({
             // onClick={() => table.nextPage()}
             onClick={() => {
               table.nextPage();
-              if (currentPage) apiCall(currentPage + 1);
+              if (currentPage && apiCall) apiCall(currentPage + 1);
             }}
             disabled={!table.getCanNextPage()}
           >
