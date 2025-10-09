@@ -9,6 +9,11 @@ import Identification from "./identification";
 import Address from "./address";
 import PhoneNumber from "./phoneNumber";
 import Background from "./background";
+import { ICreateEmployee } from "@/models/employee-model";
+import { initialData } from "./intialdata";
+import { toast } from "react-toastify";
+import { createEmployee } from "@/services/employee-service/employee-service";
+import LoadingSkeleton from "@/components/skeleton/skeleton";
 
 // import Check from "@mui/icons-material/Check";
 
@@ -17,12 +22,11 @@ type StepKey = (typeof steps)[number];
 
 export default function OnboardEmployee() {
   const [activeStep, setActiveStep] = useState(0);
+  const [payload, setpayload] = useState<ICreateEmployee>(initialData);
+  const [isLoadn, setisLoadn] = useState(false);
 
-  const [
-    validSteps,
-    // setValidSteps
-  ] = useState<Record<StepKey, boolean>>({
-    Identification: true,
+  const [validSteps, setValidSteps] = useState<Record<StepKey, boolean>>({
+    Identification: false,
     Address: false,
     "Phone Numbers": false,
     Background: false,
@@ -30,6 +34,37 @@ export default function OnboardEmployee() {
 
   const checkn = (step: StepKey) => {
     return validSteps[step] === true;
+  };
+
+  const handleCreateEmployee = (data: any) => {
+    setisLoadn(true);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { previewPhoto, gender, ...apiPayload } = data;
+    return createEmployee({
+      ...apiPayload,
+      gender: parseInt(gender),
+    }).subscribe({
+      next: (response) => {
+        if (response) {
+          toast.success("Employee account created successfully!");
+          setpayload(initialData);
+          setValidSteps({
+            Identification: false,
+            Address: false,
+            "Phone Numbers": false,
+            Background: false,
+          });
+          setActiveStep(0);
+        }
+      },
+      error: (err) => {
+        toast.error(err.response.data.error);
+        setisLoadn(false);
+      },
+      complete: () => {
+        setisLoadn(false);
+      },
+    });
   };
 
   return (
@@ -80,13 +115,42 @@ export default function OnboardEmployee() {
           </h2>
 
           <div>
-            {activeStep == 0 && <Identification />}
-            {activeStep == 1 && <Address />}
-            {activeStep == 2 && <PhoneNumber />}
-            {activeStep == 3 && <Background />}
+            {activeStep == 0 && (
+              <Identification
+                data={payload}
+                setValidSteps={setValidSteps}
+                setData={setpayload}
+                setActiveStep={setActiveStep}
+              />
+            )}
+            {activeStep == 1 && (
+              <Address
+                data={payload}
+                setValidSteps={setValidSteps}
+                setData={setpayload}
+                setActiveStep={setActiveStep}
+              />
+            )}
+            {activeStep == 2 && (
+              <PhoneNumber
+                data={payload}
+                setValidSteps={setValidSteps}
+                setData={setpayload}
+                setActiveStep={setActiveStep}
+              />
+            )}
+            {activeStep == 3 && (
+              <Background
+                data={payload}
+                setValidSteps={setValidSteps}
+                setData={setpayload}
+                handleCreateEmployee={handleCreateEmployee}
+              />
+            )}
           </div>
         </div>
       </div>
+      {isLoadn && <LoadingSkeleton />}
     </>
   );
 }

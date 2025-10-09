@@ -9,8 +9,9 @@ type PropT = {
   title: string;
   date: Date | undefined;
   setDate: (x: Date) => void;
+  minDate?: any;
 };
-export default function DateInput({ title, date, setDate }: PropT) {
+export default function DateInput({ title, date, setDate, minDate }: PropT) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -40,6 +41,7 @@ export default function DateInput({ title, date, setDate }: PropT) {
                 setOpen(false);
               }}
               className="dark:bg-slate-900"
+              hidden={{ after: minDate }}
             />
           </PopoverContent>
         </Popover>

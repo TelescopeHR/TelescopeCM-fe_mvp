@@ -47,3 +47,17 @@ export const getCurrentDate = () => {
   };
   return obj;
 };
+
+export function formatToYMD(dateString: any) {
+  // If it's already in ISO format, split at "T"
+  if (typeof dateString === "string" && dateString.includes("T")) {
+    return dateString.split("T")[0];
+  }
+
+  // If it's a Date object, format it
+  const d = new Date(dateString);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}

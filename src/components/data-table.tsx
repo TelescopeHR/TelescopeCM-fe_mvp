@@ -58,6 +58,9 @@ interface DataTableProps<TData, TValue> {
   withDate: boolean;
   searchColumn?: string;
   handleDate?: (obj: any) => void;
+  totalCount?: number;
+  currentPage?: number;
+  apiCall: (x: number) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -72,6 +75,9 @@ export function DataTable<TData, TValue>({
   withDate = true,
   searchColumn = "name",
   handleDate,
+  totalCount,
+  currentPage,
+  apiCall,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -92,6 +98,8 @@ export function DataTable<TData, TValue>({
       rowSelection,
       pagination,
     },
+    manualPagination: true, // ✅ tell the table we’ll handle pagination
+    pageCount: totalCount,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -361,7 +369,10 @@ export function DataTable<TData, TValue>({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.previousPage()}
+            onClick={() => {
+              table.previousPage();
+              if (currentPage) apiCall(currentPage - 1);
+            }}
             disabled={!table.getCanPreviousPage()}
           >
             Previous
@@ -369,7 +380,11 @@ export function DataTable<TData, TValue>({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.nextPage()}
+            // onClick={() => table.nextPage()}
+            onClick={() => {
+              table.nextPage();
+              if (currentPage) apiCall(currentPage + 1);
+            }}
             disabled={!table.getCanNextPage()}
           >
             Next

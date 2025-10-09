@@ -71,18 +71,12 @@ export const handleError = (errorResponse: any) => {
     );
   }
 
-  const subscriptionRelatedErr = errorResponse?.response?.status === 412;
-  if (subscriptionRelatedErr) {
-    // toast.error(errorResponse?.response?.message);
-    setTimeout(() => {
-      window.location.href = "/subscription";
-    }, 1500);
-  }
   const unExpectedError = errorResponse?.response?.status >= 500;
   if (unExpectedError) {
     toast.error("An unexpected error occured.");
   }
 
+  toast.error(errorResponse?.response.data.message);
   return throwError(() => errorResponse);
 };
 export default http;

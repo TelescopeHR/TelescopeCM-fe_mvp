@@ -832,3 +832,11 @@ export const AllStates = [
   { name: "Wisconsin", code: "WI" },
   { name: "Wyoming", code: "WY" },
 ];
+
+export const AllStatus = [
+  { name: "Active Full", value: "1" },
+  { name: "Active Part", value: "2" },
+  { name: "Inactive", value: "3" },
+  { name: "Terminated", value: "4" },
+  { name: "Terminated not eligible", value: "5" },
+];

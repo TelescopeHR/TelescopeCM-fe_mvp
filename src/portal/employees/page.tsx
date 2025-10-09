@@ -39,6 +39,12 @@ export function EmployeePage() {
     terminated_not_eligible: 0,
   });
   const [employees, setemployees] = useState<IEmployeeTableRespArr | any>([]);
+  const [mergedParams, setmergedParams] = useState({
+    paginate: true,
+    page: 1,
+    per_page: 20,
+  });
+  const [totalPages, settotalPages] = useState(1);
   const { setCareGiver } = useCareGiverStore();
 
   const navigate = useNavigate();
@@ -170,9 +176,12 @@ export function EmployeePage() {
 
   const fetchEmployees = () => {
     setisLoadn(true);
-    return getEmployees().subscribe({
+    return getEmployees(mergedParams).subscribe({
       next: (response) => {
         if (response) {
+          const { per_page, total } = response.pagination;
+          const totalPagx = Math.ceil(total / per_page);
+          settotalPages(totalPagx);
           const emplyArray: IEmployeeTableRespArr = response.data;
           const transformed = emplyArray.map((obj) => {
             return {
@@ -190,7 +199,7 @@ export function EmployeePage() {
               tablestatus: containsActive(obj.employee_status)
                 ? "Active"
                 : "Inactive",
-              dob: formatDate(obj.birth_date),
+              dob: obj.birth_date ? formatDate(obj.birth_date) : "---",
               SocialSecurity: obj.social_security ?? "---",
               location: {
                 address: obj.address?.address ?? "---",
@@ -218,7 +227,7 @@ export function EmployeePage() {
             };
           });
           setemployees(transformed);
-          console.log("employees response===>", emplyArray);
+          // console.log("employees response===>", emplyArray);
         }
       },
       error: (err) => {
@@ -240,6 +249,10 @@ export function EmployeePage() {
       statsSub.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [mergedParams]);
 
   return (
     <Fragment>
@@ -307,6 +320,13 @@ export function EmployeePage() {
           withDate={false}
           handleExport={onExport}
           searchColumn="employeeId"
+          currentPage={mergedParams.page}
+          totalCount={totalPages}
+          apiCall={(pageNo: number) => {
+            setmergedParams((prev) => {
+              return { ...prev, page: pageNo };
+            });
+          }}
         />
       </div>
       {isLoadn && <LoadingSkeleton />}

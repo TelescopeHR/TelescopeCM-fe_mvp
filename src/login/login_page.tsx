@@ -55,6 +55,7 @@ export default function LoginPage() {
         }
       },
       error: (err) => {
+        console.log("error", err);
         toast.error(err.response.data.error);
         setisLoading(false);
       },
