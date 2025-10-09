@@ -19,6 +19,7 @@ import {
 } from "@/models/employee-model";
 import { containsActive, formatDate, getCurrentDate } from "@/utils/utils";
 import { ExportExcelService } from "@/services/export-service/export-excel.service";
+import { Button } from "@/components/ui/button";
 // import { useQuery } from "@tanstack/react-query";
 
 export function EmployeePage() {
@@ -250,7 +251,17 @@ export function EmployeePage() {
   return (
     <Fragment>
       <div className="w-full pb-20">
-        <PageHeader title="Employees" />
+        <div className="w-full flex items-center justify-between pr-4">
+          <PageHeader title="Employees" />
+          <Button
+            className=" cursor-pointer"
+            onClick={() => {
+              navigate("/dashboard/settings/onboard/employee");
+            }}
+          >
+            Add Employee
+          </Button>
+        </div>
         {/* stats */}
         <div className="mt-10 mb-10 w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="min-h-40 border rounded p-4">
