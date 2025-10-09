@@ -55,7 +55,7 @@ export default function Identification({
       middle_name: data?.middle_name || "",
       email: data?.email || "",
       gender: data?.gender || "",
-      birth_date: data?.birth_date || "",
+      birthday: data?.birthday || "",
       social_security: data?.social_security || "",
       profile_picture: data?.profile_picture || "",
     },
@@ -267,8 +267,8 @@ export default function Identification({
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Gender</SelectLabel>
-                          <SelectItem value="1">Female</SelectItem>
-                          <SelectItem value="2">Male</SelectItem>
+                          <SelectItem value="1">Male</SelectItem>
+                          <SelectItem value="2">Female</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -282,7 +282,7 @@ export default function Identification({
               </div>
               <div className="flex flex-col gap-y-3 w-full">
                 <Controller
-                  name="birth_date"
+                  name="birthday"
                   control={control}
                   rules={{ required: "Date of birth required" }}
                   render={({ field }) => (
@@ -296,9 +296,9 @@ export default function Identification({
                     />
                   )}
                 />
-                {errors.birth_date && (
+                {errors.birthday && (
                   <p className="text-xs text-red-400">
-                    {`${errors.birth_date.message}`}
+                    {`${errors.birthday.message}`}
                   </p>
                 )}
               </div>

@@ -11,14 +11,14 @@ export type IEmployeeTableRespArr = IEmployeeTableResp[];
 
 export interface IEmployeeTableResp {
   id: number;
-  photo?: string;
+  profile_picture?: string;
   first_name: string;
   last_name: string;
   middle_name?: string;
   employee_id: string;
   phone: string;
   gender: string;
-  birth_date: string;
+  birthday: string;
   employee_status: string;
   created_at: string;
   social_security?: string;
@@ -62,7 +62,7 @@ export interface ICreateEmployee {
   last_name: string;
   middle_name: string;
   gender: string;
-  birth_date: string;
+  birthday: string;
   status: string;
   social_security: string;
   email: string;

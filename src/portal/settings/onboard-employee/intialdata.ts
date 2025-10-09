@@ -5,7 +5,7 @@ export const initialData = {
   last_name: "",
   middle_name: "",
   gender: "",
-  birth_date: "",
+  birthday: "",
   status: "",
   social_security: "",
   email: "",

@@ -20,16 +20,16 @@ spec:
         app: telescopecmfm
     spec:
       containers:
-      - name: admin
-        image: registry.digitalocean.com/quire-registry/telescopecmfm:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 80
-        resources:
-          requests:
-            cpu: 100m
-          limits:
-            cpu: 100m
+        - name: admin
+          image: registry.digitalocean.com/quire-registry/telescopecmfm:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 100m
 ---
 apiVersion: v1
 kind: Service

@@ -2,7 +2,7 @@ name: telescopeCM-fe 2025
 
 on:
   push:
-    branches: [ development ]
+    branches: [development]
 
 env:
   IMAGE_NAME: "telescopecmfm"
@@ -27,7 +27,7 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      - name: Log in to DO Container Registry 
+      - name: Log in to DO Container Registry
         run: doctl registry login --expiry-seconds 1200
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
@@ -46,4 +46,4 @@ jobs:
         run: kubectl apply -f $GITHUB_WORKSPACE/deployment.yml
 
       - name: Restart deployment
-        run: kubectl rollout restart deployment telescopecmfm 
+        run: kubectl rollout restart deployment telescopecmfm

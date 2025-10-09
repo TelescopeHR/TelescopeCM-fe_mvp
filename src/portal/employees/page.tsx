@@ -179,7 +179,7 @@ export function EmployeePage() {
             return {
               id_: obj.id,
               id: obj.id,
-              photo: obj.photo ?? Avatar,
+              photo: obj.profile_picture ?? Avatar,
               employeeId: obj.employee_id,
               firstName: obj.first_name,
               lastName: obj.last_name,
@@ -191,7 +191,7 @@ export function EmployeePage() {
               tablestatus: containsActive(obj.employee_status)
                 ? "Active"
                 : "Inactive",
-              dob: obj.birth_date ? formatDate(obj.birth_date) : "---",
+              dob: obj.birthday ? formatDate(obj.birthday) : "---",
               SocialSecurity: obj.social_security ?? "---",
               location: {
                 address: obj.address?.address ?? "---",
