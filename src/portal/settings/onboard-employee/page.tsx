@@ -14,6 +14,8 @@ import { initialData } from "./intialdata";
 import { toast } from "react-toastify";
 import { createEmployee } from "@/services/employee-service/employee-service";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
+import { SuccesssPrompt } from "./success-dialog";
+import { AddScheduleDialog } from "@/portal/schedules/add-scheudle-dialog/add-schedule";
 
 // import Check from "@mui/icons-material/Check";
 
@@ -24,6 +26,10 @@ export default function OnboardEmployee() {
   const [activeStep, setActiveStep] = useState(0);
   const [payload, setpayload] = useState<ICreateEmployee>(initialData);
   const [isLoadn, setisLoadn] = useState(false);
+  const [openDialog, setopenDialog] = useState({
+    open: false,
+    name: "",
+  });
 
   const [validSteps, setValidSteps] = useState<Record<StepKey, boolean>>({
     Identification: false,
@@ -55,6 +61,7 @@ export default function OnboardEmployee() {
             Background: false,
           });
           setActiveStep(0);
+          setopenDialog({ open: true, name: "prompt" });
         }
       },
       error: (err) => {
@@ -151,6 +158,23 @@ export default function OnboardEmployee() {
         </div>
       </div>
       {isLoadn && <LoadingSkeleton />}
+      {openDialog.open && openDialog.name === "prompt" && (
+        <SuccesssPrompt
+          open={openDialog.open}
+          setopen={() => setopenDialog({ open: false, name: "" })}
+          handleYes={() => {
+            console.log("here");
+            setopenDialog({ open: true, name: "schedule" });
+          }}
+        />
+      )}
+
+      {openDialog.open && openDialog.name === "schedule" && (
+        <AddScheduleDialog
+          open={openDialog.open}
+          setOpen={() => setopenDialog({ name: "", open: false })}
+        />
+      )}
     </>
   );
 }

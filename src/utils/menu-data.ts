@@ -23,6 +23,12 @@ export const SidebarMenuData = [
   // },
 
   {
+    title: "Clients",
+    Icon: Flower,
+    path: "/dashboard/clients",
+  },
+
+  {
     title: "Employees",
     Icon: Blend,
     path: "/dashboard/employees",
@@ -32,12 +38,6 @@ export const SidebarMenuData = [
     //     path: "/dashboard/settings/onboard",
     //   },
     // ],
-  },
-
-  {
-    title: "Clients",
-    Icon: Flower,
-    path: "/dashboard/clients",
   },
 
   {
