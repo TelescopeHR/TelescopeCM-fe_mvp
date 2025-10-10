@@ -4,8 +4,14 @@ import PageHeader from "@/components/ui/page-header/page-header";
 import { useCareGiverStore } from "@/store/caregiverStore";
 import { ScheduleDefColumns } from "./schedule-columns";
 import { ScheduleData } from "./em-schudele-data";
+import { AddScheduleDialog } from "../add-scheudle-dialog/add-schedule";
+import { useState } from "react";
 
 export default function EmployeeSchedule() {
+  const [openDialog, setopenDialog] = useState({
+    isopen: false,
+    name: "",
+  });
   const { careGiver } = useCareGiverStore();
 
   const handleViewNavigation = () => {};
@@ -34,8 +40,8 @@ export default function EmployeeSchedule() {
         <PageHeader title="Schedule" hasBack={true} />
         <div className="mr-2">
           <Button
-            variant="outline"
-            className=" cursor-pointer bg-slate-800 dark:bg-white text-white dark:text-slate-800"
+            className=" cursor-pointer bg-slate-800 text-white"
+            onClick={() => setopenDialog({ name: "addSchedule", isopen: true })}
           >
             Add Schedule
           </Button>
@@ -54,6 +60,13 @@ export default function EmployeeSchedule() {
           searchColumn="productType"
         />
       </div>
+
+      {openDialog.isopen && openDialog.name == "addSchedule" && (
+        <AddScheduleDialog
+          open={openDialog.isopen}
+          setOpen={() => setopenDialog({ name: "", isopen: false })}
+        />
+      )}
     </>
   );
 }

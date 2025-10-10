@@ -220,12 +220,12 @@ export default function EmployeeHome() {
                   </span>
                 </div>
 
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                   <div className="font-semibold text-gray-500 w-4/12">
                     Company :
                   </div>
                   <span className="font-semibold"> ABC Agency</span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
