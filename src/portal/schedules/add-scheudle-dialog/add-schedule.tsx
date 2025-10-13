@@ -8,6 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
 type PropT = {
@@ -81,6 +83,30 @@ export function AddScheduleDialog({ setOpen, open }: PropT) {
                     {day}
                   </div>
                 ))}
+              </div>
+
+              <div className="mt-10">
+                <h2 className="font-bold mb-4 text-gray-500">Time</h2>
+                <div className="flex flex-col lg:flex-row gap-x-10 w-full ">
+                  <div className="flex flex-col gap-y-3 w-full">
+                    <Label>From</Label>
+                    <Input
+                      type="time"
+                      placeholder=""
+                      className="border h-10"
+                      defaultValue="06:30"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-y-3 w-full">
+                    <Label>To</Label>
+                    <Input
+                      type="time"
+                      placeholder=""
+                      className="border h-10"
+                      defaultValue="06:30"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

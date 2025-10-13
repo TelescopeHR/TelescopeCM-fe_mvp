@@ -51,6 +51,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   searchPlaceholder: string;
   filterArray: FilterObj[];
+  handleFilter?: (x: any) => void;
   showSerialNumber: boolean;
   withExport: boolean;
   exportTypes?: "Excel" | "PDF" | "All";
@@ -60,7 +61,7 @@ interface DataTableProps<TData, TValue> {
   handleDate?: (obj: any) => void;
   totalCount?: number;
   currentPage?: number;
-  apiCall?: (x: number) => void;
+  apiCall?: (x: any) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -68,6 +69,7 @@ export function DataTable<TData, TValue>({
   data,
   searchPlaceholder,
   filterArray,
+  handleFilter,
   showSerialNumber = false,
   withExport = true,
   handleExport,
@@ -145,6 +147,7 @@ export function DataTable<TData, TValue>({
           <Select
             onValueChange={(value) => {
               console.log("filter selected", value);
+              if (handleFilter) handleFilter(value);
             }}
           >
             <SelectTrigger className="w-[180px]">

@@ -52,7 +52,7 @@ export default function OnboardEmployee() {
     }).subscribe({
       next: (response) => {
         if (response) {
-          toast.success("Employee account created successfully!");
+          // toast.success("Employee account created successfully!");
           setpayload(initialData);
           setValidSteps({
             Identification: false,

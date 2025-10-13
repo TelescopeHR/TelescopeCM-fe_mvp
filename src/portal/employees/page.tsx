@@ -37,6 +37,7 @@ export function EmployeePage() {
     paginate: true,
     page: 1,
     per_page: 20,
+    status: "all",
   });
   const [totalPages, settotalPages] = useState(1);
   const { setCareGiver } = useCareGiverStore();
@@ -166,6 +167,14 @@ export function EmployeePage() {
   //   queryFn: fetchEmployeesStats,
   // });
 
+  const statuses = [
+    { label: "Active Full", value: "active_full" },
+    { label: "Active Full", value: "active_part" },
+    { label: "Inactive", value: "inactive" },
+    { label: "Terminated", value: "terminated" },
+    { label: "Not Eligible", value: "terminated_not_eligible" },
+  ];
+
   const fetchEmployees = () => {
     setisLoadn(true);
     return getEmployees(mergedParams).subscribe({
@@ -262,13 +271,34 @@ export function EmployeePage() {
         </div>
         {/* stats */}
         <div className="mt-10 mb-10 w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="min-h-40 border rounded p-4">
-            <h2 className=" font-semibold">Total</h2>
+          <div
+            className="min-h-40 border rounded p-4"
+            style={{
+              border: mergedParams.status == "all" ? "1px solid #000" : "",
+            }}
+            onClick={() =>
+              setmergedParams((prev) => {
+                return { ...prev, status: "all" };
+              })
+            }
+          >
+            <h2 className=" font-semibold">All</h2>
             <h1 className=" mt-5 font-bold text-4xl text-center text-slate-800 dark:text-slate-400">
               {statsData.total}
             </h1>
           </div>
-          <div className="min-h-40 border rounded p-4 cursor-pointer">
+          <div
+            className="min-h-40 border rounded p-4 cursor-pointer"
+            style={{
+              border:
+                mergedParams.status == "active_full" ? "1px solid #000" : "",
+            }}
+            onClick={() =>
+              setmergedParams((prev) => {
+                return { ...prev, status: "active_full" };
+              })
+            }
+          >
             <div className="flex items-center gap-x-2">
               <h2 className=" font-semibold">Active </h2>{" "}
               <span className=" text-xs">(Full time)</span>
@@ -277,7 +307,18 @@ export function EmployeePage() {
               {statsData.active_full}
             </h1>
           </div>
-          <div className="min-h-40 border rounded p-4 cursor-pointer">
+          <div
+            className="min-h-40 border rounded p-4 cursor-pointer"
+            style={{
+              border:
+                mergedParams.status == "active_part" ? "1px solid #000" : "",
+            }}
+            onClick={() =>
+              setmergedParams((prev) => {
+                return { ...prev, status: "active_part" };
+              })
+            }
+          >
             <div className="flex items-center gap-x-2">
               <h2 className=" font-semibold">Active </h2>{" "}
               <span className=" text-xs">(Part time)</span>
@@ -287,21 +328,55 @@ export function EmployeePage() {
             </h1>
           </div>
 
-          <div className="min-h-40 border rounded p-4 cursor-pointer">
+          <div
+            className="min-h-40 border rounded p-4 cursor-pointer"
+            style={{
+              border: mergedParams.status == "inactive" ? "1px solid #000" : "",
+            }}
+            onClick={() =>
+              setmergedParams((prev) => {
+                return { ...prev, status: "inactive" };
+              })
+            }
+          >
             <h2 className=" font-semibold">Inactive</h2>
             <h1 className=" mt-5 font-bold text-4xl text-center text-slate-800 dark:text-slate-500">
               {statsData.inactive}
             </h1>
           </div>
 
-          <div className="min-h-40 border rounded p-4 cursor-pointer">
+          <div
+            className="min-h-40 border rounded p-4 cursor-pointer"
+            style={{
+              border:
+                mergedParams.status == "terminated" ? "1px solid #000" : "",
+            }}
+            onClick={() =>
+              setmergedParams((prev) => {
+                return { ...prev, status: "terminated" };
+              })
+            }
+          >
             <h2 className=" font-semibold">Terminated</h2>
             <h1 className=" mt-5 font-bold text-4xl text-center text-red-400 dark:text-red-400">
               {statsData.terminated}
             </h1>
           </div>
 
-          <div className="min-h-40 border rounded p-4 cursor-pointer">
+          <div
+            className="min-h-40 border rounded p-4 cursor-pointer"
+            style={{
+              border:
+                mergedParams.status == "terminated_not_eligible"
+                  ? "1px solid #000"
+                  : "",
+            }}
+            onClick={() =>
+              setmergedParams((prev) => {
+                return { ...prev, status: "terminated_not_eligible" };
+              })
+            }
+          >
             <div className="flex items-center gap-x-2">
               <h2 className=" font-semibold">Terminated</h2>
               <span className=" text-xs">(Not eligible)</span>
@@ -316,7 +391,12 @@ export function EmployeePage() {
           columns={columns}
           data={employees}
           searchPlaceholder="Search by Employee ID"
-          filterArray={[]}
+          filterArray={statuses}
+          handleFilter={(value) => {
+            setmergedParams((prev) => {
+              return { ...prev, status: value };
+            });
+          }}
           showSerialNumber={false}
           withExport={true}
           withDate={false}

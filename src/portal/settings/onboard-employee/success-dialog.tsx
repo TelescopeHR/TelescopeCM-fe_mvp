@@ -19,9 +19,9 @@ export function SuccesssPrompt({ open, setopen, handleYes }: PropT) {
     <AlertDialog open={open} onOpenChange={() => ""}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Do you want to add schedules?</AlertDialogTitle>
+          <AlertDialogTitle>Success!</AlertDialogTitle>
           <AlertDialogDescription>
-            Account created successfully!, Do you want to add schudules to this
+            Account created successfully!, Do you want to add schedules to this
             employee's account?
           </AlertDialogDescription>
         </AlertDialogHeader>
