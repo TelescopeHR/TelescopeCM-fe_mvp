@@ -94,6 +94,8 @@ export function BioDataUpdateDialog({ open, setopen }: PropT) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { profile_picture, ...rest } = formData;
     if (isValid) {
+      setisloading(true);
+      setskeletonMessage("Updating");
       const payload = {
         type: "biodata",
         ...rest,
@@ -121,9 +123,9 @@ export function BioDataUpdateDialog({ open, setopen }: PropT) {
     }
   };
 
-  useEffect(() => {
-    console.log("employee data", careGiver);
-  }, []);
+  // useEffect(() => {
+  //   console.log("employee data", careGiver);
+  // }, []);
 
   useEffect(() => {
     if (careGiver) {
