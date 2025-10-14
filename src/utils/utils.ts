@@ -61,3 +61,8 @@ export function formatToYMD(dateString: any) {
   const day = String(d.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
+
+export function capitalizeFirst(str: string) {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

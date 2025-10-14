@@ -16,6 +16,7 @@ import ClientSchedule from "@/portal/schedules/client-schedule/client-schedule";
 import CarePlans from "@/portal/care_plan/page";
 import { SettingsLayout } from "@/portal/settings/settings_layout";
 import OnboardEmployee from "@/portal/settings/onboard-employee/page";
+import EmployeeNote from "@/portal/employee/employee-note/employee-note";
 
 export default function ApplicationRoutes() {
   return (
@@ -29,6 +30,7 @@ export default function ApplicationRoutes() {
         <Route path="employees" element={<EmployeeLayout />}>
           <Route index element={<EmployeePage />} />
           <Route path="employee/:id" element={<EmployeeHome />} />
+          <Route path="notes/:employeeId" element={<EmployeeNote />} />
           <Route path="schedule/:employeeId" element={<EmployeeSchedule />} />
         </Route>
 

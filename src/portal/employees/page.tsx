@@ -17,7 +17,12 @@ import {
   IEmployeesStatResp,
   IEmployeeTableRespArr,
 } from "@/models/employee-model";
-import { containsActive, formatDate, getCurrentDate } from "@/utils/utils";
+import {
+  capitalizeFirst,
+  containsActive,
+  formatDate,
+  getCurrentDate,
+} from "@/utils/utils";
 import { ExportExcelService } from "@/services/export-service/export-excel.service";
 import { Button } from "@/components/ui/button";
 // import { useQuery } from "@tanstack/react-query";
@@ -37,7 +42,7 @@ export function EmployeePage() {
     paginate: true,
     page: 1,
     per_page: 20,
-    status: "all",
+    status: 0,
   });
   const [totalPages, settotalPages] = useState(1);
   const { setCareGiver } = useCareGiverStore();
@@ -168,11 +173,11 @@ export function EmployeePage() {
   // });
 
   const statuses = [
-    { label: "Active Full", value: "active_full" },
-    { label: "Active Full", value: "active_part" },
-    { label: "Inactive", value: "inactive" },
-    { label: "Terminated", value: "terminated" },
-    { label: "Not Eligible", value: "terminated_not_eligible" },
+    { label: "Active Full", value: 1 },
+    { label: "Active Part", value: 2 },
+    { label: "Inactive", value: 3 },
+    { label: "Terminated", value: 4 },
+    { label: "Not Eligible", value: 5 },
   ];
 
   const fetchEmployees = () => {
@@ -190,9 +195,11 @@ export function EmployeePage() {
               id: obj.id,
               photo: obj.profile_picture ?? Avatar,
               employeeId: obj.employee_id,
-              firstName: obj.first_name,
-              lastName: obj.last_name,
-              middleName: obj.middle_name ?? "---",
+              firstName: capitalizeFirst(obj.first_name),
+              lastName: capitalizeFirst(obj.last_name),
+              middleName: obj.middle_name
+                ? capitalizeFirst(obj.middle_name)
+                : "---",
               gender: obj.gender,
               phone: obj.phone,
               email: obj?.email ?? "---",
@@ -274,11 +281,11 @@ export function EmployeePage() {
           <div
             className="min-h-40 border rounded p-4"
             style={{
-              border: mergedParams.status == "all" ? "1px solid #000" : "",
+              border: mergedParams.status == 0 ? "1px solid #000" : "",
             }}
             onClick={() =>
               setmergedParams((prev) => {
-                return { ...prev, status: "all" };
+                return { ...prev, status: 0 };
               })
             }
           >
@@ -290,12 +297,11 @@ export function EmployeePage() {
           <div
             className="min-h-40 border rounded p-4 cursor-pointer"
             style={{
-              border:
-                mergedParams.status == "active_full" ? "1px solid #000" : "",
+              border: mergedParams.status == 1 ? "1px solid #000" : "",
             }}
             onClick={() =>
               setmergedParams((prev) => {
-                return { ...prev, status: "active_full" };
+                return { ...prev, status: 1 };
               })
             }
           >
@@ -310,12 +316,11 @@ export function EmployeePage() {
           <div
             className="min-h-40 border rounded p-4 cursor-pointer"
             style={{
-              border:
-                mergedParams.status == "active_part" ? "1px solid #000" : "",
+              border: mergedParams.status == 2 ? "1px solid #000" : "",
             }}
             onClick={() =>
               setmergedParams((prev) => {
-                return { ...prev, status: "active_part" };
+                return { ...prev, status: 2 };
               })
             }
           >
@@ -331,11 +336,11 @@ export function EmployeePage() {
           <div
             className="min-h-40 border rounded p-4 cursor-pointer"
             style={{
-              border: mergedParams.status == "inactive" ? "1px solid #000" : "",
+              border: mergedParams.status == 3 ? "1px solid #000" : "",
             }}
             onClick={() =>
               setmergedParams((prev) => {
-                return { ...prev, status: "inactive" };
+                return { ...prev, status: 3 };
               })
             }
           >
@@ -348,12 +353,11 @@ export function EmployeePage() {
           <div
             className="min-h-40 border rounded p-4 cursor-pointer"
             style={{
-              border:
-                mergedParams.status == "terminated" ? "1px solid #000" : "",
+              border: mergedParams.status == 4 ? "1px solid #000" : "",
             }}
             onClick={() =>
               setmergedParams((prev) => {
-                return { ...prev, status: "terminated" };
+                return { ...prev, status: 4 };
               })
             }
           >
@@ -366,14 +370,11 @@ export function EmployeePage() {
           <div
             className="min-h-40 border rounded p-4 cursor-pointer"
             style={{
-              border:
-                mergedParams.status == "terminated_not_eligible"
-                  ? "1px solid #000"
-                  : "",
+              border: mergedParams.status == 5 ? "1px solid #000" : "",
             }}
             onClick={() =>
               setmergedParams((prev) => {
-                return { ...prev, status: "terminated_not_eligible" };
+                return { ...prev, status: 5 };
               })
             }
           >

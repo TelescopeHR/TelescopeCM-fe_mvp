@@ -4,18 +4,28 @@ import { getEmployee } from "@/services/employee-service/employee-service";
 import { useCareGiverStore } from "@/store/caregiverStore";
 import Avatar from "@/assets/avatar.png";
 import {
+  capitalizeFirst,
   containsActive,
   ellipsisText,
   formatAndCapitalizeString,
   formatDate,
 } from "@/utils/utils";
-import { CalendarCheck2, LocateFixed, Plus, SquarePen } from "lucide-react";
+import {
+  CalendarCheck2,
+  LocateFixed,
+  Plus,
+  SquarePen,
+  NotepadTextDashedIcon,
+  FileArchiveIcon,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { BioDataUpdateDialog } from "./update-dialogs/biodata-update-dialog";
 
 export default function EmployeeHome() {
   const { careGiver } = useCareGiverStore();
+  const [dialogData, setdialogData] = useState({ open: false, name: "" });
   const [isLoadn, setisLoadn] = useState(false);
   const navigate = useNavigate();
   const { setCareGiver } = useCareGiverStore();
@@ -34,9 +44,11 @@ export default function EmployeeHome() {
             id: obj.id,
             photo: obj.profile_picture ?? Avatar,
             employeeId: obj.employee_id,
-            firstName: obj.first_name,
-            lastName: obj.last_name,
-            middleName: obj.middle_name ?? "---",
+            firstName: capitalizeFirst(obj.first_name),
+            lastName: capitalizeFirst(obj.last_name),
+            middleName: obj.middle_name
+              ? capitalizeFirst(obj.middle_name)
+              : "---",
             gender: obj.gender,
             phone: obj.phone,
             email: obj?.email ?? "---",
@@ -103,7 +115,7 @@ export default function EmployeeHome() {
             <PageHeader title={ellipsisText(name, 14)} hasBack />
           </div>
 
-          <div className="w-full flex gap-x-4 lg:gap-x-8 mt-1">
+          <div className="w-full flex gap-x-4 lg:gap-x-8 mt-1 lg:justify-end pr-4">
             <div
               className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm"
               onClick={() =>
@@ -116,6 +128,21 @@ export default function EmployeeHome() {
             <div className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm">
               <LocateFixed className="w-4 lg:w-5" />
               Visits
+            </div>
+
+            <div
+              className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm"
+              onClick={() =>
+                navigate(`/dashboard/employees/notes/${careGiver.id}`)
+              }
+            >
+              <NotepadTextDashedIcon className="w-4 lg:w-5" />
+              Notes
+            </div>
+
+            <div className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm">
+              <FileArchiveIcon className="w-4 lg:w-5" />
+              Files
             </div>
           </div>
         </div>
@@ -142,7 +169,10 @@ export default function EmployeeHome() {
           <div className="py-6 px-5 rounded my-10 bg-slate-50 dark:bg-slate-900">
             <div className="flex gap-x-4 w-full">
               <h2 className=" text-xl font-bold">Bio Data</h2>
-              <div className="cursor-pointer">
+              <div
+                className="cursor-pointer"
+                onClick={() => setdialogData({ open: true, name: "bio" })}
+              >
                 <SquarePen size={18} />
               </div>
             </div>
@@ -422,6 +452,14 @@ export default function EmployeeHome() {
       </div>
 
       {isLoadn && <LoadingSkeleton />}
+      {dialogData.open && dialogData.name == "bio" && (
+        <BioDataUpdateDialog
+          open={dialogData.open}
+          setopen={() => {
+            setdialogData({ open: false, name: "" });
+          }}
+        />
+      )}
     </>
   );
 }
