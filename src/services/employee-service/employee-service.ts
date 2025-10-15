@@ -15,6 +15,16 @@ export const updateEmployee = (payload: any, id: any): Observable<any> => {
   );
 };
 
+export const updateEmployeePhones = (
+  payload: any,
+  id: any
+): Observable<any> => {
+  return from(http.post(`/phone-number/${id}/update`, payload)).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};
+
 //get employee data
 export const getEmployee = (id: any): Observable<any> => {
   return from(http.get(`/employee/${id}`)).pipe(

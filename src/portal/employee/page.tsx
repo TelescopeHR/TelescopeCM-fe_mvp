@@ -23,6 +23,7 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { BioDataUpdateDialog } from "./update-dialogs/biodata-update-dialog";
 import { AddressDialogUpdate } from "./update-dialogs/address-update-dialog";
+import { PhoneDialogUpdate } from "./update-dialogs/phone-update-dialog";
 
 export default function EmployeeHome() {
   const { careGiver } = useCareGiverStore();
@@ -322,7 +323,10 @@ export default function EmployeeHome() {
           <div className="py-6 px-5 rounded my-10 bg-slate-50 dark:bg-slate-900">
             <div className="flex gap-x-4 w-full">
               <h2 className=" text-xl font-bold">Phone Numbers</h2>
-              <div className="cursor-pointer">
+              <div
+                className="cursor-pointer"
+                onClick={() => setdialogData({ open: true, name: "phone" })}
+              >
                 <Plus size={18} />
               </div>
             </div>
@@ -467,6 +471,16 @@ export default function EmployeeHome() {
 
       {dialogData.open && dialogData.name == "address" && (
         <AddressDialogUpdate
+          open={dialogData.open}
+          makeApiCall={fetchEmployee}
+          setopen={() => {
+            setdialogData({ open: false, name: "" });
+          }}
+        />
+      )}
+
+      {dialogData.open && dialogData.name == "phone" && (
+        <PhoneDialogUpdate
           open={dialogData.open}
           makeApiCall={fetchEmployee}
           setopen={() => {
