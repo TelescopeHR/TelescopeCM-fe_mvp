@@ -63,6 +63,7 @@ export const handleError = (errorResponse: any) => {
         : errorResponse?.response?.data?.error
     );
   }
+
   if (errorResponse?.response?.status === 422) {
     toast.error(
       errorResponse?.response?.data?.message
@@ -76,7 +77,7 @@ export const handleError = (errorResponse: any) => {
     toast.error("An unexpected error occured.");
   }
 
-  toast.error(errorResponse?.response.data.message);
+  // toast.error(errorResponse?.response.data.message);
   return throwError(() => errorResponse);
 };
 export default http;

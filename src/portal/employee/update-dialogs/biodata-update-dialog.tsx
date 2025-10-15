@@ -32,9 +32,10 @@ import { toast } from "react-toastify";
 type PropT = {
   open: boolean;
   setopen: (x: boolean) => void;
+  makeApiCall: () => void;
 };
 
-export function BioDataUpdateDialog({ open, setopen }: PropT) {
+export function BioDataUpdateDialog({ open, setopen, makeApiCall }: PropT) {
   const { careGiver } = useCareGiverStore();
 
   const [isloading, setisloading] = useState(false);
@@ -104,12 +105,13 @@ export function BioDataUpdateDialog({ open, setopen }: PropT) {
         status: parseInt(rest.status),
         profile_picture: preview,
       };
-      console.log("data", payload);
 
       return updateEmployee(payload, careGiver.id).subscribe({
         next: (response) => {
           if (response) {
             toast.success("Updated successfully!");
+            setopen(false);
+            makeApiCall();
           }
         },
         error: (err) => {
@@ -122,10 +124,6 @@ export function BioDataUpdateDialog({ open, setopen }: PropT) {
       });
     }
   };
-
-  // useEffect(() => {
-  //   console.log("employee data", careGiver);
-  // }, []);
 
   useEffect(() => {
     if (careGiver) {

@@ -19,7 +19,7 @@ export default function LoadingSkeleton({ name }: LoadingSkeletonProps) {
             backgroundColor: "rgba(255, 255, 255, 0.1)",
             padding: "20px",
             borderRadius: "12px",
-            backdropFilter: "blur(5px)",
+            backdropFilter: "blur(2px)",
           },
         }}
       >
