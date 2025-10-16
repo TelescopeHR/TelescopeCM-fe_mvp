@@ -277,9 +277,7 @@ export function BioDataUpdateDialog({ open, setopen, makeApiCall }: PropT) {
                       <DateInput
                         title="Date of Birth"
                         date={field.value ? new Date(field.value) : undefined}
-                        setDate={(val) =>
-                          field.onChange(formatToYMD(val?.toISOString()))
-                        }
+                        setDate={(val) => field.onChange(formatToYMD(val))}
                         minDate={minAgeDate}
                       />
                     )}

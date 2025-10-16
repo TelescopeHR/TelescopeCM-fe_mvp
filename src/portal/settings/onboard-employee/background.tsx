@@ -72,9 +72,7 @@ export default function Background({
                 <DateInput
                   title="Hire date"
                   date={field.value ? new Date(field.value) : undefined}
-                  setDate={(val) =>
-                    field.onChange(formatToYMD(val?.toISOString()))
-                  }
+                  setDate={(val) => field.onChange(formatToYMD(val))}
                 />
               )}
             />
@@ -93,9 +91,7 @@ export default function Background({
                 <DateInput
                   title="Application date"
                   date={field.value ? new Date(field.value) : undefined}
-                  setDate={(val) =>
-                    field.onChange(formatToYMD(val?.toISOString()))
-                  }
+                  setDate={(val) => field.onChange(formatToYMD(val))}
                 />
               )}
             />
@@ -117,9 +113,7 @@ export default function Background({
                 <DateInput
                   title="Signed job description date"
                   date={field.value ? new Date(field.value) : undefined}
-                  setDate={(val) =>
-                    field.onChange(formatToYMD(val?.toISOString()))
-                  }
+                  setDate={(val) => field.onChange(formatToYMD(val))}
                 />
               )}
             />
@@ -138,9 +132,7 @@ export default function Background({
                 <DateInput
                   title="Orientation date"
                   date={field.value ? new Date(field.value) : undefined}
-                  setDate={(val) =>
-                    field.onChange(formatToYMD(val?.toISOString()))
-                  }
+                  setDate={(val) => field.onChange(formatToYMD(val))}
                 />
               )}
             />
@@ -164,9 +156,7 @@ export default function Background({
                 <DateInput
                   title="Signed policy procedure date"
                   date={field.value ? new Date(field.value) : undefined}
-                  setDate={(val) =>
-                    field.onChange(formatToYMD(val?.toISOString()))
-                  }
+                  setDate={(val) => field.onChange(formatToYMD(val))}
                 />
               )}
             />
@@ -185,9 +175,7 @@ export default function Background({
                 <DateInput
                   title="Evaluated assigned tasks date"
                   date={field.value ? new Date(field.value) : undefined}
-                  setDate={(val) =>
-                    field.onChange(formatToYMD(val?.toISOString()))
-                  }
+                  setDate={(val) => field.onChange(formatToYMD(val))}
                 />
               )}
             />
@@ -209,9 +197,7 @@ export default function Background({
                 <DateInput
                   title="Last evaluation date"
                   date={field.value ? new Date(field.value) : undefined}
-                  setDate={(val) =>
-                    field.onChange(formatToYMD(val?.toISOString()))
-                  }
+                  setDate={(val) => field.onChange(formatToYMD(val))}
                 />
               )}
             />
@@ -230,9 +216,7 @@ export default function Background({
                 <DateInput
                   title="Termination date"
                   date={field.value ? new Date(field.value) : undefined}
-                  setDate={(val) =>
-                    field.onChange(formatToYMD(val?.toISOString()))
-                  }
+                  setDate={(val) => field.onChange(formatToYMD(val))}
                 />
               )}
             />
