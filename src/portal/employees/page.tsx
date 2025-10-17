@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { useEffect, useState, Fragment } from "react";
 import {
+  deleteEmployee,
   getEmployees,
   getEmployeesStats,
 } from "@/services/employee-service/employee-service";
@@ -25,10 +26,12 @@ import {
 } from "@/utils/utils";
 import { ExportExcelService } from "@/services/export-service/export-excel.service";
 import { Button } from "@/components/ui/button";
+import { DeleteDialog } from "@/components/delete-dialog/delete-dialog";
 // import { useQuery } from "@tanstack/react-query";
 
 export function EmployeePage() {
   const [isLoadn, setisLoadn] = useState(false);
+  const [dialogData, setdialogData] = useState({ open: false, name: "" });
   const [statsData, setstatsData] = useState<IEmployeesStatResp>({
     total: 0,
     active_full: 0,
@@ -46,6 +49,7 @@ export function EmployeePage() {
   });
   const [totalPages, settotalPages] = useState(1);
   const { setCareGiver } = useCareGiverStore();
+  const [selectedObj, setselectedObj] = useState<any>({});
 
   const navigate = useNavigate();
   const handleViewNavigation = (data: any) => {
@@ -62,11 +66,34 @@ export function EmployeePage() {
   };
   const handleStatusUpdate = () => {};
 
+  const handleDeleteDialog = (data: any) => {
+    setselectedObj(data);
+    setdialogData({ open: true, name: "delete" });
+  };
+
+  const handleDelete = () => {
+    setisLoadn(true);
+    return deleteEmployee(selectedObj.id).subscribe({
+      next: (response) => {
+        if (response) {
+          toast.success("Employee deleted!");
+          fetchEmployees();
+        }
+      },
+      error: (err) => {
+        toast.error(err.response.data.error);
+        setisLoadn(false);
+      },
+      complete: () => {},
+    });
+  };
+
   const columns = EmployeedefColumns(
     handleViewNavigation,
     handleStatusUpdate,
     handleSchedules,
-    handleVisits
+    handleVisits,
+    handleDeleteDialog
   );
 
   // ===== export functions =================================
@@ -413,6 +440,17 @@ export function EmployeePage() {
         />
       </div>
       {isLoadn && <LoadingSkeleton />}
+
+      {dialogData.open && dialogData.name === "delete" && (
+        <DeleteDialog
+          open={dialogData.open}
+          setopen={() => {
+            setdialogData({ open: false, name: "" });
+          }}
+          description={`You're about to delete ${selectedObj.firstName} ${selectedObj.lastName}'s record, Do you want to proceed?`}
+          handleProceed={handleDelete}
+        />
+      )}
     </Fragment>
   );
 }

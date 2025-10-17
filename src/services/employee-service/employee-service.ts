@@ -68,3 +68,10 @@ export const getSingleEmployee = (id: string): Observable<any> => {
     catchError(handleError)
   );
 };
+
+export const deleteEmployee = (id: string): Observable<any> => {
+  return from(http.post(`/employee/${id}/delete`)).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};

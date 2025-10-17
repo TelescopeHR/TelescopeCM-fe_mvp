@@ -27,7 +27,8 @@ export const EmployeedefColumns = (
   handleNavigation: (x: any) => void,
   handleStatus: (x: any) => void,
   handleSchedules: (x: any) => void,
-  handleVisits: (x: any) => void
+  handleVisits: (x: any) => void,
+  handleDelete: (x: any) => void
 ): ColumnDef<StudentT>[] => [
   {
     id: "select",
@@ -169,11 +170,18 @@ export const EmployeedefColumns = (
                 Visits
               </DropdownMenuItem>
 
-              <DropdownMenuItem
+              {/* <DropdownMenuItem
                 onClick={() => handleStatus(record)}
                 className=" cursor-pointer"
               >
                 {record.tablestatus === "Active" ? "Deactivate" : "Activate"}
+              </DropdownMenuItem> */}
+
+              <DropdownMenuItem
+                onClick={() => handleDelete(record)}
+                className=" cursor-pointer"
+              >
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
