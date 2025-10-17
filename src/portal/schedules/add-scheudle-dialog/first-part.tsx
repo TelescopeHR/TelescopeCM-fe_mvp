@@ -103,7 +103,7 @@ export default function FirstPart({ setformPart, data, setformData }: PropT) {
               )}
             />
             {errors.fromDate && (
-              <p className="text-red-500 text-sm">Select a start date</p>
+              <p className="text-red-500 text-xs">Select a start date</p>
             )}
           </div>
 
@@ -112,7 +112,18 @@ export default function FirstPart({ setformPart, data, setformData }: PropT) {
             <Controller
               name="toDate"
               control={control}
-              rules={{ required: "End date is required" }}
+              rules={{
+                required: "End date is required",
+                validate: (value) => {
+                  const from = new Date(getValues("fromDate"));
+                  const to = new Date(value);
+
+                  if (!from || !to) return true;
+                  if (to < from) return "End date cannot be before start date";
+
+                  return true;
+                },
+              }}
               render={({ field }) => (
                 <DateInput
                   title="To"
@@ -122,7 +133,7 @@ export default function FirstPart({ setformPart, data, setformData }: PropT) {
               )}
             />
             {errors.toDate && (
-              <p className="text-red-500 text-sm">Select an end date</p>
+              <p className="text-red-500 text-xs">{errors.toDate.message}</p>
             )}
           </div>
         </div>
@@ -161,7 +172,7 @@ export default function FirstPart({ setformPart, data, setformData }: PropT) {
                 ))}
               </div>
               {errors.days && (
-                <p className="text-red-500 text-sm text-center mt-2">
+                <p className="text-red-500 text-xs text-center mt-2">
                   {errors.days.message?.toString()}
                 </p>
               )}
@@ -171,7 +182,9 @@ export default function FirstPart({ setformPart, data, setformData }: PropT) {
 
         {/* --- Time Section --- */}
         <div className="mt-8 mb-4 border p-4 rounded">
-          <h2 className="font-bold mb-4 text-gray-500">Time</h2>
+          <h2 className="font-bold mb-4 text-gray-500">
+            Time <span className="text-xs">(24-hour)</span>
+          </h2>
 
           <div className="flex flex-col lg:flex-row gap-x-10 w-full">
             {/* From Time */}
@@ -186,7 +199,7 @@ export default function FirstPart({ setformPart, data, setformData }: PropT) {
                 disabled={isAllDay}
               />
               {errors.fromTime && (
-                <p className="text-red-500 text-sm">Select start time</p>
+                <p className="text-red-500 text-xs">Select start time</p>
               )}
             </div>
 
@@ -196,13 +209,30 @@ export default function FirstPart({ setformPart, data, setformData }: PropT) {
               <Input
                 {...register("toTime", {
                   required: !isAllDay ? "End time is required" : false,
+                  validate: (value) => {
+                    const from = getValues("fromTime");
+
+                    // Only validate when not all-day and both times exist
+                    if (!isAllDay && from && value) {
+                      const [fromH, fromM] = from.split(":").map(Number);
+                      const [toH, toM] = value.split(":").map(Number);
+
+                      const fromMinutes = fromH * 60 + fromM;
+                      const toMinutes = toH * 60 + toM;
+
+                      if (toMinutes <= fromMinutes)
+                        return "End time must be later than start time";
+                    }
+
+                    return true;
+                  },
                 })}
                 type="time"
                 className="border h-10"
                 disabled={isAllDay}
               />
               {errors.toTime && (
-                <p className="text-red-500 text-sm">Select end time</p>
+                <p className="text-red-500 text-xs">{errors.toTime.message}</p>
               )}
             </div>
           </div>
