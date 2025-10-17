@@ -25,7 +25,7 @@ export type StudentT = {
 
 export const EmployeedefColumns = (
   handleNavigation: (x: any) => void,
-  handleStatus: (x: any) => void,
+  _handleStatus: (x: any) => void,
   handleSchedules: (x: any) => void,
   handleVisits: (x: any) => void,
   handleDelete: (x: any) => void
