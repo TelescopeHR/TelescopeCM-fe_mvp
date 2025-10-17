@@ -3,15 +3,25 @@ import { Button } from "@/components/ui/button";
 import PageHeader from "@/components/ui/page-header/page-header";
 import { useCareGiverStore } from "@/store/caregiverStore";
 import { ScheduleDefColumns } from "./schedule-columns";
-import { ScheduleData } from "./em-schudele-data";
+// import { ScheduleData } from "./em-schudele-data";
 import { AddScheduleDialog } from "../add-scheudle-dialog/add-schedule";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getSchedules } from "@/services/employee-service/employee-service";
+import { toast } from "react-toastify";
+import LoadingSkeleton from "@/components/skeleton/skeleton";
 
 export default function EmployeeSchedule() {
   const [openDialog, setopenDialog] = useState({
     isopen: false,
     name: "",
   });
+  const [mergedParams, setmergedParams] = useState({
+    paginate: true,
+    page: 1,
+    per_page: 20,
+  });
+  const [totalPages, settotalPages] = useState(1);
+  const [isLoadn, setisLoadn] = useState(false);
   const { careGiver } = useCareGiverStore();
 
   const handleViewNavigation = () => {};
@@ -25,6 +35,40 @@ export default function EmployeeSchedule() {
     handleDelete,
     handleStatus
   );
+
+  const fetchSchedules = () => {
+    setisLoadn(true);
+    return getSchedules(mergedParams, careGiver.id).subscribe({
+      next: (response) => {
+        if (response) {
+          const { per_page, total } = response.pagination;
+          const totalPagx = Math.ceil(total / per_page);
+          settotalPages(totalPagx);
+          const schedulesArray = response.data;
+          const transformed = schedulesArray.map((obj: any) => {
+            return { ...obj };
+          });
+          console.log("e===>", transformed);
+
+          console.log("schedules response===>", schedulesArray);
+        }
+      },
+      error: (err) => {
+        toast.error(err.response.data.error);
+        setisLoadn(false);
+      },
+      complete: () => {
+        setisLoadn(false);
+      },
+    });
+  };
+
+  useEffect(() => {
+    const subscription = fetchSchedules();
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <>
@@ -51,13 +95,20 @@ export default function EmployeeSchedule() {
       <div className="mt-10">
         <DataTable
           columns={columns}
-          data={ScheduleData}
+          data={[]}
           searchPlaceholder="Search"
           filterArray={[]}
           showSerialNumber={false}
           withExport={true}
           withDate={false}
           searchColumn="productType"
+          currentPage={mergedParams.page}
+          totalCount={totalPages}
+          apiCall={(pageNo: number) => {
+            setmergedParams((prev) => {
+              return { ...prev, page: pageNo };
+            });
+          }}
         />
       </div>
 
@@ -67,6 +118,8 @@ export default function EmployeeSchedule() {
           setOpen={() => setopenDialog({ name: "", isopen: false })}
         />
       )}
+
+      {isLoadn && <LoadingSkeleton />}
     </>
   );
 }

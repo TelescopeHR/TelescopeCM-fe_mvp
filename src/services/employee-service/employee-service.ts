@@ -41,6 +41,18 @@ export const getEmployees = (payload: any): Observable<any> => {
   );
 };
 
+//get all schedules
+export const getSchedules = (payload: any, id: string): Observable<any> => {
+  return from(
+    http.get(`employee/schedule/${id}`, {
+      params: { ...payload },
+    })
+  ).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};
+
 //get employee stats
 export const getEmployeesStats = (): Observable<any> => {
   return from(http.get(`/employee/statistics`)).pipe(
