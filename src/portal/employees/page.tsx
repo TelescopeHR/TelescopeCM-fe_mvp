@@ -194,11 +194,6 @@ export function EmployeePage() {
     });
   };
 
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ["emplyStats"],
-  //   queryFn: fetchEmployeesStats,
-  // });
-
   const statuses = [
     { label: "Active Full", value: 1 },
     { label: "Active Part", value: 2 },

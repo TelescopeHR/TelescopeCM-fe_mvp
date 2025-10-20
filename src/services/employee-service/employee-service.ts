@@ -41,6 +41,22 @@ export const getEmployees = (payload: any): Observable<any> => {
   );
 };
 
+//get all clients
+export const getClients = (): Observable<any> => {
+  return from(http.get("/client?select=true")).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};
+
+//create schedule
+export const createSchedule = (payload: any): Observable<any> => {
+  return from(http.post("/employee/schedule", payload)).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};
+
 //get all schedules
 export const getSchedules = (payload: any, id: string): Observable<any> => {
   return from(

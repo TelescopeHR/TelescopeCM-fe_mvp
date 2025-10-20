@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { getSchedules } from "@/services/employee-service/employee-service";
 import { toast } from "react-toastify";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
+import { IScheduleResponse } from "@/models/schedule-module";
+import { formatDate } from "@/utils/utils";
 
 export default function EmployeeSchedule() {
   const [openDialog, setopenDialog] = useState({
@@ -20,6 +22,7 @@ export default function EmployeeSchedule() {
     page: 1,
     per_page: 20,
   });
+  const [schedulesArr, setschedulesArr] = useState<any[]>([]);
   const [totalPages, settotalPages] = useState(1);
   const [isLoadn, setisLoadn] = useState(false);
   const { careGiver } = useCareGiverStore();
@@ -45,12 +48,23 @@ export default function EmployeeSchedule() {
           const totalPagx = Math.ceil(total / per_page);
           settotalPages(totalPagx);
           const schedulesArray = response.data;
-          const transformed = schedulesArray.map((obj: any) => {
-            return { ...obj };
-          });
-          console.log("e===>", transformed);
-
-          console.log("schedules response===>", schedulesArray);
+          const transformed = schedulesArray.map(
+            (obj: IScheduleResponse, idx: number) => {
+              return {
+                id: obj.id,
+                scheduleId: idx + 1,
+                scheduleType: obj.type.name,
+                startDate: formatDate(obj.start_date),
+                endDate: formatDate(obj.end_date),
+                hours: obj.hours,
+                rate: `$${obj.rate}`,
+                client: obj.client,
+                status: obj.status.toLowerCase(),
+                weeklySchedule: obj.weekly_schedule,
+              };
+            }
+          );
+          setschedulesArr(transformed);
         }
       },
       error: (err) => {
@@ -95,13 +109,13 @@ export default function EmployeeSchedule() {
       <div className="mt-10">
         <DataTable
           columns={columns}
-          data={[]}
+          data={schedulesArr}
           searchPlaceholder="Search"
           filterArray={[]}
           showSerialNumber={false}
           withExport={true}
           withDate={false}
-          searchColumn="productType"
+          searchColumn="clientName"
           currentPage={mergedParams.page}
           totalCount={totalPages}
           apiCall={(pageNo: number) => {
@@ -116,6 +130,8 @@ export default function EmployeeSchedule() {
         <AddScheduleDialog
           open={openDialog.isopen}
           setOpen={() => setopenDialog({ name: "", isopen: false })}
+          makeApiCall={fetchSchedules}
+          userId={careGiver.id}
         />
       )}
 

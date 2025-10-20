@@ -12,28 +12,33 @@ import {
 } from "@/components/ui/select";
 import { Controller, useForm } from "react-hook-form";
 
+type FormValues = {
+  patient_id: string;
+  type_id: string;
+  status: string;
+  rate: string;
+};
+
 type PropT = {
   setformPart: (x: number) => void;
+  clientsArr: any[];
+  handleCreate: (x: FormValues) => void;
 };
 
-type FormValues = {
-  patient: string;
-  eventType: string;
-  status: string;
-  payRate: string;
-};
-
-export default function SecondPart({ setformPart }: PropT) {
+export default function SecondPart({
+  setformPart,
+  clientsArr,
+  handleCreate,
+}: PropT) {
   const {
     control,
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormValues>({});
 
   const handleNext = async (data: FormValues) => {
-    console.log("data", data);
-    if (isValid) setformPart(2);
+    handleCreate(data);
   };
   return (
     <form className="grid gap-4 -mt-1" onSubmit={handleSubmit(handleNext)}>
@@ -42,7 +47,7 @@ export default function SecondPart({ setformPart }: PropT) {
           <div className="flex flex-col gap-y-3 w-full">
             <Label>Patient</Label>
             <Controller
-              name="patient"
+              name="patient_id"
               control={control}
               rules={{ required: "Select a patient" }}
               render={({ field }) => (
@@ -55,18 +60,21 @@ export default function SecondPart({ setformPart }: PropT) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Gender</SelectLabel>
-                      <SelectItem value="1">Male</SelectItem>
-                      <SelectItem value="2">Female</SelectItem>
+                      <SelectLabel>Clients</SelectLabel>
+                      {clientsArr.map((obj: any, idx: number) => (
+                        <SelectItem key={idx} value={obj.id}>
+                          {obj.label}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
               )}
             />
 
-            {errors.patient && (
+            {errors.patient_id && (
               <p className="text-xs text-red-400">
-                {`${errors.patient.message}`}
+                {`${errors.patient_id.message}`}
               </p>
             )}
           </div>
@@ -75,7 +83,7 @@ export default function SecondPart({ setformPart }: PropT) {
             <Label>Type of event</Label>
 
             <Controller
-              name="eventType"
+              name="type_id"
               control={control}
               rules={{ required: "Select an event" }}
               render={({ field }) => (
@@ -89,23 +97,19 @@ export default function SecondPart({ setformPart }: PropT) {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Type of event</SelectLabel>
-                      <SelectItem value="Daily fixed">Daily Fixed</SelectItem>
-                      <SelectItem value="Daily variable">
-                        Daily Variable
-                      </SelectItem>
-                      <SelectItem value="No schedule">No Schedule</SelectItem>
-                      <SelectItem value="Weekly variable">
-                        Weekly Variable
-                      </SelectItem>
+                      <SelectItem value="1">Daily Fixed</SelectItem>
+                      <SelectItem value="2">Daily Variable</SelectItem>
+                      <SelectItem value="3">No Schedule</SelectItem>
+                      <SelectItem value="4">Weekly Variable</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
               )}
             />
 
-            {errors.eventType && (
+            {errors.type_id && (
               <p className="text-xs text-red-400">
-                {`${errors.eventType.message}`}
+                {`${errors.type_id.message}`}
               </p>
             )}
           </div>
@@ -128,8 +132,8 @@ export default function SecondPart({ setformPart }: PropT) {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Status</SelectLabel>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="inactive">Inactive</SelectItem>
+                      <SelectItem value="1">Active</SelectItem>
+                      <SelectItem value="3">Inactive</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -145,13 +149,18 @@ export default function SecondPart({ setformPart }: PropT) {
           <div className="flex flex-col gap-y-3 w-full">
             <Label>Pay rate</Label>
             <Input
-              {...register("payRate", {
+              {...register("rate", {
                 required: "Pay rate is required",
+                pattern: {
+                  value: /^[0-9]*$/,
+                  message: "Only numbers are allowed",
+                },
               })}
+              type="number"
               placeholder="Pay rate"
               className="border h-10"
             />
-            {errors.payRate && (
+            {errors.rate && (
               <p className="text-red-500 text-sm">Pay rate is required</p>
             )}
           </div>

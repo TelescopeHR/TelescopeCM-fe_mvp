@@ -53,7 +53,7 @@ export const ScheduleDefColumns = (
 
   {
     accessorKey: "scheduleId",
-    header: "Schedule ID",
+    header: "S/N",
   },
 
   {
@@ -63,7 +63,7 @@ export const ScheduleDefColumns = (
       const record: any = row.original;
 
       return (
-        <span>{record.client.firstName + " " + record.client.lastName}</span>
+        <span>{record.client.first_name + " " + record.client.first_name}</span>
       );
     },
   },
@@ -134,14 +134,22 @@ export const ScheduleDefColumns = (
                 onClick={() => handleNavigation(record)}
                 className=" cursor-pointer"
               >
-                View
+                View Details
+              </DropdownMenuItem>
+
+              <DropdownMenuItem className=" cursor-pointer">
+                View Client
+              </DropdownMenuItem>
+
+              <DropdownMenuItem className=" cursor-pointer">
+                Visits
               </DropdownMenuItem>
 
               <DropdownMenuItem
                 onClick={() => handleEdit(record)}
                 className=" cursor-pointer"
               >
-                Edit
+                Edit Schedule
               </DropdownMenuItem>
 
               <DropdownMenuItem

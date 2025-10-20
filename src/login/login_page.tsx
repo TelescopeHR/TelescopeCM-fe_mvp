@@ -56,8 +56,8 @@ export default function LoginPage() {
         }
       },
       error: (err) => {
-        console.log("error", err);
-        toast.error(err.response.data.error);
+        console.log("error", err.response.data.message);
+        toast.error(err.response.data.message);
         setisLoading(false);
       },
       complete: () => {
@@ -123,6 +123,9 @@ export default function LoginPage() {
                     className=" border h-10"
                   />
                 </div>
+                <p className=" text-right cursor-pointer text-sm -mb-2">
+                  forgot password?
+                </p>
               </div>
               <Button className="w-full h-10">Login</Button>
             </form>

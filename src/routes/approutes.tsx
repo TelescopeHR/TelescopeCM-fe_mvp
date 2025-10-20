@@ -17,6 +17,7 @@ import CarePlans from "@/portal/care_plan/page";
 import { SettingsLayout } from "@/portal/settings/settings_layout";
 import OnboardEmployee from "@/portal/settings/onboard-employee/page";
 import EmployeeNote from "@/portal/employee/employee-note/employee-note";
+import OnboardClient from "@/portal/settings/onboard-client/page";
 
 export default function ApplicationRoutes() {
   return (
@@ -43,6 +44,7 @@ export default function ApplicationRoutes() {
         <Route path="settings" element={<SettingsLayout />}>
           <Route index element={<EmployeePage />} />
           <Route path="onboard/employee" element={<OnboardEmployee />} />
+          <Route path="onboard/client" element={<OnboardClient />} />
         </Route>
         <Route path="finance" element={<FinancePage />} />
         <Route path="*" element={<NotfoundPage path="/dashboard" />} />

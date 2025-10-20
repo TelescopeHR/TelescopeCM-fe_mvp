@@ -11,8 +11,8 @@ interface IData {
   toDate: string;
   fromTime: string;
   toTime: string;
-  patient: string;
-  eventType: string;
+  patient_id: string;
+  type_id: string;
   status: string;
   payRate: string;
   isAllDay: boolean;
@@ -35,17 +35,27 @@ type FormValues = {
 };
 
 export default function FirstPart({ setformPart, data, setformData }: PropT) {
-  const Weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const Weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
   const {
     control,
     register,
     watch,
     handleSubmit,
+
     setValue,
     getValues,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormValues>({
+    mode: "onChange",
     defaultValues: {
       fromDate: data.fromDate || "",
       toDate: data.toDate || "",
@@ -76,10 +86,7 @@ export default function FirstPart({ setformPart, data, setformData }: PropT) {
       ...prev,
       ...formData,
     }));
-    // only move to next part if valid
-    if (isValid) {
-      setformPart(2);
-    }
+    setformPart(2);
   };
 
   return (
@@ -160,7 +167,7 @@ export default function FirstPart({ setformPart, data, setformData }: PropT) {
                 {Weekdays.map((day, idx) => (
                   <div
                     key={idx}
-                    className={`w-14 h-14 rounded-xl flex items-center justify-center cursor-pointer text-sm font-bold ${
+                    className={`px-2 h-10 rounded-full flex items-center justify-center cursor-pointer text-xs font-bold ${
                       field.value.includes(day)
                         ? "bg-cyan-500 text-white"
                         : "bg-slate-200 text-slate-500"
@@ -192,7 +199,7 @@ export default function FirstPart({ setformPart, data, setformData }: PropT) {
               <Label>From</Label>
               <Input
                 {...register("fromTime", {
-                  required: !isAllDay ? "Start time is required" : false,
+                  required: !getValues("isAllDay") && "Start time is required",
                 })}
                 type="time"
                 className="border h-10"
@@ -208,7 +215,7 @@ export default function FirstPart({ setformPart, data, setformData }: PropT) {
               <Label>To</Label>
               <Input
                 {...register("toTime", {
-                  required: !isAllDay ? "End time is required" : false,
+                  required: !getValues("isAllDay") && "End time is required",
                   validate: (value) => {
                     const from = getValues("fromTime");
 
@@ -254,6 +261,7 @@ export default function FirstPart({ setformPart, data, setformData }: PropT) {
                       setValue("fromTime", "");
                       setValue("toTime", "");
                     }
+                    // trigger(["fromTime", "toTime"]);
                   }}
                 />
               )}

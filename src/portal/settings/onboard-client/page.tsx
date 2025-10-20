@@ -8,7 +8,6 @@ import PageHeader from "@/components/ui/page-header/page-header";
 import Identification from "./identification";
 import Address from "./address";
 import PhoneNumber from "./phoneNumber";
-import Background from "./background";
 import { ICreateEmployee } from "@/models/employee-model";
 import { initialData } from "./intialdata";
 import { toast } from "react-toastify";
@@ -16,13 +15,14 @@ import { createEmployee } from "@/services/employee-service/employee-service";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
 import { SuccesssPrompt } from "./success-dialog";
 import { AddScheduleDialog } from "@/portal/schedules/add-scheudle-dialog/add-schedule";
+import MedicalInfo from "./medicalInfo";
 
 // import Check from "@mui/icons-material/Check";
 
-const steps = ["Identification", "Address", "Phone Numbers", "Background"];
+const steps = ["Identification", "Address", "Phone Numbers", "Medical Info"];
 type StepKey = (typeof steps)[number];
 
-export default function OnboardEmployee() {
+export default function OnboardClient() {
   const [activeStep, setActiveStep] = useState(0);
   const [payload, setpayload] = useState<ICreateEmployee>(initialData);
   const [isLoadn, setisLoadn] = useState(false);
@@ -30,7 +30,6 @@ export default function OnboardEmployee() {
     open: false,
     name: "",
   });
-  const [newEmployeeData, setnewEmployeeData] = useState<any>({}); //new employee's data
 
   const [validSteps, setValidSteps] = useState<Record<StepKey, boolean>>({
     Identification: false,
@@ -53,8 +52,6 @@ export default function OnboardEmployee() {
     }).subscribe({
       next: (response) => {
         if (response) {
-          console.log("newEmpl", response.data);
-          setnewEmployeeData(response.data);
           // toast.success("Employee account created successfully!");
           setpayload(initialData);
           setValidSteps({
@@ -81,7 +78,7 @@ export default function OnboardEmployee() {
     <>
       <div className="px-4">
         <div className="mb-6">
-          <PageHeader title="Onboard Employee" hasBack />
+          <PageHeader title="Onboard Client" hasBack />
         </div>
         <Stepper sx={{ width: "100%" }}>
           {steps.map((step, index) => (
@@ -150,7 +147,7 @@ export default function OnboardEmployee() {
               />
             )}
             {activeStep == 3 && (
-              <Background
+              <MedicalInfo
                 data={payload}
                 setValidSteps={setValidSteps}
                 setData={setpayload}
@@ -176,8 +173,6 @@ export default function OnboardEmployee() {
         <AddScheduleDialog
           open={openDialog.open}
           setOpen={() => setopenDialog({ name: "", open: false })}
-          makeApiCall={() => ""}
-          userId={newEmployeeData.id}
         />
       )}
     </>

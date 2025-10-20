@@ -5,6 +5,7 @@ import { DataTable } from "@/components/data-table";
 import PageHeader from "@/components/ui/page-header/page-header";
 import { useNavigate } from "react-router";
 import { useClientStore } from "@/store/clientStore";
+import { Button } from "@/components/ui/button";
 
 export type Payment = {
   id: string;
@@ -41,7 +42,18 @@ export function ClientsPage() {
   );
   return (
     <div className="w-full">
-      <PageHeader title="Clients" />
+      <div className="flex items-center justify-between">
+        <PageHeader title="Clients" />
+        <Button
+          className=" cursor-pointer"
+          onClick={() => {
+            navigate("/dashboard/settings/onboard/client");
+          }}
+        >
+          Add Client
+        </Button>
+      </div>
+
       <div className="mt-10 mb-10 w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <div className="h-36 border rounded p-4 cursor-pointer">
           <h2 className=" font-semibold">Total</h2>
