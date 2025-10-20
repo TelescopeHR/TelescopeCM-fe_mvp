@@ -173,6 +173,8 @@ export default function OnboardClient() {
         <AddScheduleDialog
           open={openDialog.open}
           setOpen={() => setopenDialog({ name: "", open: false })}
+          makeApiCall={() => ""}
+          userId=""
         />
       )}
     </>
