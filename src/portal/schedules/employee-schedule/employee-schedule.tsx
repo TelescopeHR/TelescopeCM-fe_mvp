@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
 import { IScheduleResponse } from "@/models/schedule-module";
 import { formatDate } from "@/utils/utils";
+import { ScheduleDetails } from "../schedule-details/schedule-details-dialog";
 
 export default function EmployeeSchedule() {
   const [openDialog, setopenDialog] = useState({
@@ -25,9 +26,14 @@ export default function EmployeeSchedule() {
   const [schedulesArr, setschedulesArr] = useState<any[]>([]);
   const [totalPages, settotalPages] = useState(1);
   const [isLoadn, setisLoadn] = useState(false);
+  const [selectedRow, setselectedRow] = useState<any>({});
   const { careGiver } = useCareGiverStore();
 
-  const handleViewNavigation = () => {};
+  const handleViewNavigation = (row: any) => {
+    setselectedRow(row);
+    setopenDialog({ name: "details", isopen: true });
+  };
+
   const handleEdit = () => {};
   const handleDelete = () => {};
   const handleStatus = () => {};
@@ -132,6 +138,14 @@ export default function EmployeeSchedule() {
           setOpen={() => setopenDialog({ name: "", isopen: false })}
           makeApiCall={fetchSchedules}
           userId={careGiver.id}
+        />
+      )}
+
+      {openDialog.isopen && openDialog.name == "details" && (
+        <ScheduleDetails
+          open={openDialog.isopen}
+          setopen={() => setopenDialog({ name: "", isopen: false })}
+          details={selectedRow}
         />
       )}
 

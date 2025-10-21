@@ -147,7 +147,7 @@ export default function SecondPart({
           </div>
 
           <div className="flex flex-col gap-y-3 w-full">
-            <Label>Pay rate</Label>
+            <Label>Pay rate (USD)</Label>
             <Input
               {...register("rate", {
                 required: "Pay rate is required",
