@@ -101,7 +101,9 @@ export default function EmployeeScheduleVisits() {
               <Clock9 size={20} />
               <div className="flex gap-x-2">
                 <span>Total Hours:</span>
-                <span>{parseFloat(visitsMeta.totalHours).toFixed(2)}</span>
+                <span className="font-bold">
+                  {parseFloat(visitsMeta.totalHours).toFixed(2)}
+                </span>
               </div>
             </div>
             <div className="flex gap-x-2">
