@@ -138,10 +138,6 @@ export const ScheduleDefColumns = (
               </DropdownMenuItem>
 
               <DropdownMenuItem className=" cursor-pointer">
-                View Client
-              </DropdownMenuItem>
-
-              <DropdownMenuItem className=" cursor-pointer">
                 Visits
               </DropdownMenuItem>
 
@@ -155,11 +151,17 @@ export const ScheduleDefColumns = (
               <DropdownMenuItem
                 onClick={() => {
                   handleStatus(record);
-                  handleDelete(record);
                 }}
                 className=" cursor-pointer"
               >
                 {record.status === "active" ? "Deactivate" : "Activate"}
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                className=" cursor-pointer"
+                onClick={() => handleDelete(record)}
+              >
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

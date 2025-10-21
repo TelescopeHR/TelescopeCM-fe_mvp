@@ -11,18 +11,19 @@ import FirstPart from "./first-part";
 import SecondPart from "./second-part";
 import { toast } from "react-toastify";
 import {
-  createSchedule,
   getClients,
+  updateSchedule,
 } from "@/services/employee-service/employee-service";
 import { Subscription } from "rxjs";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
+import { useCareGiverStore } from "@/store/caregiverStore";
 // import { useCareGiverStore } from "@/store/caregiverStore";
 
 type PropT = {
   setOpen: (x: any) => void;
+  data: any;
   open: boolean;
   makeApiCall: () => void;
-  userId: string;
 };
 
 const initialData = {
@@ -52,23 +53,18 @@ export interface ISchedulepayload {
   all_day_event: boolean;
 }
 
-export function AddScheduleDialog({
+export function EditScheduleDialog({
   setOpen,
   open,
   makeApiCall,
-  userId,
+  data,
 }: PropT) {
   const [formData, setformData] = useState(initialData);
   const [formpart, setformpart] = useState(1);
   const [isloading, setisloading] = useState(false);
   const [clientsArr, setclientsArr] = useState<any>([]);
   const [skeletonMessage, setskeletonMessage] = useState("Processing");
-  // const { careGiver } = useCareGiverStore();
-
-  // const onSubmit = (data: FormValues) => {
-  //   console.log("Final data:", data);
-  //   setOpen(false);
-  // };
+  const { careGiver } = useCareGiverStore();
 
   const fetchClients = () => {
     setisloading(true);
@@ -98,11 +94,11 @@ export function AddScheduleDialog({
     });
   };
 
-  const handleCreateSchedule = (obj: any) => {
+  const handleUpdateSchedule = (obj: any) => {
     const formObj = { ...formData, ...obj };
     const payload = {
       patient_id: formObj.patient_id,
-      care_worker_id: userId,
+      care_worker_id: careGiver.id,
       type_id: parseInt(formObj.type_id),
       date_from: formObj.fromDate,
       date_to: formObj.toDate,
@@ -114,13 +110,13 @@ export function AddScheduleDialog({
       all_day_event: formObj.isAllDay,
     };
     setisloading(true);
-    setskeletonMessage("Creating schedule...");
-    return createSchedule(payload).subscribe({
+    setskeletonMessage("Updating schedule...");
+    return updateSchedule(payload, data.id).subscribe({
       next: (response) => {
         if (response) {
           makeApiCall();
           setOpen(false);
-          toast.success("Schedule created successfully!");
+          toast.success("Schedule updated successfully!");
         }
       },
       error: () => {
@@ -144,23 +140,23 @@ export function AddScheduleDialog({
       <div className="w-full ">
         <DialogContent className="sm:max-w-xl w-full max-h-[90vh] overflow-scroll">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Add Schedule</DialogTitle>
-            <DialogDescription>
-              Add a new schedule to the selected employee.
-            </DialogDescription>
+            <DialogTitle className="text-2xl">Update Schedule</DialogTitle>
+            <DialogDescription>Update the selected schedule.</DialogDescription>
           </DialogHeader>
           {formpart === 1 && (
             <FirstPart
               setformPart={setformpart}
               data={formData}
               setformData={setformData}
+              scheduleData={data}
             />
           )}
           {formpart === 2 && (
             <SecondPart
               setformPart={setformpart}
               clientsArr={clientsArr}
-              handleCreate={handleCreateSchedule}
+              handleUpdate={handleUpdateSchedule}
+              scheduleData={data}
             />
           )}
         </DialogContent>

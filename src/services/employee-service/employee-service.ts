@@ -57,6 +57,14 @@ export const createSchedule = (payload: any): Observable<any> => {
   );
 };
 
+//update schedule
+export const updateSchedule = (payload: any, id: string): Observable<any> => {
+  return from(http.post(`/employee/schedule/update/${id}`, payload)).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};
+
 //get all schedules
 export const getSchedules = (payload: any, id: string): Observable<any> => {
   return from(
@@ -64,6 +72,14 @@ export const getSchedules = (payload: any, id: string): Observable<any> => {
       params: { ...payload },
     })
   ).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};
+
+//delete schedule
+export const deleteSchedules = (id: string): Observable<any> => {
+  return from(http.post(`employee/schedule/delete/${id}`)).pipe(
     map((response: any) => response),
     catchError(handleError)
   );

@@ -7,7 +7,8 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { useCareGiverStore } from "@/store/caregiverStore";
-import { ExternalLink } from "lucide-react";
+import { MoveRight } from "lucide-react";
+import { useNavigate } from "react-router";
 
 type propT = {
   open: boolean;
@@ -18,6 +19,7 @@ type propT = {
 export function ScheduleDetails({ open, setopen, details }: propT) {
   const { careGiver } = useCareGiverStore();
   const weeklySchedules = details.weeklySchedule;
+  const navigate = useNavigate();
 
   const Weekdays = [
     "Sunday",
@@ -63,16 +65,12 @@ export function ScheduleDetails({ open, setopen, details }: propT) {
                   </div>
                 </div>
                 <div className="flex gap-x-4 cursor-pointer">
-                  <Label className="font-bold cursor-pointer">Client</Label>
+                  <Label className="font-bold cursor-pointer">
+                    Schedule Type
+                  </Label>
                   <div className="relative">
-                    <ExternalLink
-                      className=" absolute right-0 -top-3"
-                      size={14}
-                    />
                     <div className="flex gap-x-1 text-sm">
-                      <span>{details.client.first_name}</span>
-                      <span>{details.client.middle_name}</span>
-                      <span>{details.client.last_name}</span>
+                      <span>{details.scheduleType}</span>
                     </div>
                   </div>
                 </div>
@@ -109,6 +107,35 @@ export function ScheduleDetails({ open, setopen, details }: propT) {
               </div>
             </div>
           </div>
+
+          <hr />
+          <div
+            className="my-4 border border-cyan-500 p-4 rounded cursor-pointer"
+            onClick={() => {
+              navigate(`/dashboard/clients/client/${details.client.id}`);
+            }}
+          >
+            <div className="flex justify-between pr-4">
+              <h2 className="font-bold text-gray-500">Client</h2>
+              <div className="flex items-center gap-x-2 cursor-pointer">
+                <span className="text-sm font-bold text-cyan-500">
+                  View Client
+                </span>
+                <MoveRight size={20} />
+              </div>
+            </div>
+            <div className="flex gap-x-4 my-2">
+              <Label className="font-bold">Name</Label>
+              <div className="relative">
+                <div className="flex gap-x-1 text-sm">
+                  <span>{details.client.first_name}</span>{" "}
+                  <span>{details.client.middle_name}</span>
+                  <span>{details.client.last_name}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
           <div className="mt-4">
             <h2 className="font-bold text-gray-500">Weekly Schedules</h2>
             <div className="grid grid-cols-3 gap-4 w-full mt-6">

@@ -6,12 +6,17 @@ import { ScheduleDefColumns } from "./schedule-columns";
 // import { ScheduleData } from "./em-schudele-data";
 import { AddScheduleDialog } from "../add-scheudle-dialog/add-schedule";
 import { useEffect, useState } from "react";
-import { getSchedules } from "@/services/employee-service/employee-service";
+import {
+  deleteSchedules,
+  getSchedules,
+} from "@/services/employee-service/employee-service";
 import { toast } from "react-toastify";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
 import { IScheduleResponse } from "@/models/schedule-module";
 import { formatDate } from "@/utils/utils";
 import { ScheduleDetails } from "../schedule-details/schedule-details-dialog";
+import { DeleteDialog } from "@/components/delete-dialog/delete-dialog";
+import { EditScheduleDialog } from "../edit-schedule-dialog/edit-schedule";
 
 export default function EmployeeSchedule() {
   const [openDialog, setopenDialog] = useState({
@@ -34,14 +39,22 @@ export default function EmployeeSchedule() {
     setopenDialog({ name: "details", isopen: true });
   };
 
-  const handleEdit = () => {};
-  const handleDelete = () => {};
+  const handleEdit = (row: any) => {
+    setselectedRow(row);
+    setopenDialog({ name: "edit", isopen: true });
+  };
+
+  const handleDeleteDialog = (row: any) => {
+    setselectedRow(row);
+    setopenDialog({ name: "delete", isopen: true });
+  };
+
   const handleStatus = () => {};
 
   const columns = ScheduleDefColumns(
     handleViewNavigation,
     handleEdit,
-    handleDelete,
+    handleDeleteDialog,
     handleStatus
   );
 
@@ -64,6 +77,7 @@ export default function EmployeeSchedule() {
                 endDate: formatDate(obj.end_date),
                 hours: obj.hours,
                 rate: `$${obj.rate}`,
+                rateNumber: obj.rate,
                 client: obj.client,
                 status: obj.status.toLowerCase(),
                 weeklySchedule: obj.weekly_schedule,
@@ -71,6 +85,25 @@ export default function EmployeeSchedule() {
             }
           );
           setschedulesArr(transformed);
+        }
+      },
+      error: (err) => {
+        toast.error(err.response.data.error);
+        setisLoadn(false);
+      },
+      complete: () => {
+        setisLoadn(false);
+      },
+    });
+  };
+
+  const handleDelete = () => {
+    setisLoadn(true);
+    return deleteSchedules(selectedRow.id).subscribe({
+      next: (response) => {
+        if (response) {
+          toast.success("Schedule deleted!");
+          fetchSchedules();
         }
       },
       error: (err) => {
@@ -141,11 +174,29 @@ export default function EmployeeSchedule() {
         />
       )}
 
+      {openDialog.isopen && openDialog.name == "edit" && (
+        <EditScheduleDialog
+          open={openDialog.isopen}
+          setOpen={() => setopenDialog({ name: "", isopen: false })}
+          makeApiCall={fetchSchedules}
+          data={selectedRow}
+        />
+      )}
+
       {openDialog.isopen && openDialog.name == "details" && (
         <ScheduleDetails
           open={openDialog.isopen}
           setopen={() => setopenDialog({ name: "", isopen: false })}
           details={selectedRow}
+        />
+      )}
+
+      {openDialog.isopen && openDialog.name == "delete" && (
+        <DeleteDialog
+          open={openDialog.isopen}
+          setopen={() => setopenDialog({ name: "", isopen: false })}
+          description={`You're about to delete a schedule,  Do you want to proceed?`}
+          handleProceed={handleDelete}
         />
       )}
 

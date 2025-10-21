@@ -66,6 +66,14 @@ export function formatToYMD(dateString: any) {
   return `${year}-${month}-${day}`;
 }
 
+export function convertToISO(dateStr: string) {
+  if (!dateStr) return null;
+
+  const [day, month, year] = dateStr.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.toISOString();
+}
+
 export function capitalizeFirst(str: string) {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);
