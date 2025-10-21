@@ -77,6 +77,21 @@ export const getSchedules = (payload: any, id: string): Observable<any> => {
   );
 };
 
+//get all schedules visits
+export const getSchedulesVisits = (
+  payload: any,
+  schedule_id: string
+): Observable<any> => {
+  return from(
+    http.get(`employee/schedule/visits/${schedule_id}`, {
+      params: { ...payload },
+    })
+  ).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};
+
 //delete schedule
 export const deleteSchedules = (id: string): Observable<any> => {
   return from(http.post(`employee/schedule/delete/${id}`)).pipe(

@@ -24,7 +24,8 @@ export const ScheduleDefColumns = (
   handleNavigation: (x: any) => void,
   handleEdit: (x: any) => void,
   handleDelete: (x: any) => void,
-  handleStatus: (x: any) => void
+  handleStatus: (x: any) => void,
+  handleVisit: (x: any) => void
 ): ColumnDef<ScheduleT>[] => [
   {
     id: "select",
@@ -137,7 +138,10 @@ export const ScheduleDefColumns = (
                 View Details
               </DropdownMenuItem>
 
-              <DropdownMenuItem className=" cursor-pointer">
+              <DropdownMenuItem
+                className=" cursor-pointer"
+                onClick={() => handleVisit(record)}
+              >
                 Visits
               </DropdownMenuItem>
 

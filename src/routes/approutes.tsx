@@ -18,6 +18,7 @@ import { SettingsLayout } from "@/portal/settings/settings_layout";
 import OnboardEmployee from "@/portal/settings/onboard-employee/page";
 import EmployeeNote from "@/portal/employee/employee-note/employee-note";
 import OnboardClient from "@/portal/settings/onboard-client/page";
+import EmployeeScheduleVisits from "@/portal/schedules/emp-schedule-visits/emp-schedule-visits";
 
 export default function ApplicationRoutes() {
   return (
@@ -33,6 +34,10 @@ export default function ApplicationRoutes() {
           <Route path="employee/:id" element={<EmployeeHome />} />
           <Route path="notes/:employeeId" element={<EmployeeNote />} />
           <Route path="schedule/:employeeId" element={<EmployeeSchedule />} />
+          <Route
+            path="schedule/visits/:scheduleId"
+            element={<EmployeeScheduleVisits />}
+          />
         </Route>
 
         <Route path="clients" element={<ClientsLayout />}>

@@ -17,6 +17,7 @@ import { formatDate } from "@/utils/utils";
 import { ScheduleDetails } from "../schedule-details/schedule-details-dialog";
 import { DeleteDialog } from "@/components/delete-dialog/delete-dialog";
 import { EditScheduleDialog } from "../edit-schedule-dialog/edit-schedule";
+import { useNavigate } from "react-router";
 
 export default function EmployeeSchedule() {
   const [openDialog, setopenDialog] = useState({
@@ -33,6 +34,7 @@ export default function EmployeeSchedule() {
   const [isLoadn, setisLoadn] = useState(false);
   const [selectedRow, setselectedRow] = useState<any>({});
   const { careGiver } = useCareGiverStore();
+  const navigate = useNavigate();
 
   const handleViewNavigation = (row: any) => {
     setselectedRow(row);
@@ -50,12 +52,16 @@ export default function EmployeeSchedule() {
   };
 
   const handleStatus = () => {};
+  const handleVisit = (row: any) => {
+    navigate(`/dashboard/employees/schedule/visits/${row.id}`);
+  };
 
   const columns = ScheduleDefColumns(
     handleViewNavigation,
     handleEdit,
     handleDeleteDialog,
-    handleStatus
+    handleStatus,
+    handleVisit
   );
 
   const fetchSchedules = () => {
