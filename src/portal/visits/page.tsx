@@ -1,10 +1,10 @@
-import { DataTable } from "@/components/data-table";
 import PageHeader from "@/components/ui/page-header/page-header";
 import { useState } from "react";
 import { VisitDefColumns } from "./visit-columns";
 import { Button } from "@/components/ui/button";
 
 import { AddVisitDialog } from "./add-visit-dialog";
+import { VisitTable } from "@/components/visit-table";
 
 export default function Visitspage() {
   const [mergedparams, setmergedparams] = useState({
@@ -30,15 +30,12 @@ export default function Visitspage() {
 
       {/* ==== table ======= */}
       <div className="mt-10">
-        <DataTable
+        <VisitTable
           columns={columns}
           data={[]}
-          searchPlaceholder={
-            mergedparams.type === "client"
-              ? "Search by Client ID"
-              : "Search by Employee ID"
-          }
-          filterArray={[]}
+          searchPlaceholder={"Search by Employee ID"}
+          clientArr={[]}
+          employeeArr={[]}
           handleFilter={(value) => {
             setmergedparams((prev) => {
               return { ...prev, status: value };
