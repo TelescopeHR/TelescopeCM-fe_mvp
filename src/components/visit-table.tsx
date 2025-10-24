@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";
 import {
@@ -38,7 +37,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Label } from "./ui/label";
 import { Checkbox } from "./ui/checkbox";
 import { SearchableSelect } from "./ui/searchable-select";
@@ -66,6 +65,8 @@ interface DataTableProps<TData, TValue> {
   totalCount?: number;
   currentPage?: number;
   apiCall?: (x: any) => void;
+  setparams: (x: any) => void;
+  params: any;
 }
 
 export function VisitTable<TData, TValue>({
@@ -84,11 +85,14 @@ export function VisitTable<TData, TValue>({
   totalCount,
   currentPage,
   apiCall,
+  params,
+  setparams,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 50,
@@ -100,9 +104,15 @@ export function VisitTable<TData, TValue>({
   });
 
   const toggle = (value: string) => {
-    setfilterObj((prev) => {
-      return { ...prev, category: value };
-    });
+    if (value === filterObj.category) {
+      setfilterObj((prev) => {
+        return { ...prev, selectedValue: "", category: "" };
+      });
+    } else {
+      setfilterObj((prev) => {
+        return { ...prev, category: value };
+      });
+    }
   };
 
   const table = useReactTable({
@@ -133,13 +143,31 @@ export function VisitTable<TData, TValue>({
     endDate: string | null;
   }) => {
     if (handleDate) {
-      handleDate(range);
+      if (range.startDate == null && range.endDate) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { date_from, date_to, ...rest } = params;
+        setparams({ ...rest });
+      } else {
+        handleDate(range);
+      }
     }
   };
 
   const selectedRows = table
     .getSelectedRowModel()
     .rows.map((obj) => obj.original);
+
+  useEffect(() => {
+    if (filterObj.category === "Client") {
+      setparams({ ...params, client_id: filterObj.selectedValue });
+    } else if (filterObj.category === "Employee") {
+      setparams({ ...params, employee_id: filterObj.selectedValue });
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { employee_id, client_id, ...rest } = params;
+      setparams({ ...rest });
+    }
+  }, [filterObj.selectedValue]);
 
   return (
     <div className="rounded-md border p-4">

@@ -35,9 +35,24 @@ export const VisitDefColumns = (): ColumnDef<ScheduleT>[] => [
     enableHiding: false,
   },
 
+  // {
+  //   accessorKey: "sn",
+  //   header: "S/N",
+  // },
+
+  // {
+  //   accessorKey: "employeeId",
+  //   header: "Employee ID",
+  // },
+
   {
-    accessorKey: "sn",
-    header: "S/N",
+    accessorKey: "employeeName",
+    header: "Employee",
+  },
+
+  {
+    accessorKey: "clientName",
+    header: "Client",
   },
 
   {
