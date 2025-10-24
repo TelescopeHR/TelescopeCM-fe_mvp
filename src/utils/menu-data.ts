@@ -6,6 +6,7 @@ import {
   Flower,
   Activity,
   UserRound,
+  Locate,
   LogOut,
 } from "lucide-react";
 
@@ -38,6 +39,12 @@ export const SidebarMenuData = [
     //     path: "/dashboard/settings/onboard",
     //   },
     // ],
+  },
+
+  {
+    title: "Visits",
+    Icon: Locate,
+    path: "/dashboard/visits",
   },
 
   {

@@ -19,6 +19,7 @@ import OnboardEmployee from "@/portal/settings/onboard-employee/page";
 import EmployeeNote from "@/portal/employee/employee-note/employee-note";
 import OnboardClient from "@/portal/settings/onboard-client/page";
 import EmployeeScheduleVisits from "@/portal/schedules/emp-schedule-visits/emp-schedule-visits";
+import Visitspage from "@/portal/visits/page";
 
 export default function ApplicationRoutes() {
   return (
@@ -29,6 +30,7 @@ export default function ApplicationRoutes() {
       </Route>
       <Route path="dashboard" element={<PortalLayout />}>
         <Route index element={<DashboardPage />} />
+
         <Route path="employees" element={<EmployeeLayout />}>
           <Route index element={<EmployeePage />} />
           <Route path="employee/:id" element={<EmployeeHome />} />
@@ -46,6 +48,7 @@ export default function ApplicationRoutes() {
           <Route path="careplans/:clientId" element={<CarePlans />} />
           <Route path="schedule/:clientId" element={<ClientSchedule />} />
         </Route>
+        <Route path="visits" element={<Visitspage />} />
         <Route path="settings" element={<SettingsLayout />}>
           <Route index element={<EmployeePage />} />
           <Route path="onboard/employee" element={<OnboardEmployee />} />
