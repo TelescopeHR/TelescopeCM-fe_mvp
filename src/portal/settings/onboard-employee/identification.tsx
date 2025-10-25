@@ -171,7 +171,6 @@ export default function Identification({
                 <Label>Middle Name</Label>
                 <Input
                   {...register("middle_name", {
-                    required: "Middle name required",
                     minLength: { value: 3, message: "Too short" },
                   })}
                   placeholder="Middle Name"
@@ -352,6 +351,7 @@ export default function Identification({
                       message: "SSN Must be 9 characters long",
                     },
                   })}
+                  maxLength={9}
                   placeholder="Social Security Number"
                   className="border h-10"
                 />
@@ -374,7 +374,6 @@ export default function Identification({
               <Controller
                 name="profile_picture"
                 control={control}
-                rules={{ required: "Photo is required" }} // 👈 validation rule
                 render={({ field }) => (
                   <>
                     <input

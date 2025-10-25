@@ -42,6 +42,7 @@ export default function DateInput({ title, date, setDate, minDate }: PropT) {
               }}
               className="dark:bg-slate-900"
               hidden={{ after: minDate }}
+              toYear={2050}
             />
           </PopoverContent>
         </Popover>

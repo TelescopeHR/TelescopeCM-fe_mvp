@@ -14,11 +14,12 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { IVisitPayload } from "@/models/visits-model";
+import { IVisitPayload } from "@/models/vistis-model";
 import { formatToYMD } from "@/utils/utils";
 import { Controller, useForm } from "react-hook-form";
 
@@ -26,12 +27,24 @@ type propT = {
   open: boolean;
   setOpen: () => void;
 };
+
+export interface IVistPayload {
+  date: string;
+  schedule_id: string;
+  visit_type: string;
+  verified_in: string;
+  verified_out: string;
+  reason: string;
+  reasoninput: string;
+}
+
 export function AddVisitDialog({ open, setOpen }: propT) {
   const {
     control,
     register,
     handleSubmit,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<IVisitPayload>({
     defaultValues: {},
@@ -40,6 +53,8 @@ export function AddVisitDialog({ open, setOpen }: propT) {
   const handleOnSubmit = (formData: IVisitPayload) => {
     console.log(formData);
   };
+
+  const reasonValue = watch("reason");
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogContent className="sm:max-w-[425px] lg:max-w-5/10">
@@ -109,7 +124,7 @@ export function AddVisitDialog({ open, setOpen }: propT) {
               <div className="grid gap-3">
                 <Label htmlFor="status">Visit Type</Label>
                 <Controller
-                  name="schedule_id"
+                  name="visit_type"
                   control={control}
                   rules={{ required: "Select a Visit type" }}
                   render={({ field }) => (
@@ -122,15 +137,19 @@ export function AddVisitDialog({ open, setOpen }: propT) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem value="item">item</SelectItem>
+                          <SelectItem value="Employee">Employee</SelectItem>
+                          <SelectItem value="Orientation">
+                            Orientation
+                          </SelectItem>
+                          <SelectItem value="Supervisor">Supervisor</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
                   )}
                 />
-                {errors.schedule_id && (
+                {errors.visit_type && (
                   <p className="text-xs text-red-400">
-                    {errors.schedule_id.message}
+                    {errors.visit_type.message}
                   </p>
                 )}
               </div>
@@ -196,15 +215,81 @@ export function AddVisitDialog({ open, setOpen }: propT) {
 
               <div className="flex flex-col gap-y-3 w-full">
                 <Label>Reason</Label>
-                <Textarea
-                  {...register("reason", {
-                    required: "Reason is required",
-                  })}
-                  placeholder="Reason"
-                  className="border h-10"
-                />
-                {errors.reason && (
-                  <p className="text-red-500 text-sm">Reason is required</p>
+                {reasonValue !== "other" && (
+                  <div className="flex flex-col gap-y-1">
+                    <Controller
+                      name="reason"
+                      control={control}
+                      rules={{ required: "Select a Schedule" }}
+                      render={({ field }) => (
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger
+                            className="h-10 w-full"
+                            style={{ height: "40px" }}
+                          >
+                            <SelectValue placeholder="Select Schedule" />
+                          </SelectTrigger>
+                          <SelectContent className="w-full">
+                            <SelectGroup>
+                              <SelectLabel>Reasons</SelectLabel>
+                              <SelectItem value="RC01 – Mobile App/Device Issue">
+                                RC01 – Mobile App/Device Issue
+                              </SelectItem>
+                              <SelectItem value="RC02 – Forgot to Clock In">
+                                RC02 – Forgot to Clock In
+                              </SelectItem>
+                              <SelectItem value="RC03 – EVV Not Accessible	Caregiver couldn’t access the app due to system downtime.">
+                                RC03 – EVV Not Accessible Caregiver couldn’t
+                                access the app due to system downtime.
+                              </SelectItem>
+                              <SelectItem value="RC04 – Forgot to Clock Out">
+                                RC04 – Forgot to Clock Out
+                              </SelectItem>
+                              <SelectItem value="RC05– Missed Visit with Notification	Client canceled, caregiver notified agency.">
+                                RC05– Missed Visit with Notification Client
+                                canceled, caregiver notified agency.
+                              </SelectItem>
+
+                              <SelectItem value="RC06 – Visit Location Change	Visit occurred at alternate location.">
+                                RC06 – Visit Location Change Visit occurred at
+                                alternate location.
+                              </SelectItem>
+
+                              <SelectItem value="RC07 – Substitute Caregiver	Replacement caregiver completed the visit.">
+                                RC07 – Substitute Caregiver Replacement
+                                caregiver completed the visit.
+                              </SelectItem>
+
+                              <SelectItem value="other">Other</SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                    {errors.reason && (
+                      <p className="text-xs text-red-400">
+                        {errors.reason.message}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {reasonValue == "other" && (
+                  <div className="flex flex-col gap-y-1">
+                    <Textarea
+                      {...register("reasoninput", {
+                        required: "Reason is required",
+                      })}
+                      placeholder="Reason"
+                      className="border h-10"
+                    />
+                    {errors.reasoninput && (
+                      <p className="text-red-500 text-xs">Reason is required</p>
+                    )}
+                  </div>
                 )}
               </div>
             </div>

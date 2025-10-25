@@ -9,7 +9,11 @@ import {
   getClients,
   getEmployees,
 } from "@/services/employee-service/employee-service";
-import { capitalizeFirst, formatAndCapitalizeString } from "@/utils/utils";
+import {
+  capitalizeFirst,
+  formatAndCapitalizeString,
+  formatDate,
+} from "@/utils/utils";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
 import { toast } from "react-toastify";
 import { getAllVisits } from "@/services/visits-service/visit-service";
@@ -49,15 +53,12 @@ export default function Visitspage() {
             };
           });
           setemployees(transformed);
-          console.log("employees response===>", transformed);
         }
       },
       error: () => {
         setisLoadn(false);
       },
-      complete: () => {
-        setisLoadn(false);
-      },
+      complete: () => {},
     });
   };
 
@@ -81,11 +82,8 @@ export default function Visitspage() {
       },
       error: (err) => {
         console.log(err);
-        setisLoadn(false);
       },
-      complete: () => {
-        setisLoadn(false);
-      },
+      complete: () => {},
     });
   };
 
@@ -107,7 +105,7 @@ export default function Visitspage() {
               employeeId: "---",
               employeeName: `${obj.employee.full_name}`,
               clientName: obj.client.full_name,
-              date: obj.date,
+              date: formatDate(obj.date),
               timeIn: obj.time_in,
               timeOut: obj.time_out,
               verifiedIn: obj.verified_in ?? "---",
