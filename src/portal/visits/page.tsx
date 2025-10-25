@@ -114,7 +114,6 @@ export default function Visitspage() {
             };
           });
           setvisitsArr(transformed);
-          console.log("visit response===>", visitArray);
         }
       },
       error: (err) => {
