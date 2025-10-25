@@ -137,8 +137,8 @@ export default function Visitspage() {
   }, []);
 
   useEffect(() => {
+    setisLoadn(true);
     const visitsSub = fetchVisits();
-    // console.log("===>", mergedparams);
     return () => {
       visitsSub.unsubscribe();
     };

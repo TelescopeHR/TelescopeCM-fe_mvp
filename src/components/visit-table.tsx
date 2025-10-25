@@ -428,7 +428,13 @@ export function VisitTable<TData, TValue>({
           {/* Page size selector */}
           <Select
             value={String(table.getState().pagination.pageSize)}
-            onValueChange={(value) => table.setPageSize(Number(value))}
+            onValueChange={(value) => {
+              table.setPageSize(Number(value));
+              setparams({
+                ...params,
+                per_page: value,
+              });
+            }}
           >
             <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Rows per page" />
