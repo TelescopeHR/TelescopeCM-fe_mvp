@@ -89,8 +89,6 @@ export default function Visitspage() {
   };
 
   const fetchVisits = () => {
-    setisLoadn(true);
-    setisLoadn(true);
     return getAllVisits(mergedparams).subscribe({
       next: (response) => {
         if (response) {
@@ -132,11 +130,10 @@ export default function Visitspage() {
   useEffect(() => {
     const fetchEmplySub = fetchEmployees();
     const fetchClientSub = fetchClients();
-    const visitsSub = fetchVisits();
+
     return () => {
       fetchEmplySub.unsubscribe();
       fetchClientSub.unsubscribe();
-      visitsSub.unsubscribe();
     };
   }, []);
 
