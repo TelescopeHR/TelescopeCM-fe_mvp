@@ -99,7 +99,7 @@ export function VisitTable<TData, TValue>({
   });
 
   const [filterObj, setfilterObj] = useState({
-    category: "Employee",
+    category: "",
     selectedValue: "",
   });
 
@@ -158,10 +158,10 @@ export function VisitTable<TData, TValue>({
     .rows.map((obj) => obj.original);
 
   useEffect(() => {
-    if (filterObj.category === "Client") {
+    if (filterObj.category === "Client" && filterObj.selectedValue) {
       setparams({ ...params, client_id: filterObj.selectedValue });
-    } else if (filterObj.category === "Employee") {
-      setparams({ ...params, employee_id: filterObj.selectedValue });
+    } else if (filterObj.category === "Employee" && filterObj.selectedValue) {
+      setparams({ ...params, page: 1, employee_id: filterObj.selectedValue });
     } else {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { employee_id, client_id, ...rest } = params;

@@ -10,7 +10,6 @@ import {
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -39,7 +38,7 @@ import {
 } from "@/components/ui/table";
 
 import { useState } from "react";
-import DateRangePicker from "./ui/date-range-picker";
+// import DateRangePicker from "./ui/date-range-picker";
 import { Label } from "./ui/label";
 import { Checkbox } from "./ui/checkbox";
 import { SearchableSelect } from "./ui/searchable-select";
@@ -72,8 +71,6 @@ export function DataTable2<TData, TValue>({
   columns,
   data,
   searchPlaceholder,
-  filterArray,
-  handleFilter,
   showSerialNumber = false,
   withExport = true,
   handleExport,

@@ -27,6 +27,7 @@ export default function Visitspage() {
   const [mergedparams, setmergedparams] = useState<any>({
     page: 1,
     paginate: true,
+    per_page: 50,
   });
   const [totalPages, settotalPages] = useState(1);
 
@@ -162,7 +163,7 @@ export default function Visitspage() {
       </div>
 
       {/* ==== table ======= */}
-      <div className="mt-10">
+      <div className="mt-10 mb-20">
         <VisitTable
           columns={columns}
           data={visitsArr}
