@@ -16,8 +16,8 @@ export const deleteNote = (note_id: any): Observable<any> => {
   );
 };
 
-export const updateEmployee = (payload: any, id: any): Observable<any> => {
-  return from(http.post(`/employee/${id}/update`, payload)).pipe(
+export const updateNote = (payload: any, note_id: any): Observable<any> => {
+  return from(http.post(`note/admin/update/${note_id}`, payload)).pipe(
     map((response: any) => response),
     catchError(handleError)
   );

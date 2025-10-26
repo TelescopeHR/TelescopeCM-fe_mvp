@@ -1,4 +1,5 @@
 import { DeleteDialog } from "@/components/delete-dialog/delete-dialog";
+import { EditNoteDialog } from "@/components/edit-note-dialog/edit-note-dialog";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
 import {
   AccordionContent,
@@ -7,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { INoteResponse } from "@/models/note-model";
 import { deleteNote } from "@/services/note-service/note-service";
+import { useClientStore } from "@/store/clientStore";
 import { formatDateTime } from "@/utils/utils";
 import { CalendarDays, SquarePen, Trash } from "lucide-react";
 import React, { useState } from "react";
@@ -25,6 +27,9 @@ export default function NoteCard({ note, apiCall }: propT) {
     name: "",
   });
 
+  const { client } = useClientStore();
+  const clientObj = client;
+
   const handleDelete = () => {
     setisLoadn(true);
     setskeletonMessage("Deleting note");
@@ -37,7 +42,9 @@ export default function NoteCard({ note, apiCall }: propT) {
         toast.error(err.response.data.error);
         setisLoadn(false);
       },
-      complete: () => {},
+      complete: () => {
+        setisLoadn(false);
+      },
     });
   };
 
@@ -54,7 +61,10 @@ export default function NoteCard({ note, apiCall }: propT) {
             </label>
           </div>
           <div className="px-2 pt-2 w-full">
-            <div className=" w-full">{note.description}</div>
+            <div
+              className=" w-full leading-6"
+              dangerouslySetInnerHTML={{ __html: note.description }}
+            />
           </div>
           <div className="mt-4 -mb-4">
             <hr />
@@ -66,7 +76,13 @@ export default function NoteCard({ note, apiCall }: propT) {
                 </span>
               </div>
               <div className="flex items-center gap-x-4">
-                <SquarePen size={16} className=" cursor-pointer" />
+                <SquarePen
+                  size={16}
+                  className=" cursor-pointer"
+                  onClick={() => {
+                    setdialogData({ open: true, name: "edit" });
+                  }}
+                />
                 <Trash
                   color="red"
                   size={16}
@@ -87,6 +103,22 @@ export default function NoteCard({ note, apiCall }: propT) {
           setopen={() => setdialogData({ name: "", open: false })}
           description={`You're about to delete this note,  Do you want to proceed?`}
           handleProceed={handleDelete}
+        />
+      )}
+
+      {dialogData.open && dialogData.name == "edit" && (
+        <EditNoteDialog
+          open={dialogData.open}
+          setOpen={() => setdialogData({ name: "", open: false })}
+          mode="client"
+          userId={clientObj.id}
+          apiCall={apiCall}
+          noteId={note.id}
+          data={{
+            notetitle: note.title,
+            type: note.type,
+            description: note.description,
+          }}
         />
       )}
 

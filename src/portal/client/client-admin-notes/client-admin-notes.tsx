@@ -8,7 +8,7 @@ import { useClientStore } from "@/store/clientStore";
 
 import { toast } from "react-toastify";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
-import { AddNoteDialog } from "@/components/ui/add-note-dialog/add-note-dialog";
+import { AddNoteDialog } from "@/components/add-note-dialog/add-note-dialog";
 import NoteCard from "./note-card";
 import { INoteResponse } from "@/models/note-model";
 import { Plus } from "lucide-react";
@@ -135,7 +135,7 @@ export default function ClientAdminNotes() {
       <hr className="mt-4" />
 
       {notesArr.length ? (
-        <div className="mt-10">
+        <div className="mt-10 mb-80">
           <div className="w-full py-6 rounded lg:w-11/12 px-2 mx-auto border">
             <Accordion
               type="single"

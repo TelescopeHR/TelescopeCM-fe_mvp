@@ -16,13 +16,14 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "../select";
-import { Textarea } from "../textarea";
-import { Button } from "../button";
+} from "../ui/select";
+
+import { Button } from "../ui/button";
 import { createAdminNote } from "@/services/note-service/note-service";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
+import { RichTextEditor } from "../rich-text-editor/rich-text-editor";
 
 type propT = {
   open: boolean;
@@ -37,6 +38,7 @@ type formvaluesT = {
   type: string;
   description: string;
 };
+
 export function AddNoteDialog({ open, setOpen, mode, userId, apiCall }: propT) {
   const [isLoadn, setisLoadn] = useState(false);
   const {
@@ -90,7 +92,7 @@ export function AddNoteDialog({ open, setOpen, mode, userId, apiCall }: propT) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[425px] lg:max-w-6/12">
+      <DialogContent className="sm:max-w-[425px] lg:max-w-6/12 max-h-[90vh]">
         <DialogHeader>
           <DialogTitle>Add Admin Note</DialogTitle>
           <DialogDescription>
@@ -150,9 +152,9 @@ export function AddNoteDialog({ open, setOpen, mode, userId, apiCall }: propT) {
               </div>
             </div>
 
-            <div className="flex flex-col gap-y-3 w-full">
+            <div className="flex flex-col gap-y-3 w-full ">
               <Label>Description</Label>
-              <div className="flex flex-col gap-y-1">
+              {/* <div className="flex flex-col gap-y-1">
                 <Controller
                   name="description"
                   control={control}
@@ -164,6 +166,26 @@ export function AddNoteDialog({ open, setOpen, mode, userId, apiCall }: propT) {
                       })}
                       placeholder="Description"
                       className="border min-h-40"
+                    />
+                  )}
+                />
+                {errors.description && (
+                  <p className="text-xs text-red-400">
+                    {errors.description.message}
+                  </p>
+                )}
+              </div> */}
+
+              <div className="flex flex-col gap-y-1">
+                <Controller
+                  name="description"
+                  control={control}
+                  rules={{ required: "Select a note type" }}
+                  render={({ field }) => (
+                    <RichTextEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Start typing your content..."
                     />
                   )}
                 />
