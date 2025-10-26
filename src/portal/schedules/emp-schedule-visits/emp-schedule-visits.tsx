@@ -10,7 +10,7 @@ import LoadingSkeleton from "@/components/skeleton/skeleton";
 import { ScheduleVisitDefColumns } from "./schedule-visit-columns";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatAndCapitalizeString, formatDate } from "@/utils/utils";
-import { Clock9 } from "lucide-react";
+import { Clock9, User } from "lucide-react";
 
 export default function EmployeeScheduleVisits() {
   const [mergedParams, setmergedParams] = useState({
@@ -36,7 +36,6 @@ export default function EmployeeScheduleVisits() {
           if (response) {
             const { per_page, total } = response.pagination;
             const totalPagx = Math.ceil(total / per_page);
-            console.log(totalPagx);
             settotalPages(totalPagx);
             const visitsArray = response.data;
             const metaObj = {
@@ -44,10 +43,9 @@ export default function EmployeeScheduleVisits() {
               verifieldHours: visitsArray.total_verified_hours,
             };
             setvisitsMeta(metaObj);
-            console.log("response", metaObj);
+
             const transformed = visitsArray.visits.map(
               (obj: any, idx: number) => {
-                console.log("obj", obj);
                 return {
                   id: obj.id,
                   sn: idx + 1,
@@ -57,9 +55,11 @@ export default function EmployeeScheduleVisits() {
                   verifiedIn: obj.verified_in ?? "---",
                   verifiedOut: obj.verified_out ?? "---",
                   status: formatAndCapitalizeString(obj.status),
+                  client: obj.client,
                 };
               }
             );
+
             setvisitssArr(transformed);
           }
         },
@@ -96,23 +96,39 @@ export default function EmployeeScheduleVisits() {
           <div className="w-1/2">
             <PageHeader title="Schedule visits" hasBack={true} />
           </div>
-          <div className="flex flex-col lg:flex-row items-center gap-x-10">
-            <div className="flex items-center gap-x-1">
-              <Clock9 size={20} />
-              <div className="flex gap-x-2">
-                <span>Total Hours:</span>
-                <span className="font-bold">
-                  {parseFloat(visitsMeta.totalHours).toFixed(2)}
-                </span>
-              </div>
-            </div>
-            <div className="flex gap-x-2">
+          <div>
+            <div className="flex flex-col lg:flex-row items-center gap-x-10">
               <div className="flex items-center gap-x-1">
                 <Clock9 size={20} />
-                <span>Verified Hours</span>
-                <span className="font-bold">
-                  {parseFloat(visitsMeta.verifieldHours).toFixed(2)}
+                <div className="flex gap-x-2">
+                  <span>Total Hours:</span>
+                  <span className="font-bold">
+                    {parseFloat(visitsMeta.totalHours).toFixed(2)}
+                  </span>
+                </div>
+              </div>
+              <div className="flex gap-x-2">
+                <div className="flex items-center gap-x-1">
+                  <Clock9 size={20} />
+                  <span>Verified Hours</span>
+                  <span className="font-bold">
+                    {parseFloat(visitsMeta.verifieldHours).toFixed(2)}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-2 flex">
+              <div className="flex items-center gap-x-1  mr-2">
+                <User size={16} /> Client:
+              </div>
+              <div className="flex items-center gap-x-1 text-sm font-bold text-cyan-500">
+                <span>
+                  {visitsArr.length && visitsArr[0].client.first_name}
                 </span>
+                <span>
+                  {visitsArr.length && visitsArr[0].client.middle_name}
+                </span>
+                <span>{visitsArr.length && visitsArr[0].client.last_name}</span>
               </div>
             </div>
           </div>
