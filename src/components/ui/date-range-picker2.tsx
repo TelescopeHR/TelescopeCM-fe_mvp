@@ -133,10 +133,10 @@ export function DateRangePicker2({
       ref={containerRef}
       className={cn("relative w-full max-w-sm", className)}
     >
-      <Button
+      <div
         onClick={() => setIsOpen(!isOpen)}
-        variant="outline"
-        className="w-full justify-start text-left font-normal"
+        // variant="outline"
+        className="w-full justify-start text-left font-normal flex items-center"
       >
         <Calendar className="mr-2 h-4 w-4" />
         {startDate && endDate
@@ -152,7 +152,7 @@ export function DateRangePicker2({
             <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
           </button>
         )}
-      </Button>
+      </div>
 
       {isOpen && (
         <div className="absolute top-full left-0 z-50 mt-2 rounded-lg border border-border bg-card p-4 w-80">

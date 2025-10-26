@@ -26,7 +26,8 @@ export const ClientdefColumns = (
   handleNavigation: (x: any) => void,
   handleStatus: (x: any) => void,
   handleSchedules: (x: any) => void,
-  handleVisits: (x: any) => void
+  handleVisits: (x: any) => void,
+  handleAdminNotes: (x: any) => void
 ): ColumnDef<StudentT>[] => [
   {
     id: "select",
@@ -63,45 +64,45 @@ export const ClientdefColumns = (
     header: "First Name",
   },
 
-  {
-    accessorKey: "middleName",
-    header: "Middle Name",
-  },
+  // {
+  //   accessorKey: "middleName",
+  //   header: "Middle Name",
+  // },
 
   {
     accessorKey: "lastName",
     header: "Last Name",
   },
 
-  {
-    accessorKey: "gender",
-    header: "Gender",
-  },
+  // {
+  //   accessorKey: "gender",
+  //   header: "Gender",
+  // },
 
-  {
-    accessorKey: "dob",
-    header: "Birth Date",
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const record = row.original;
+  // {
+  //   accessorKey: "dob",
+  //   header: "Birth Date",
+  // },
+  // {
+  //   accessorKey: "status",
+  //   header: "Status",
+  //   cell: ({ row }) => {
+  //     const record = row.original;
 
-      const color =
-        record.status === "active"
-          ? "#28A745"
-          : record.status === "inactive"
-          ? "#DC3545"
-          : "#DC3545";
+  //     const color =
+  //       record.status === "active"
+  //         ? "#28A745"
+  //         : record.status === "inactive"
+  //         ? "#DC3545"
+  //         : "#DC3545";
 
-      return (
-        <span style={{ color }}>
-          <span style={{ textTransform: "capitalize" }}>{record.status}</span>
-        </span>
-      );
-    },
-  },
+  //     return (
+  //       <span style={{ color }}>
+  //         <span style={{ textTransform: "capitalize" }}>{record.status}</span>
+  //       </span>
+  //     );
+  //   },
+  // },
 
   {
     id: "actions",
@@ -132,6 +133,13 @@ export const ClientdefColumns = (
                 className=" cursor-pointer"
               >
                 Schedules
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() => handleAdminNotes(record)}
+                className=" cursor-pointer"
+              >
+                View Notes
               </DropdownMenuItem>
 
               <DropdownMenuItem

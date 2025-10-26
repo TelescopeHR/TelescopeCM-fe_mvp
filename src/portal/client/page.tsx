@@ -6,6 +6,7 @@ import {
   Plus,
   SquarePen,
   Bandage,
+  NotepadTextDashedIcon,
 } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
@@ -33,7 +34,17 @@ export default function ClientHome() {
             />
           </div>
 
-          <div className="w-full flex gap-x-4 lg:gap-x-8 mt-1">
+          <div className="w-full flex gap-x-4 lg:gap-x-8 mt-1 lg:justify-end pr-10">
+            <div
+              className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm"
+              onClick={() =>
+                navigate(`/dashboard/clients/careplans/${clientObj.id}`)
+              }
+            >
+              <Bandage className="w-4 lg:w-5" />
+              Care Plans
+            </div>
+
             <div
               className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm"
               onClick={() =>
@@ -49,13 +60,13 @@ export default function ClientHome() {
             </div>
 
             <div
-              className="font-bold cursor-pointer flex items-center gap-1 text-xs lg:text-sm"
+              className="font-bold flex items-center gap-1 text-xs lg:text-sm cursor-pointer"
               onClick={() =>
-                navigate(`/dashboard/clients/careplans/${clientObj.id}`)
+                navigate(`/dashboard/clients/notes/${clientObj.id}`)
               }
             >
-              <Bandage className="w-4 lg:w-5" />
-              Care Plans
+              <NotepadTextDashedIcon className="w-4 lg:w-5" />
+              Notes
             </div>
           </div>
         </div>

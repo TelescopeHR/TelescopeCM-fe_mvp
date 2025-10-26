@@ -20,6 +20,7 @@ import EmployeeNote from "@/portal/employee/employee-note/employee-note";
 import OnboardClient from "@/portal/settings/onboard-client/page";
 import EmployeeScheduleVisits from "@/portal/schedules/emp-schedule-visits/emp-schedule-visits";
 import Visitspage from "@/portal/visits/page";
+import ClientAdminNotes from "@/portal/client/client-admin-notes/client-admin-notes";
 
 export default function ApplicationRoutes() {
   return (
@@ -45,6 +46,7 @@ export default function ApplicationRoutes() {
         <Route path="clients" element={<ClientsLayout />}>
           <Route index element={<ClientsPage />} />
           <Route path="client/:id" element={<ClientHome />} />
+          <Route path="notes/:id" element={<ClientAdminNotes />} />
           <Route path="careplans/:clientId" element={<CarePlans />} />
           <Route path="schedule/:clientId" element={<ClientSchedule />} />
         </Route>
