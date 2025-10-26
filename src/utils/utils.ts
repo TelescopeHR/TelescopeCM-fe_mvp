@@ -74,6 +74,26 @@ export function convertToISO(dateStr: string) {
   return date.toISOString();
 }
 
+export function formatDateTime(dateString: any) {
+  if (!dateString) return "";
+
+  const date = new Date(dateString);
+
+  // Get date parts
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  // Get time parts
+  let hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12; // convert 0–23 → 1–12
+  const formattedHours = String(hours).padStart(2, "0");
+
+  return `${month}/${day}/${year} ${formattedHours}:${minutes} ${ampm}`;
+}
+
 export function capitalizeFirst(str: string) {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);

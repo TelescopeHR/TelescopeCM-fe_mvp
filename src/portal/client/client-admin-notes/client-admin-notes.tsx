@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { DateRangePicker2 } from "@/components/ui/date-range-picker2";
 import PageHeader from "@/components/ui/page-header/page-header";
 import { getAdminNotes } from "@/services/note-service/note-service";
 import { useClientStore } from "@/store/clientStore";
-import { CalendarDays } from "lucide-react";
 
 import { toast } from "react-toastify";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
 import { AddNoteDialog } from "@/components/ui/add-note-dialog/add-note-dialog";
+import NoteCard from "./note-card";
+import { INoteResponse } from "@/models/note-model";
+import { Plus } from "lucide-react";
 
 export default function ClientAdminNotes() {
   const [isLoadn, setisLoadn] = useState(false);
@@ -45,8 +42,7 @@ export default function ClientAdminNotes() {
           const noteArray = response.data;
           const transformed = noteArray.map((obj: any) => {
             return {
-              id_: obj.id,
-              id: obj.id,
+              ...obj,
             };
           });
           setnotesArr(transformed);
@@ -119,68 +115,37 @@ export default function ClientAdminNotes() {
             />
           </div>
           <Button
-            className=" cursor-pointer"
+            className=" cursor-pointer hidden lg:block"
             onClick={() => {
               setdialogData({ open: true, name: "add" });
             }}
           >
             Add Admin Note
           </Button>
+          <div
+            className="lg:hidden mx-4"
+            onClick={() => {
+              setdialogData({ open: true, name: "add" });
+            }}
+          >
+            <Plus />
+          </div>
         </div>
       </div>
       <hr className="mt-4" />
 
       {notesArr.length ? (
-        <div className="mt-2">
-          <div className="w-full min-h-40 rounded lg:w-11/12 px-2 mx-auto">
+        <div className="mt-10">
+          <div className="w-full py-6 rounded lg:w-11/12 px-2 mx-auto border">
             <Accordion
               type="single"
               collapsible
-              className="w-full"
+              className="w-full space-y-4"
               defaultValue="item-1"
             >
-              <AccordionItem value="item-1" className="rounded">
-                <AccordionTrigger className="text-xl text-cyan-600 p-2">
-                  Product Information
-                </AccordionTrigger>
-                <AccordionContent className="flex flex-col gap-4 text-balance w-full">
-                  <div className="px-2 pt-2 w-full">
-                    <p className="leading-6 text-md w-full">
-                      Our flagship product combines cutting-edge technology with
-                      sleek design. Built with premium materials, it offers
-                      unparalleled performance and reliability.
-                    </p>
-                  </div>
-                  <div className="mt-4 -mb-4">
-                    <hr />
-                    <div className="flex items-center gap-x-2 bg-slate-100 p-4">
-                      <CalendarDays size={16} />
-                      <span className="text-xs">10/09/2025 08:55 PM</span>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2" className="rounded">
-                <AccordionTrigger className="text-xl text-cyan-600 p-2">
-                  Product Information
-                </AccordionTrigger>
-                <AccordionContent className="flex flex-col gap-4 text-balance w-full">
-                  <div className="px-2 pt-2 w-full">
-                    <p className="leading-6 text-md w-full">
-                      Our flagship product combines cutting-edge technology with
-                      sleek design. Built with premium materials, it offers
-                      unparalleled performance and reliability.
-                    </p>
-                  </div>
-                  <div className="mt-4 -mb-4">
-                    <hr />
-                    <div className="flex items-center gap-x-2 bg-slate-100 p-4">
-                      <CalendarDays size={16} />
-                      <span className="text-xs">10/09/2025 08:55 PM</span>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+              {notesArr.map((note: INoteResponse, idx: number) => (
+                <NoteCard key={idx} note={note} apiCall={fetchNotes} />
+              ))}
             </Accordion>
           </div>
         </div>

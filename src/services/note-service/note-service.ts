@@ -8,6 +8,14 @@ export const createAdminNote = (payload: any): Observable<any> => {
   );
 };
 
+//delete note
+export const deleteNote = (note_id: any): Observable<any> => {
+  return from(http.post(`/note/admin/delete/${note_id}`)).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};
+
 export const updateEmployee = (payload: any, id: any): Observable<any> => {
   return from(http.post(`/employee/${id}/update`, payload)).pipe(
     map((response: any) => response),
