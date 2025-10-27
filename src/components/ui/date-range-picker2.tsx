@@ -129,10 +129,7 @@ export function DateRangePicker2({
   }, [startDate, endDate]);
 
   return (
-    <div
-      ref={containerRef}
-      className={cn("relative w-full max-w-sm", className)}
-    >
+    <div ref={containerRef} className={cn("relative w-full", className)}>
       <div
         onClick={() => setIsOpen(!isOpen)}
         // variant="outline"

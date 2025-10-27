@@ -840,3 +840,74 @@ export const AllStatus = [
   { name: "Terminated", value: "4" },
   { name: "Terminated not eligible", value: "5" },
 ];
+
+export const visitsReasons = [
+  {
+    id: 1,
+    uuid: "1535777c-b41e-4e44-adb3-395325b251ca",
+    code: "RC01",
+    name: "Mobile App/Device Issue",
+    description:
+      "Caregiver’s phone malfunctioned, app crashed, or no signal. Device died, app frozen, or no internet connection",
+    created_at: "2025-10-27T14:38:31.000000Z",
+    updated_at: null,
+  },
+  {
+    id: 2,
+    uuid: "ef188255-bad0-41bd-9e72-8289ee7151b8",
+    code: "RC02",
+    name: "Forgot to Clock In",
+    description:
+      "Caregiver forgot to clock in but provided services as scheduled. Human error.",
+    created_at: "2025-10-27T14:38:31.000000Z",
+    updated_at: null,
+  },
+  {
+    id: 3,
+    uuid: "2bcc0eb1-a2f0-4801-8e7d-99a2a1e6f96d",
+    code: "RC03",
+    name: "EVV Not Accessible",
+    description:
+      "Caregiver couldn’t access the app due to system downtime.\tTelescope outage or EVV maintenance",
+    created_at: "2025-10-27T14:38:31.000000Z",
+    updated_at: null,
+  },
+  {
+    id: 4,
+    uuid: "b094d825-aafc-4b81-848b-d593d624f622",
+    code: "RC04",
+    name: "Forgot to Clock Out",
+    description: "Caregiver forgot to clock out at visit end. Human error.",
+    created_at: "2025-10-27T14:38:31.000000Z",
+    updated_at: null,
+  },
+  {
+    id: 5,
+    uuid: "766e2768-e3f3-42d4-9090-b464bee76990",
+    code: "RC05",
+    name: "Missed Visit with Notification",
+    description: "Caregiver notified agency. Documented cancellation",
+    created_at: "2025-10-27T14:38:31.000000Z",
+    updated_at: null,
+  },
+  {
+    id: 6,
+    uuid: "21a6f323-334b-4088-aa26-14e598021e73",
+    code: "RC06",
+    name: "Visit Location Change",
+    description:
+      "Visit occurred at alternate location.\tClient temporarily at family’s home or facility",
+    created_at: "2025-10-27T14:38:31.000000Z",
+    updated_at: null,
+  },
+  {
+    id: 7,
+    uuid: "935463ed-8b6d-4e26-a1e1-74ecf501b9df",
+    code: "RC07",
+    name: "Substitute Caregiver",
+    description:
+      "Replacement caregiver completed the visit. Backup assigned for shift",
+    created_at: "2025-10-27T14:38:31.000000Z",
+    updated_at: null,
+  },
+];

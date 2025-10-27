@@ -173,7 +173,7 @@ export function VisitTable<TData, TValue>({
     <div className="rounded-md border p-4">
       {/* Top Filters */}
       <div className="flex items-center justify-between py-4 w-full">
-        <div className="flex items-center gap-x-2">
+        <div className="flex items-center gap-x-2 w-10/12">
           {/* Search */}
           <Input
             placeholder={searchPlaceholder}
@@ -186,69 +186,72 @@ export function VisitTable<TData, TValue>({
             className="max-w-[12rem]"
           />
 
-          {/* Filter */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto min-w-28">
-                Filter <Filter />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="center"
-              className="lg:w-5/12"
-              style={{ width: "26rem" }}
-            >
-              <div className="flex w-full">
-                <div className="w-4/12 p-2">
-                  <div className="flex flex-col gap-3">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="client"
-                        checked={filterObj.category === "Client"}
-                        onCheckedChange={() => toggle("Client")}
-                      />
-                      <Label htmlFor="client">Client</Label>
-                    </div>
+          <div className="flex justify-start items-center gap-x-4">
+            {/* Filter */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ml-auto min-w-28">
+                  Filter <Filter />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="center"
+                className="lg:w-5/12"
+                style={{ width: "26rem" }}
+              >
+                <div className="flex w-full">
+                  <div className="w-4/12 p-2">
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="client"
+                          checked={filterObj.category === "Client"}
+                          onCheckedChange={() => toggle("Client")}
+                        />
+                        <Label htmlFor="client">Client</Label>
+                      </div>
 
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="employee"
-                        checked={filterObj.category === "Employee"}
-                        onCheckedChange={() => toggle("Employee")}
-                      />
-                      <Label htmlFor="employee">Employee</Label>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="employee"
+                          checked={filterObj.category === "Employee"}
+                          onCheckedChange={() => toggle("Employee")}
+                        />
+                        <Label htmlFor="employee">Employee</Label>
+                      </div>
                     </div>
                   </div>
+                  <div className="w-10/12 border-l px-2 min-h-40">
+                    <SearchableSelect
+                      options={
+                        filterObj.category === "Employee"
+                          ? employeeArr
+                          : clientArr
+                      }
+                      value={filterObj.selectedValue}
+                      onValueChange={(value) =>
+                        setfilterObj((prev) => {
+                          return { ...prev, selectedValue: value };
+                        })
+                      }
+                      placeholder={`Select ${filterObj.category}`}
+                      searchPlaceholder={`Search ${filterObj.category}s`}
+                    />
+                  </div>
                 </div>
-                <div className="w-10/12 border-l px-2 min-h-40">
-                  <SearchableSelect
-                    options={
-                      filterObj.category === "Employee"
-                        ? employeeArr
-                        : clientArr
-                    }
-                    value={filterObj.selectedValue}
-                    onValueChange={(value) =>
-                      setfilterObj((prev) => {
-                        return { ...prev, selectedValue: value };
-                      })
-                    }
-                    placeholder={`Select ${filterObj.category}`}
-                    searchPlaceholder={`Search ${filterObj.category}s`}
-                  />
-                </div>
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-          {/* Date Range */}
-          {withDate && (
-            <DateRangePicker2
-              onDateRangeChange={(startDate: any, endDate: any) => {
-                handleRangeChange({ startDate, endDate });
-              }}
-            />
-          )}
+            {/* Date Range */}
+            {withDate && (
+              <DateRangePicker2
+                onDateRangeChange={(startDate: any, endDate: any) => {
+                  handleRangeChange({ startDate, endDate });
+                }}
+                className="w-10/12"
+              />
+            )}
+          </div>
         </div>
 
         {/* Column & Export */}
