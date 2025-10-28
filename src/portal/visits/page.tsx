@@ -13,11 +13,13 @@ import {
   capitalizeFirst,
   formatAndCapitalizeString,
   formatDate,
+  getCurrentDate,
 } from "@/utils/utils";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
 import { toast } from "react-toastify";
 import { getAllVisits } from "@/services/visits-service/visit-service";
 import { IVistsResponse } from "@/models/vistis-model";
+import { ExportExcelService } from "@/services/export-service/export-excel.service";
 
 export default function Visitspage() {
   const [isLoadn, setisLoadn] = useState(false);
@@ -27,7 +29,7 @@ export default function Visitspage() {
   const [mergedparams, setmergedparams] = useState<any>({
     page: 1,
     paginate: true,
-    per_page: 50,
+    per_page: 10,
   });
   const [totalPages, settotalPages] = useState(1);
 
@@ -126,6 +128,85 @@ export default function Visitspage() {
     });
   };
 
+  // ===== export functions =================================
+  const onExport = (exportType: string, details: any) => {
+    if (exportType === "Excel") {
+      setisLoadn(true);
+      const edata: any = [];
+      const _rawData: any = [];
+      const fileName = `Visits - ${getCurrentDate().date} - ${
+        getCurrentDate().time
+      }`;
+      const udt: any = {
+        data: [],
+      };
+
+      details.forEach((item: any, id: number) => {
+        udt.data.push({
+          "S/N": id + 1,
+          "Employee ID": item.employeeId,
+          "Employe Name": item.employeeName,
+          "Client Name": item.clientName,
+          "Pay Rate": item.pay_rate,
+          date: item.date,
+          "Time In": item.timeIn,
+          "Time Out": item?.timeOut,
+          "Verified In": item.verifiedIn,
+          "Verified Out": item.verifiedOut,
+          Status: item.status,
+        });
+      });
+
+      edata.push(udt);
+      edata[0].data.forEach((row: any) => {
+        _rawData.push(Object.values(row));
+      });
+
+      const reportData = {
+        title: "VISITS",
+        fileName: fileName,
+        data: _rawData,
+        headers: Object.keys(udt.data[0]),
+      };
+      const exportService = new ExportExcelService();
+      exportService.exportExcel(reportData, {
+        adjustColums: [
+          {
+            columnNumber: 2,
+            columWidth: 30,
+          },
+          {
+            columnNumber: 3,
+            columWidth: 45,
+          },
+          {
+            columnNumber: 4,
+            columWidth: 37,
+          },
+          {
+            columnNumber: 5,
+            columWidth: 26,
+          },
+          {
+            columnNumber: 6,
+            columWidth: 22,
+          },
+          {
+            columnNumber: 7,
+            columWidth: 18,
+          },
+
+          {
+            columnNumber: 8,
+            columWidth: 18,
+          },
+        ],
+      });
+      setisLoadn(false);
+    }
+  };
+  // =================================================================
+
   useEffect(() => {
     const fetchEmplySub = fetchEmployees();
     const fetchClientSub = fetchClients();
@@ -188,8 +269,8 @@ export default function Visitspage() {
           }}
           showSerialNumber={false}
           withExport={true}
+          handleExport={onExport}
           withDate={true}
-          handleExport={() => ""}
           searchColumn="employeeId"
           currentPage={mergedparams.page}
           totalCount={totalPages}
@@ -206,6 +287,7 @@ export default function Visitspage() {
       {dialogData.name == "addvisit" && dialogData.open && (
         <AddVisitDialog
           open={dialogData.open}
+          apicall={fetchVisits}
           setOpen={() => {
             setdialogData({ open: false, name: "" });
           }}

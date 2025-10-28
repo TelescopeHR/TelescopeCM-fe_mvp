@@ -34,6 +34,7 @@ import { toast } from "react-toastify";
 type propT = {
   open: boolean;
   setOpen: () => void;
+  apicall: () => void;
 };
 
 export interface IVistPayload {
@@ -46,7 +47,7 @@ export interface IVistPayload {
   reasoninput: string;
 }
 
-export function AddVisitDialog({ open, setOpen }: propT) {
+export function AddVisitDialog({ open, setOpen, apicall }: propT) {
   const [isLoadn, setisLoadn] = useState(false);
   const [skeletonMessage, setskeletonMessage] = useState("");
   const [scheduleArr, setscheduleArr] = useState<any[]>([]);
@@ -69,6 +70,7 @@ export function AddVisitDialog({ open, setOpen }: propT) {
         if (response) {
           toast.success("Visit created succeefully!");
           setOpen();
+          apicall();
         }
       },
       error: (err) => {

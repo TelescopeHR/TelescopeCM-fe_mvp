@@ -95,7 +95,7 @@ export function VisitTable<TData, TValue>({
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 50,
+    pageSize: 10,
   });
 
   const [filterObj, setfilterObj] = useState({
