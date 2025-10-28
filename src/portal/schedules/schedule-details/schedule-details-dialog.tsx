@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { useCareGiverStore } from "@/store/caregiverStore";
-import { MoveRight } from "lucide-react";
+import { MoveRight, User } from "lucide-react";
 import { useNavigate } from "react-router";
 
 type propT = {
@@ -116,7 +116,10 @@ export function ScheduleDetails({ open, setopen, details }: propT) {
             }}
           >
             <div className="flex justify-between pr-4">
-              <h2 className="font-bold text-gray-500">Client</h2>
+              <div className="flex items-center gap-x-1">
+                <User size={16} />
+                <h2 className="font-bold text-gray-500">Client</h2>
+              </div>
               <div className="flex items-center gap-x-2 cursor-pointer">
                 <span className="text-sm font-bold text-cyan-500">
                   View Client
