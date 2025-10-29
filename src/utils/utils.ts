@@ -98,3 +98,39 @@ export function capitalizeFirst(str: string) {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function formatToTimeString(input: any) {
+  if (!input) {
+    const now = new Date();
+    return `${now.getHours().toString().padStart(2, "0")}:${now
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}`;
+  }
+
+  // If it's already a Date
+  if (input instanceof Date) {
+    const hours = input.getHours().toString().padStart(2, "0");
+    const minutes = input.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  }
+
+  // If it's a string like "17:00:00" or "17:00"
+  if (typeof input === "string") {
+    const parts = input.split(":");
+    if (parts.length >= 2) {
+      const [hour, minute] = parts;
+      return `${hour.padStart(2, "0")}:${minute.padStart(2, "0")}`;
+    }
+  }
+
+  // If it's a timestamp
+  if (typeof input === "number") {
+    const date = new Date(input);
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  }
+
+  throw new Error("Invalid input format for formatToTimeString");
+}

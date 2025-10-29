@@ -1,6 +1,16 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -9,7 +19,10 @@ export type ScheduleT = {
   status: string;
 };
 
-export const VisitDefColumns = (): ColumnDef<ScheduleT>[] => [
+export const VisitDefColumns = (
+  handleUpdate: (x: any) => void,
+  handleDelete: (x: any) => void
+): ColumnDef<ScheduleT>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -87,10 +100,36 @@ export const VisitDefColumns = (): ColumnDef<ScheduleT>[] => [
 
   {
     id: "actions",
-    cell: () => {
+    cell: ({ row }) => {
+      const record = row.original;
+
       return (
         <div className="flex justify-end">
-          <div className="h-8"></div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => handleUpdate(record)}
+                className=" cursor-pointer"
+              >
+                Update
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() => handleDelete(record)}
+                className=" cursor-pointer"
+              >
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       );
     },

@@ -17,12 +17,18 @@ import {
 } from "@/utils/utils";
 import LoadingSkeleton from "@/components/skeleton/skeleton";
 import { toast } from "react-toastify";
-import { getAllVisits } from "@/services/visits-service/visit-service";
+import {
+  deleteVisit,
+  getAllVisits,
+} from "@/services/visits-service/visit-service";
 import { IVistsResponse } from "@/models/vistis-model";
 import { ExportExcelService } from "@/services/export-service/export-excel.service";
+import { DeleteDialog } from "@/components/delete-dialog/delete-dialog";
+import { EditVisitDialog } from "./edit-visit-dialog";
 
 export default function Visitspage() {
   const [isLoadn, setisLoadn] = useState(false);
+  const [skeletonMessage, setskeletonMessage] = useState("Processing");
   const [employees, setemployees] = useState<any>([]);
   const [clientsArr, setclientsArr] = useState<any>([]);
   const [visitsArr, setvisitsArr] = useState<any>([]);
@@ -32,10 +38,20 @@ export default function Visitspage() {
     per_page: 10,
   });
   const [totalPages, settotalPages] = useState(1);
+  const [selectedRow, setselectedRow] = useState<any>({});
 
-  const columns = VisitDefColumns();
   const [dialogData, setdialogData] = useState({ open: false, name: "" });
 
+  const triggerDelete = (row: any) => {
+    setselectedRow(row);
+    setdialogData({ open: true, name: "delete" });
+  };
+  const triggerUpdate = (row: any) => {
+    setselectedRow(row);
+    setdialogData({ open: true, name: "edit" });
+  };
+
+  const columns = VisitDefColumns(triggerUpdate, triggerDelete);
   const fetchEmployees = () => {
     setisLoadn(true);
     return getEmployees({}).subscribe({
@@ -62,6 +78,26 @@ export default function Visitspage() {
         setisLoadn(false);
       },
       complete: () => {},
+    });
+  };
+
+  const handleDelete = () => {
+    setisLoadn(true);
+    setskeletonMessage("Deleting record");
+    return deleteVisit(selectedRow.id).subscribe({
+      next: (response) => {
+        if (response) {
+          toast.success("Visit record deleted!");
+          fetchVisits();
+        }
+      },
+      error: (err) => {
+        toast.error(err.response.data.error);
+        setisLoadn(false);
+      },
+      complete: () => {
+        setisLoadn(false);
+      },
     });
   };
 
@@ -113,6 +149,7 @@ export default function Visitspage() {
               verifiedOut: obj.verified_out ?? "---",
               status: formatAndCapitalizeString(obj.status),
               pay_rate: obj.pay_rate,
+              data: obj,
             };
           });
           setvisitsArr(transformed);
@@ -294,7 +331,29 @@ export default function Visitspage() {
         />
       )}
 
-      {isLoadn && <LoadingSkeleton />}
+      {dialogData.name == "edit" && dialogData.open && (
+        <EditVisitDialog
+          open={dialogData.open}
+          apicall={fetchVisits}
+          selectedData={selectedRow.data}
+          setOpen={() => {
+            setdialogData({ open: false, name: "" });
+          }}
+        />
+      )}
+
+      {dialogData.open && dialogData.name === "delete" && (
+        <DeleteDialog
+          open={dialogData.open}
+          setopen={() => {
+            setdialogData({ open: false, name: "" });
+          }}
+          description={`You're about to delete this record, Do you want to proceed?`}
+          handleProceed={handleDelete}
+        />
+      )}
+
+      {isLoadn && <LoadingSkeleton name={skeletonMessage} />}
     </>
   );
 }

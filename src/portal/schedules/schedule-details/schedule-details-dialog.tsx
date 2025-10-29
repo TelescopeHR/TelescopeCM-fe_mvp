@@ -107,7 +107,6 @@ export function ScheduleDetails({ open, setopen, details }: propT) {
               </div>
             </div>
           </div>
-
           <hr />
           <div
             className="my-4 border border-cyan-500 p-4 rounded cursor-pointer"

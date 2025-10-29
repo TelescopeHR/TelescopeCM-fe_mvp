@@ -21,11 +21,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { IVisitPayload } from "@/models/vistis-model";
+import { IVisitPayload, IVistsResponse } from "@/models/vistis-model";
 import { getAllSchedule } from "@/services/schedule-service/schedule-service";
-import { createVisit } from "@/services/visits-service/visit-service";
+import { updateVisit } from "@/services/visits-service/visit-service";
 import { visitsReasons } from "@/utils/data";
-import { formatToYMD } from "@/utils/utils";
+import { formatToTimeString, formatToYMD } from "@/utils/utils";
 import { Portal } from "@radix-ui/react-dialog";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -35,6 +35,7 @@ type propT = {
   open: boolean;
   setOpen: () => void;
   apicall: () => void;
+  selectedData: IVistsResponse;
 };
 
 export interface IVistPayload {
@@ -47,7 +48,12 @@ export interface IVistPayload {
   reasoninput: string;
 }
 
-export function AddVisitDialog({ open, setOpen, apicall }: propT) {
+export function EditVisitDialog({
+  open,
+  setOpen,
+  apicall,
+  selectedData,
+}: propT) {
   const [isLoadn, setisLoadn] = useState(false);
   const [skeletonMessage, setskeletonMessage] = useState("");
   const [scheduleArr, setscheduleArr] = useState<any[]>([]);
@@ -61,16 +67,24 @@ export function AddVisitDialog({ open, setOpen, apicall }: propT) {
     watch,
     formState: { errors },
   } = useForm<IVisitPayload>({
-    defaultValues: {},
+    defaultValues: {
+      date: selectedData.date,
+      schedule_id: selectedData.schedule.id,
+      visit_type: selectedData.type,
+      verified_in: formatToTimeString(selectedData.verified_in),
+      verified_out: formatToTimeString(selectedData.verified_out),
+      reason: selectedData.reason.code,
+      reasoninput: "",
+    },
   });
 
   const handleOnSubmit = (payload: IVisitPayload) => {
     setisLoadn(true);
-    setskeletonMessage("Creating visit");
-    return createVisit(payload).subscribe({
+    setskeletonMessage("Updating visit");
+    return updateVisit(payload, selectedData.id).subscribe({
       next: (response) => {
         if (response) {
-          toast.success("Visit created succeefully!");
+          toast.success("Visit updated succeefully!");
           setOpen();
           apicall();
         }
@@ -402,7 +416,7 @@ export function AddVisitDialog({ open, setOpen, apicall }: propT) {
             className="h-8 w-[100px] cursor-pointer "
             onClick={() => handleOnSubmit(payload)}
           >
-            Submit
+            Update
           </Button>
         </div>
       </div>
@@ -422,7 +436,7 @@ export function AddVisitDialog({ open, setOpen, apicall }: propT) {
         <DialogContent className="sm:max-w-[425px] lg:max-w-5/10">
           <DialogHeader>
             <DialogTitle>
-              {currentView == "form" ? "Add Visit" : "Confirm Inputs"}
+              {currentView == "form" ? "Edit Visit" : "Confirm Inputs"}
             </DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
