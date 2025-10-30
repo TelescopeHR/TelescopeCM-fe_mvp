@@ -18,7 +18,7 @@ import {
   NotepadTextDashedIcon,
   FileArchiveIcon,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { BioDataUpdateDialog } from "./update-dialogs/biodata-update-dialog";
@@ -97,6 +97,8 @@ export default function EmployeeHome() {
     });
   };
 
+  const containerRef: any = useRef(null);
+
   useEffect(() => {
     if (!careGiver) navigate(-1);
   }, [careGiver, navigate]);
@@ -108,9 +110,22 @@ export default function EmployeeHome() {
     };
   }, []);
 
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0; // scrolls the div to top
+    }
+  }, []);
+
   return (
     <>
-      <div className="w-full pb-20">
+      <div
+        className="w-full pb-20"
+        ref={containerRef}
+        style={{
+          height: "90vh",
+          overflowY: "auto",
+        }}
+      >
         <h2 className="mb-2 font-bold text-cyan-600 text-sm">EMPLOYEE</h2>
         <div className="w-full flex flex-col lg:flex-row gap-4 lg:gap-1 lg:items-center">
           <div className="lg:w-4/12">
