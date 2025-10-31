@@ -73,7 +73,7 @@ export function EditVisitDialog({
       visit_type: selectedData.type,
       verified_in: formatToTimeString(selectedData.verified_in),
       verified_out: formatToTimeString(selectedData.verified_out),
-      reason: selectedData.reason.code,
+      reason: selectedData.reason?.code ?? "",
       reasoninput: "",
     },
   });
@@ -270,7 +270,7 @@ export function EditVisitDialog({
                           const toMinutes = toH * 60 + toM;
 
                           if (toMinutes <= fromMinutes)
-                            return "End time must be later than start time";
+                            return "Verified out time must be later than start time";
                         }
 
                         return true;

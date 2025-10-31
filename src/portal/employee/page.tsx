@@ -104,16 +104,13 @@ export default function EmployeeHome() {
   }, [careGiver, navigate]);
 
   useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0; // scrolls the div to top
+    }
     const sub = fetchEmployee();
     return () => {
       sub.unsubscribe();
     };
-  }, []);
-
-  useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = 0; // scrolls the div to top
-    }
   }, []);
 
   return (
