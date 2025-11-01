@@ -57,7 +57,7 @@ export function AddNoteDialog({ open, setOpen, mode, userId, apiCall }: propT) {
       title: notetitle,
       type,
       description,
-      client_id: userId,
+      ...(mode === "client" ? { client_id: userId } : { employee_id: userId }),
       mode,
     };
 

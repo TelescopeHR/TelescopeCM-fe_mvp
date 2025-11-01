@@ -35,3 +35,16 @@ export const getAdminNotes = (
     catchError(handleError)
   );
 };
+
+//get all employee notes
+export const getEmployeeNotes = (
+  payload: any,
+  userId: string
+): Observable<any> => {
+  return from(
+    http.get(`/employee-note/${userId}`, { params: { ...payload } })
+  ).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};
