@@ -30,6 +30,7 @@ export default function EmployeeNote() {
     page: 1,
     per_page: 20,
     status: 0,
+    mode: "employee",
   });
   const { careGiver } = useCareGiverStore();
 

@@ -8,6 +8,7 @@ import {
   UserRound,
   Locate,
   LogOut,
+  CalendarSync,
 } from "lucide-react";
 
 export const SidebarMenuData = [
@@ -39,6 +40,12 @@ export const SidebarMenuData = [
     //     path: "/dashboard/settings/onboard",
     //   },
     // ],
+  },
+
+  {
+    title: "Schedules",
+    Icon: CalendarSync,
+    path: "/dashboard/schedules",
   },
 
   {

@@ -18,6 +18,7 @@ import { ScheduleDetails } from "../schedule-details/schedule-details-dialog";
 import { DeleteDialog } from "@/components/delete-dialog/delete-dialog";
 import { EditScheduleDialog } from "../edit-schedule-dialog/edit-schedule";
 import { useNavigate } from "react-router";
+// import { CollapsibleTable } from "@/components/ui/collapsible-table";
 
 export default function EmployeeSchedule() {
   const [openDialog, setopenDialog] = useState({
@@ -151,7 +152,7 @@ export default function EmployeeSchedule() {
         </div>
       </div>
 
-      <div className="mt-10">
+      <div className="mt-10 pb-20">
         <DataTable
           columns={columns}
           data={schedulesArr}
@@ -169,6 +170,48 @@ export default function EmployeeSchedule() {
             });
           }}
         />
+
+        {/* <CollapsibleTable
+          columns={columns}
+          data={schedulesArr}
+          searchColumn="name"
+          searchPlaceholder="Search by name..."
+          filterArray={[]}
+          withExport={true}
+          withDate={false}
+          currentPage={mergedParams.page}
+          totalCount={totalPages}
+          apiCall={(pageNo: number) => {
+            setmergedParams((prev) => {
+              return { ...prev, page: pageNo };
+            });
+          }}
+          renderDetails={(row) => (
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">
+                  Email
+                </p>
+                <p className="text-sm text-foreground">{row.email}</p>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">
+                  Join Date
+                </p>
+                <p className="text-sm text-foreground">{row.joinDate}</p>
+              </div>
+              <div className="col-span-2">
+                <p className="text-xs font-medium text-muted-foreground">
+                  Additional Info
+                </p>
+                <p className="text-sm text-foreground">
+                  This is expandable detail content for {row.name}. You can add
+                  any custom content here.
+                </p>
+              </div>
+            </div>
+          )}
+        /> */}
       </div>
 
       {openDialog.isopen && openDialog.name == "addSchedule" && (

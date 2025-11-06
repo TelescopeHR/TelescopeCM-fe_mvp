@@ -21,6 +21,7 @@ import OnboardClient from "@/portal/settings/onboard-client/page";
 import EmployeeScheduleVisits from "@/portal/schedules/emp-schedule-visits/emp-schedule-visits";
 import Visitspage from "@/portal/visits/page";
 import ClientAdminNotes from "@/portal/client/client-admin-notes/client-admin-notes";
+import ScheduleModule from "@/portal/schedule-module/schedule-module";
 
 export default function ApplicationRoutes() {
   return (
@@ -50,6 +51,9 @@ export default function ApplicationRoutes() {
           <Route path="careplans/:clientId" element={<CarePlans />} />
           <Route path="schedule/:clientId" element={<ClientSchedule />} />
         </Route>
+
+        <Route path="schedules" element={<ScheduleModule />} />
+
         <Route path="visits" element={<Visitspage />} />
         <Route path="settings" element={<SettingsLayout />}>
           <Route index element={<EmployeePage />} />

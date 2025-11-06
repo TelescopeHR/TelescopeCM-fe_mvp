@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 type FormValues = {
@@ -40,6 +41,11 @@ export default function SecondPart({
   const handleNext = async (data: FormValues) => {
     handleCreate(data);
   };
+
+  useEffect(() => {
+    console.log("clients", clientsArr);
+  }, []);
+
   return (
     <form className="grid gap-4 -mt-1" onSubmit={handleSubmit(handleNext)}>
       <div className="my-2">

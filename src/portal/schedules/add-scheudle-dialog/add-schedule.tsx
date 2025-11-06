@@ -79,7 +79,7 @@ export function AddScheduleDialog({
           const res = response.data;
           const transformed = res.map((obj: any) => {
             return {
-              id: obj.uuid,
+              id: obj.id,
               label: `${obj.first_name} ${obj.middle_name ?? ""} ${
                 obj.last_name
               }`,
