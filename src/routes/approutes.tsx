@@ -22,12 +22,14 @@ import EmployeeScheduleVisits from "@/portal/schedules/emp-schedule-visits/emp-s
 import Visitspage from "@/portal/visits/page";
 import ClientAdminNotes from "@/portal/client/client-admin-notes/client-admin-notes";
 import ScheduleModule from "@/portal/schedule-module/schedule-module";
+import CreateAccountPage from "@/create-account/create-account";
 
 export default function ApplicationRoutes() {
   return (
     <Routes>
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<LoginPage />} />
+        <Route path="/create-account" element={<CreateAccountPage />} />
         <Route path="*" element={<NotfoundPage path="/" />} />
       </Route>
       <Route path="dashboard" element={<PortalLayout />}>
