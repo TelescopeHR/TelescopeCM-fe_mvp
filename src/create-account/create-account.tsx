@@ -15,84 +15,84 @@ import {
 } from "@/components/ui/select";
 import { CreateAccountT } from "@/models/agency-model";
 import LayoutContainer from "@/public_layout/layout-container";
-import { loginService } from "@/services/portal-service/portal-service";
-import { useUserStore } from "@/store/userStore";
-import { removeStoredAuthToken, storeAuthToken } from "@/utils/ls";
+// import { loginService } from "@/services/portal-service/portal-service";
+// import { useUserStore } from "@/store/userStore";
+import { AllStates } from "@/utils/data";
+// import { removeStoredAuthToken, storeAuthToken } from "@/utils/ls";
 import { ImagePlus, MoveLeft } from "lucide-react";
 
 import { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 export default function CreateAccountPage() {
   const [data, setData] = useState<CreateAccountT | any>({});
-  const [preview, setPreview] = useState<string | null>("");
+  const [preview, setPreview] = useState<string | null>(data.previewPhoto);
   const [isloading, setisloading] = useState(false);
   const [skeletonMessage, setskeletonMessage] = useState("Loading");
   const [currentForm, setcurrentForm] = useState(1);
-  const [email, setemail] = useState<any>(undefined);
-  const [password, setpassword] = useState<any>(undefined);
-  const { setUser } = useUserStore();
+  // const { setUser } = useUserStore();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setisLoading(true);
-    //clear token if there is one already
-    removeStoredAuthToken();
-    loginService({ email, password }).subscribe({
-      next: (response) => {
-        // console.log("response===>", response);
-        if (response) {
-          if (response.statusCode == 422) {
-            setisLoading(false);
-            toast.error(response.error);
-          }
-          if (response.statusCode == 403) {
-            setisLoading(false);
-          }
-          if (response.statusCode == 200) {
-            setisLoading(false);
-            //store toke securely
-            storeAuthToken(response.data.access_token);
-            //dispatch user to state
-            setUser({
-              email: response.data.user.email,
-              name: response.data.user.full_name,
-              userId: response.data.user.id,
-              avatar: response.data.user.profile_picture ?? "",
-              ...response.data.user,
-            });
-            toast.success(response.message, {
-              autoClose: 5000,
-              position: "top-center",
-            });
-            navigate("/dashboard");
-          }
-        }
-      },
-      error: (err) => {
-        console.log("error", err.response.data.message);
-        toast.error(err.response.data.message);
-        setisLoading(false);
-      },
-      complete: () => {
-        setisLoading(false);
-      },
-    });
-  };
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setisloading(true);
+  //   removeStoredAuthToken();
+  //   loginService({ email, password }).subscribe({
+  //     next: (response) => {
+  //       if (response) {
+  //         if (response.statusCode == 422) {
+  //           setisloading(false);
+  //           toast.error(response.error);
+  //         }
+  //         if (response.statusCode == 403) {
+  //           setisloading(false);
+  //         }
+  //         if (response.statusCode == 200) {
+  //           setisloading(false);
+
+  //           storeAuthToken(response.data.access_token);
+
+  //           setUser({
+  //             email: response.data.user.email,
+  //             name: response.data.user.full_name,
+  //             userId: response.data.user.id,
+  //             avatar: response.data.user.profile_picture ?? "",
+  //             ...response.data.user,
+  //           });
+  //           toast.success(response.message, {
+  //             autoClose: 5000,
+  //             position: "top-center",
+  //           });
+  //           navigate("/dashboard");
+  //         }
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.log("error", err.response.data.message);
+  //       toast.error(err.response.data.message);
+  //       setisloading(false);
+  //     },
+  //     complete: () => {
+  //       setisloading(false);
+  //     },
+  //   });
+  // };
 
   const AgencyForm = () => {
     const {
       control,
       register,
       handleSubmit,
-      watch,
       formState: { errors, isValid },
     } = useForm<CreateAccountT>({
-      defaultValues: {},
+      defaultValues: {
+        agency_name: data.agency_name,
+        services: data.services,
+        numberof_clients: data.numberof_clients,
+      },
     });
 
     const uploadToCloudinary = async (file: File) => {
@@ -117,15 +117,24 @@ export default function CreateAccountPage() {
     };
 
     const colorOptions: MultiSelectOption[] = [
-      { value: "red", label: "Red" },
-      { value: "blue", label: "Blue" },
-      { value: "green", label: "Green" },
-      { value: "yellow", label: "Yellow" },
-      { value: "purple", label: "Purple" },
+      { value: "service1", label: "Service 1" },
+      { value: "service2", label: "Service2" },
+      { value: "service3", label: "Service3" },
     ];
 
+    const handleOnSubmit = (formData: CreateAccountT) => {
+      setData((prev: any) => {
+        return { ...prev, ...formData };
+      });
+      console.log(isValid);
+      setcurrentForm(2);
+    };
+
     return (
-      <div className="border lg:px-8 lg:py-4 rounded mt-6 mb-2">
+      <form
+        className="border lg:px-8 lg:py-4 rounded mt-6 mb-2"
+        onSubmit={handleSubmit(handleOnSubmit)}
+      >
         <h2 className=" font-bold text-xl text-gray-400">Agency Details</h2>
 
         <div className="w-full flex justify-center">
@@ -194,12 +203,10 @@ export default function CreateAccountPage() {
             <Label htmlFor="">Agency Name</Label>
             <Input
               {...register("agency_name", {
+                required: "Agency name is required",
                 minLength: { value: 3, message: "Too short" },
               })}
               type="text"
-              value={""}
-              onChange={(e) => setemail(e.target.value)}
-              required
               placeholder="Your agency name"
               className=" border h-10"
             />
@@ -215,7 +222,7 @@ export default function CreateAccountPage() {
             <Controller
               name="services"
               control={control}
-              rules={{ required: "Select total clients range" }}
+              rules={{ required: "Select service" }}
               render={({ field }) => (
                 <MultiSelect
                   options={colorOptions}
@@ -226,10 +233,8 @@ export default function CreateAccountPage() {
               )}
             />
 
-            {errors.agency_name && (
-              <p className="text-xs text-red-400">
-                {errors.agency_name.message}
-              </p>
+            {errors.services && (
+              <p className="text-xs text-red-400">{errors.services.message}</p>
             )}
           </div>
 
@@ -268,55 +273,79 @@ export default function CreateAccountPage() {
         </div>
 
         <div className="mt-10">
-          <Button className="w-full h-10 font-bold">Proceed</Button>
+          <Button type="submit" className="w-full h-10 font-bold">
+            Proceed
+          </Button>
         </div>
-      </div>
+      </form>
     );
   };
 
   const DetailsForm = () => {
-    return (
-      <div className="border lg:px-8 lg:py-4 rounded mt-6 mb-2">
-        <h2 className=" font-bold text-xl text-gray-400">Agency Details</h2>
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+    } = useForm<CreateAccountT>({
+      defaultValues: {
+        admin_firstname: data.admin_firstname,
+        admin_lastname: data.admin_lastname,
+        email: data.email,
+        phone: data.phone,
+        password: data.password,
+        cpassword: data.cpassword,
+      },
+    });
 
-        <div className="w-full flex flex-col gap-y-6 mb-2 mt-6">
-          <div className="flex flex-col gap-y-3">
-            <Label htmlFor="">Agency Name</Label>
-            <Input
-              type="text"
-              value={""}
-              onChange={(e) => setemail(e.target.value)}
-              required
-              placeholder="Your agency name"
-              className=" border h-10"
-            />
-          </div>
-        </div>
+    const handleOnSubmit = (formData: CreateAccountT) => {
+      setData((prev: any) => {
+        return { ...prev, ...formData };
+      });
+      setcurrentForm(3);
+    };
+    return (
+      <form
+        className="border lg:px-8 lg:py-4 rounded mt-10 mb-2"
+        onSubmit={handleSubmit(handleOnSubmit)}
+      >
+        <h2 className=" font-bold text-xl text-gray-400">Admin Details</h2>
 
         <div className="w-full flex flex-col lg:flex-row justify-between gap-x-4 mb-8">
           <div className="w-full  lg:w-1/2 flex flex-col gap-y-6 mt-6">
             <div className="flex flex-col gap-y-3">
               <Label htmlFor="">Admin First Name</Label>
               <Input
+                {...register("admin_firstname", {
+                  required: "First name is required",
+                  minLength: { value: 3, message: "Too short" },
+                })}
                 type="text"
-                value={""}
-                onChange={(e) => setemail(e.target.value)}
-                required
                 placeholder="First name"
                 className=" border h-10"
               />
+
+              {errors.admin_firstname && (
+                <p className="text-xs text-red-400">
+                  {errors.admin_firstname.message}
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col gap-y-3">
               <Label htmlFor="">Email</Label>
               <Input
+                {...register("email", {
+                  required: "email is required",
+                  minLength: { value: 3, message: "Too short" },
+                })}
                 type="email"
-                value={""}
-                onChange={(e) => setpassword(e.target.value)}
-                required
                 placeholder="Email"
                 className=" border h-10"
               />
+
+              {errors.email && (
+                <p className="text-xs text-red-400">{errors.email.message}</p>
+              )}
             </div>
           </div>
 
@@ -324,25 +353,35 @@ export default function CreateAccountPage() {
             <div className="flex flex-col gap-y-3">
               <Label htmlFor="">Admin Last Name</Label>
               <Input
+                {...register("admin_lastname", {
+                  required: "Last name is required",
+                  minLength: { value: 3, message: "Too short" },
+                })}
                 type="text"
-                value={""}
-                onChange={(e) => setemail(e.target.value)}
-                required
                 placeholder="Last name"
                 className=" border h-10"
               />
+              {errors.admin_lastname && (
+                <p className="text-xs text-red-400">
+                  {errors.admin_lastname.message}
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col gap-y-3 ">
               <Label htmlFor="password">Phone Number</Label>
               <Input
+                {...register("phone", {
+                  required: "Phone is required",
+                  minLength: { value: 3, message: "Too short" },
+                })}
                 type="text"
-                value={password}
-                onChange={(e) => setpassword(e.target.value)}
-                required
                 placeholder="Phone number"
                 className=" border h-10 w-full"
               />
+              {errors.phone && (
+                <p className="text-xs text-red-400">{errors.phone.message}</p>
+              )}
             </div>
           </div>
         </div>
@@ -351,95 +390,187 @@ export default function CreateAccountPage() {
           <div className="flex flex-col gap-y-3 w-full lg:w-1/2">
             <Label htmlFor="">Password</Label>
             <Input
+              {...register("password", {
+                required: "Password is required",
+                minLength: { value: 3, message: "Too short" },
+              })}
               type="password"
-              value={""}
-              onChange={(e) => setemail(e.target.value)}
-              required
               placeholder="Your password"
               className=" border h-10"
             />
+
+            {errors.password && (
+              <p className="text-xs text-red-400">{errors.password.message}</p>
+            )}
           </div>
 
           <div className="flex flex-col gap-y-3 w-full lg:w-1/2">
             <Label htmlFor="">Confirm Password</Label>
             <Input
+              {...register("cpassword", {
+                required: "Password is required",
+                minLength: { value: 3, message: "Too short" },
+              })}
               type="password"
-              value={""}
-              onChange={(e) => setpassword(e.target.value)}
-              required
               placeholder="Confirm password"
               className=" border h-10"
             />
+
+            {errors.cpassword && (
+              <p className="text-xs text-red-400">{errors.cpassword.message}</p>
+            )}
           </div>
         </div>
 
-        <div className="mt-10">
-          <Button className="w-full h-10 font-bold">Proceed</Button>
+        <div className="mt-10 flex justify-end gap-x-4">
+          <div
+            className="border rounded py-1 px-4 font-bold cursor-pointer"
+            onClick={() => setcurrentForm(1)}
+          >
+            Previous
+          </div>
+          <Button className="h-10 font-bold">Proceed</Button>
         </div>
-      </div>
+      </form>
     );
   };
 
   const AddressForm = () => {
+    const {
+      control,
+      register,
+      handleSubmit,
+      formState: { errors, isValid },
+    } = useForm<CreateAccountT>({
+      defaultValues: {},
+    });
+
+    const handleOnSubmit = () => {
+      console.log(isValid);
+      setcurrentForm(2);
+    };
+
     return (
-      <div className="border lg:p-8 rounded mt-4 mb-20">
-        <h2 className=" font-bold">Address</h2>
+      <form
+        className="border lg:p-8 rounded mt-4 mb-20"
+        onSubmit={handleSubmit(handleOnSubmit)}
+      >
+        <h2 className=" font-bold text-xl text-gray-400">Address</h2>
+
+        <div className="flex flex-col gap-y-3 mt-8">
+          <Label htmlFor="">Street Address</Label>
+          <Input
+            {...register("street", {
+              required: "Street address is required",
+              minLength: { value: 3, message: "Too short" },
+            })}
+            type="text"
+            placeholder="Street address"
+            className=" border h-10"
+          />
+          {errors.street && (
+            <p className="text-xs text-red-400">{errors.street.message}</p>
+          )}
+        </div>
+
         <div className="w-full flex flex-col lg:flex-row justify-between gap-x-4">
           <div className="w-full  lg:w-1/2 flex flex-col gap-y-6 mb-10 mt-6">
             <div className="flex flex-col gap-y-3">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Address Line 2</Label>
               <Input
-                type="email"
-                value={email}
-                onChange={(e) => setemail(e.target.value)}
-                required
-                placeholder="Your Email"
+                {...register("address_Line2", {
+                  minLength: { value: 3, message: "Too short" },
+                })}
+                type="text"
+                placeholder="Street address"
                 className=" border h-10"
               />
+              {errors.address_Line2 && (
+                <p className="text-xs text-red-400">
+                  {errors.address_Line2.message}
+                </p>
+              )}
             </div>
 
-            <div className="flex flex-col gap-y-3">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setpassword(e.target.value)}
-                required
-                placeholder="Your Password"
-                className=" border h-10"
+            <div className="flex flex-col gap-y-3 w-full">
+              <Label htmlFor="gender">State</Label>
+
+              <Controller
+                name="state"
+                control={control}
+                rules={{ required: "Select a state" }}
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger
+                      className="h-10 w-full"
+                      style={{ height: "40px" }}
+                    >
+                      <SelectValue placeholder="Select state" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {AllStates.map((obj, idx: number) => (
+                          <SelectItem value={obj.code} key={idx}>
+                            {obj.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
               />
+              {errors.state && (
+                <p className="text-xs text-red-400">{errors.state.message}</p>
+              )}
             </div>
           </div>
 
           <div className="w-full  lg:w-1/2 flex flex-col gap-y-6 mb-10 mt-6">
             <div className="flex flex-col gap-y-3">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="city">City</Label>
               <Input
-                type="email"
-                value={email}
-                onChange={(e) => setemail(e.target.value)}
-                required
-                placeholder="Your Email"
+                {...register("city", {
+                  required: "City is required",
+                  minLength: { value: 2, message: "Too short" },
+                })}
+                type="text"
+                placeholder="City"
                 className=" border h-10"
               />
+              {errors.city && (
+                <p className="text-xs text-red-400">{errors.city.message}</p>
+              )}
             </div>
 
-            <div className="flex flex-col gap-y-3 ">
-              <Label htmlFor="password">Password</Label>
+            <div className="flex flex-col gap-y-3 w-full">
+              <Label htmlFor="zip">Zip</Label>
               <Input
-                type="password"
-                value={password}
-                onChange={(e) => setpassword(e.target.value)}
-                required
-                placeholder="Your Password"
-                className=" border h-10 w-full"
+                {...register("zip", {
+                  required: "Zip is required",
+                  minLength: { value: 3, message: "Too short" },
+                })}
+                type="number"
+                placeholder="Zip code"
+                maxLength={5}
+                className=" border h-10"
               />
+              {errors.zip && (
+                <p className="text-xs text-red-400">{errors.zip.message}</p>
+              )}
             </div>
           </div>
         </div>
 
-        <Button className="w-full h-10 font-bold">Create account</Button>
-      </div>
+        <div className="mt-10 flex justify-end gap-x-4">
+          <div
+            className="border rounded py-1 px-4 font-bold cursor-pointer"
+            onClick={() => setcurrentForm(2)}
+          >
+            Previous
+          </div>
+          <Button className="h-10 font-bold">Proceed</Button>
+        </div>
+      </form>
     );
   };
   return (
@@ -451,7 +582,7 @@ export default function CreateAccountPage() {
               className="mt-2 cursor-pointer"
               onClick={() => navigate(-1)}
             />
-            <form onSubmit={handleSubmit} className="w-full">
+            <div className="w-full">
               <h1 className=" text-4xl">Agency Registration</h1>
 
               <p className=" text-sm mt-2">Let's get started</p>
@@ -460,7 +591,7 @@ export default function CreateAccountPage() {
 
               {/* --- address */}
               {currentForm == 3 && <AddressForm />}
-            </form>
+            </div>
           </div>
           <p className="text-center mt-10 text-sm">
             Already have an account?{" "}

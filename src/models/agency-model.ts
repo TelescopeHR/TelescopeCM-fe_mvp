@@ -5,6 +5,7 @@ export type CreateAccountT = {
   email: string;
   phone: string;
   password: string;
+  cpassword: string;
   photo: string;
   state: string;
   city: string;

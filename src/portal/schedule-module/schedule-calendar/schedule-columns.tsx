@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -80,9 +81,8 @@ export const ScheduleDefColumns = (): ColumnDef<ScheduleT>[] => [
   {
     accessorKey: "monday",
     header: "Mon",
-    cell: ({ row }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const record = row.original;
+    cell: () => {
+      // const record = row.original;
 
       return (
         <div className="w-full px-4 bg-indigo-100  min-h-20 rounded flex flex-col  justify-center text-[0.70rem]">
@@ -97,9 +97,8 @@ export const ScheduleDefColumns = (): ColumnDef<ScheduleT>[] => [
   {
     accessorKey: "tuesday",
     header: "Tue",
-    cell: ({ row }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const record = row.original;
+    cell: () => {
+      // const record = row.original;
 
       return (
         <div className="w-full px-4 bg-indigo-100  min-h-20 rounded flex flex-col  justify-center text-[0.70rem]">
@@ -114,9 +113,8 @@ export const ScheduleDefColumns = (): ColumnDef<ScheduleT>[] => [
   {
     accessorKey: "wednesday",
     header: "Wed",
-    cell: ({ row }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const record = row.original;
+    cell: () => {
+      // const record = row.original;
 
       return (
         <div className="w-full px-4 bg-indigo-100  min-h-20 rounded flex flex-col  justify-center text-[0.70rem]">
@@ -131,9 +129,8 @@ export const ScheduleDefColumns = (): ColumnDef<ScheduleT>[] => [
   {
     accessorKey: "thursday",
     header: "Thur",
-    cell: ({ row }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const record = row.original;
+    cell: () => {
+      // const record = row.original;
 
       return (
         <div className="w-full px-4 bg-indigo-100  min-h-20 rounded flex flex-col  justify-center text-[0.70rem]">
@@ -148,9 +145,8 @@ export const ScheduleDefColumns = (): ColumnDef<ScheduleT>[] => [
   {
     accessorKey: "friday",
     header: "Fri",
-    cell: ({ row }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const record = row.original;
+    cell: () => {
+      // const record = row.original;
 
       return (
         <div className="w-full px-4 bg-indigo-100  min-h-20 rounded flex flex-col  justify-center text-[0.70rem]">
@@ -165,9 +161,8 @@ export const ScheduleDefColumns = (): ColumnDef<ScheduleT>[] => [
   {
     accessorKey: "saturday",
     header: "Sat",
-    cell: ({ row }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const record = row.original;
+    cell: () => {
+      // const record = row.original;
 
       return (
         <div className="w-full px-4 bg-indigo-100  min-h-20 rounded flex flex-col  justify-center text-[0.70rem]">
@@ -182,9 +177,8 @@ export const ScheduleDefColumns = (): ColumnDef<ScheduleT>[] => [
   {
     accessorKey: "sunday",
     header: "Sun",
-    cell: ({ row }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const record = row.original;
+    cell: () => {
+      // const record = row.original;
 
       return (
         <div className="w-full px-4 bg-indigo-100  min-h-20 rounded flex flex-col  justify-center text-[0.70rem]">

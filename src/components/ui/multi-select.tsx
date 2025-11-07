@@ -27,7 +27,7 @@ export function MultiSelect({
 }: MultiSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement | any>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [dropdownPosition, setDropdownPosition] = useState({
     top: 0,
@@ -81,7 +81,7 @@ export function MultiSelect({
   return (
     <div ref={containerRef} className={cn("w-full", className)}>
       {/* Display area with selected items */}
-      <button
+      <div
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
@@ -118,7 +118,7 @@ export function MultiSelect({
             isOpen && "rotate-180"
           )}
         />
-      </button>
+      </div>
 
       {isOpen &&
         createPortal(

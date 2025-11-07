@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DataTable } from "@/components/data-table";
 import { IEmployeeTableRespArr } from "@/models/employee-model";
 
