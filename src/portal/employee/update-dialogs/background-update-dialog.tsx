@@ -1,0 +1,319 @@
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { ICreateEmployee } from "@/models/employee-model";
+import { useCareGiverStore } from "@/store/caregiverStore";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { toast } from "react-toastify";
+import { updateEmployee } from "@/services/employee-service/employee-service";
+import LoadingSkeleton from "@/components/skeleton/skeleton";
+import { formatToYMD } from "@/utils/utils";
+import DateInput from "@/components/date-input";
+
+type PropT = {
+  open: boolean;
+  setopen: (x: boolean) => void;
+  makeApiCall: () => void;
+};
+export function BackgroundDialogUpdate({ open, setopen, makeApiCall }: PropT) {
+  const { careGiver } = useCareGiverStore();
+  const [isloading, setisloading] = useState(false);
+  const [skeletonMessage, setskeletonMessage] = useState("Loading");
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<ICreateEmployee>({
+    defaultValues: {
+      hire_date: "",
+      application_date: "",
+      signed_job_description_date: "",
+      orientation_date: "",
+      signed_policy_procedure_date: "",
+      evaluated_assigned_date: "",
+      last_evaluation_date: "",
+      termination_date: "",
+      number_of_references: 1,
+    },
+  });
+
+  const handleOnSubmit = (formData: ICreateEmployee) => {
+    if (isValid) {
+      setisloading(true);
+      setskeletonMessage("Updating");
+      const payload = { ...formData, type: "background" };
+
+      return updateEmployee(payload, careGiver.id).subscribe({
+        next: (response) => {
+          if (response) {
+            toast.success("Updated successfully!");
+            setopen(false);
+            makeApiCall();
+          }
+        },
+        error: (err) => {
+          toast.error(err.response.data.error);
+          setisloading(false);
+        },
+        complete: () => {
+          setisloading(false);
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (careGiver) {
+      const background = careGiver.backgroundData;
+      reset({
+        hire_date: background.hiredate || "",
+        application_date: background.applicationDate || "",
+        signed_job_description_date: background.signedJobDescriptionDate || "",
+        orientation_date: background.orientationDate || "",
+        signed_policy_procedure_date:
+          background.signedPolicyProcedureDate || "",
+        evaluated_assigned_date: background.evaluatedAssignedTaskDate || "",
+        last_evaluation_date: background.lastEvaluationDate || "",
+        termination_date: background.terminationDate || "",
+        number_of_references: background.numberOfReferences || "",
+      });
+    }
+  }, [careGiver, open, reset]);
+
+  return (
+    <AlertDialog open={open} onOpenChange={setopen}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>UPDATE BACKGROUND DATES</AlertDialogTitle>
+          <AlertDialogDescription></AlertDialogDescription>
+          <form
+            className="w-w-full  py-4 flex flex-col gap-y-8"
+            onSubmit={handleSubmit(handleOnSubmit)}
+          >
+            <div className="items center flex flex-col lg:flex-row gap-x-10 w-full">
+              <div className="flex flex-col gap-y-3 w-full">
+                <Controller
+                  name="hire_date"
+                  control={control}
+                  rules={{ required: "Hire date is required" }}
+                  render={({ field }) => (
+                    <DateInput
+                      title="Hire date"
+                      date={field.value ? new Date(field.value) : undefined}
+                      setDate={(val) => {
+                        console.log("value date", val);
+                        field.onChange(formatToYMD(val));
+                      }}
+                    />
+                  )}
+                />
+                {errors.hire_date && (
+                  <p className="text-xs text-red-400">
+                    {`${errors.hire_date.message}`}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col gap-y-3 w-full">
+                <Controller
+                  name="application_date"
+                  control={control}
+                  rules={{ required: "Application date is required" }}
+                  render={({ field }) => (
+                    <DateInput
+                      title="Application date"
+                      date={field.value ? new Date(field.value) : undefined}
+                      setDate={(val) => field.onChange(formatToYMD(val))}
+                    />
+                  )}
+                />
+                {errors.application_date && (
+                  <p className="text-xs text-red-400">
+                    {`${errors.application_date.message}`}
+                  </p>
+                )}
+              </div>
+            </div>
+            {/*  */}
+            <div className="items center flex flex-col lg:flex-row gap-x-10 w-full">
+              <div className="flex flex-col gap-y-3 w-full">
+                <Controller
+                  name="signed_job_description_date"
+                  control={control}
+                  rules={{
+                    required: "Signed job description date is required",
+                  }}
+                  render={({ field }) => (
+                    <DateInput
+                      title="Signed job description date"
+                      date={field.value ? new Date(field.value) : undefined}
+                      setDate={(val) => field.onChange(formatToYMD(val))}
+                    />
+                  )}
+                />
+                {errors.signed_job_description_date && (
+                  <p className="text-xs text-red-400">
+                    {`${errors.signed_job_description_date.message}`}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col gap-y-3 w-full">
+                <Controller
+                  name="orientation_date"
+                  control={control}
+                  rules={{ required: "Orientation date is required" }}
+                  render={({ field }) => (
+                    <DateInput
+                      title="Orientation date"
+                      date={field.value ? new Date(field.value) : undefined}
+                      setDate={(val) => field.onChange(formatToYMD(val))}
+                    />
+                  )}
+                />
+                {errors.orientation_date && (
+                  <p className="text-xs text-red-400">
+                    {`${errors.orientation_date.message}`}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/*  */}
+
+            <div className="items center flex flex-col lg:flex-row gap-x-10 w-full">
+              <div className="flex flex-col gap-y-3 w-full">
+                <Controller
+                  name="signed_policy_procedure_date"
+                  control={control}
+                  rules={{
+                    required: "Signed policy procedure date is required",
+                  }}
+                  render={({ field }) => (
+                    <DateInput
+                      title="Signed policy procedure date"
+                      date={field.value ? new Date(field.value) : undefined}
+                      setDate={(val) => field.onChange(formatToYMD(val))}
+                    />
+                  )}
+                />
+                {errors.signed_policy_procedure_date && (
+                  <p className="text-xs text-red-400">
+                    {`${errors.signed_policy_procedure_date.message}`}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col gap-y-3 w-full">
+                <Controller
+                  name="evaluated_assigned_date"
+                  control={control}
+                  rules={{
+                    required: "Evaluated assigned tasks date is required",
+                  }}
+                  render={({ field }) => (
+                    <DateInput
+                      title="Evaluated assigned tasks date"
+                      date={field.value ? new Date(field.value) : undefined}
+                      setDate={(val) => field.onChange(formatToYMD(val))}
+                    />
+                  )}
+                />
+                {errors.evaluated_assigned_date && (
+                  <p className="text-xs text-red-400">
+                    {`${errors.evaluated_assigned_date.message}`}
+                  </p>
+                )}
+              </div>
+            </div>
+            {/*  */}
+            <div className="items center flex flex-col lg:flex-row gap-x-10 w-full">
+              <div className="flex flex-col gap-y-3 w-full">
+                <Controller
+                  name="last_evaluation_date"
+                  control={control}
+                  rules={{ required: "Last evaluation date is required" }}
+                  render={({ field }) => (
+                    <DateInput
+                      title="Last evaluation date"
+                      date={field.value ? new Date(field.value) : undefined}
+                      setDate={(val) => field.onChange(formatToYMD(val))}
+                    />
+                  )}
+                />
+                {errors.last_evaluation_date && (
+                  <p className="text-xs text-red-400">
+                    {`${errors.last_evaluation_date.message}`}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col gap-y-3 w-full">
+                <Controller
+                  name="termination_date"
+                  control={control}
+                  rules={{ required: "Termination date is required" }}
+                  render={({ field }) => (
+                    <DateInput
+                      title="Termination date"
+                      date={field.value ? new Date(field.value) : undefined}
+                      setDate={(val) => field.onChange(formatToYMD(val))}
+                    />
+                  )}
+                />
+                {errors.termination_date && (
+                  <p className="text-xs text-red-400">
+                    {`${errors.termination_date.message}`}
+                  </p>
+                )}
+              </div>
+            </div>
+            {/*  */}
+
+            <div className="items center flex flex-col lg:flex-row gap-x-10 w-full">
+              <div className="flex flex-col gap-y-3 w-full">
+                <Label htmlFor="Number of references">
+                  Number of references
+                </Label>
+                <Input
+                  {...register("number_of_references", {
+                    required: "Number of reference is required",
+                  })}
+                  type="number"
+                  placeholder="Number of references"
+                  className=" border h-10"
+                />
+                {errors.number_of_references && (
+                  <p className="text-xs text-red-400">
+                    {errors.number_of_references.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-x-4">
+              <div
+                className="h-8 w-[100px] flex items-center text-sm font-bold justify-center cursor-pointer border text-center rounded border-slate-400"
+                onClick={() => setopen(false)}
+              >
+                Cancel
+              </div>
+              <Button type="submit" className="h-8 w-[100px] cursor-pointer ">
+                Update
+              </Button>
+            </div>
+          </form>
+          {isloading && <LoadingSkeleton name={skeletonMessage} />}
+        </AlertDialogHeader>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}

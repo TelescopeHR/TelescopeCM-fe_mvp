@@ -1,4 +1,5 @@
 import { useUserStore } from "@/store/userStore";
+import { removeStoredAuthToken } from "@/utils/ls";
 import { useEffect, useState } from "react";
 
 export default function UseAuth() {
@@ -6,7 +7,8 @@ export default function UseAuth() {
   const [isAuth, setIsAuth] = useState(false);
 
   const Logout = () => {
-    setUser(null);
+    removeStoredAuthToken(); //remove token
+    setUser(null); //remove user details from state
     setIsAuth(false);
   };
 

@@ -19,14 +19,16 @@ export type StudentT = {
   id: string;
   id_: string;
   dob: string;
-  status: string;
+  tablestatus: string;
   photo?: string;
 };
 
 export const EmployeedefColumns = (
   handleNavigation: (x: any) => void,
-  triggerDelete: (x: any) => void,
-  handleStatus: (x: any) => void
+  _handleStatus: (x: any) => void,
+  handleSchedules: (x: any) => void,
+  handleVisits: (x: any) => void,
+  handleDelete: (x: any) => void
 ): ColumnDef<StudentT>[] => [
   {
     id: "select",
@@ -108,21 +110,23 @@ export const EmployeedefColumns = (
     header: "Birth Date",
   },
   {
-    accessorKey: "status",
+    accessorKey: "tablestatus",
     header: "Status",
     cell: ({ row }) => {
       const record = row.original;
 
       const color =
-        record.status === "active"
+        record.tablestatus === "Active"
           ? "#28A745"
-          : record.status === "inactive"
+          : record.tablestatus === "inactive"
           ? "#DC3545"
           : "#DC3545";
 
       return (
         <span style={{ color }}>
-          <span style={{ textTransform: "capitalize" }}>{record.status}</span>
+          <span style={{ textTransform: "capitalize" }}>
+            {record.tablestatus}
+          </span>
         </span>
       );
     },
@@ -153,16 +157,29 @@ export const EmployeedefColumns = (
               </DropdownMenuItem>
 
               <DropdownMenuItem
+                onClick={() => handleSchedules(record)}
+                className=" cursor-pointer"
+              >
+                Schedules
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() => handleVisits(record)}
+                className=" cursor-pointer"
+              >
+                Visits
+              </DropdownMenuItem>
+
+              {/* <DropdownMenuItem
                 onClick={() => handleStatus(record)}
                 className=" cursor-pointer"
               >
-                {record.status === "active" ? "Deactivate" : "Activate"}
-              </DropdownMenuItem>
+                {record.tablestatus === "Active" ? "Deactivate" : "Activate"}
+              </DropdownMenuItem> */}
+
               <DropdownMenuItem
+                onClick={() => handleDelete(record)}
                 className=" cursor-pointer"
-                onClick={() => {
-                  triggerDelete(row);
-                }}
               >
                 Delete
               </DropdownMenuItem>

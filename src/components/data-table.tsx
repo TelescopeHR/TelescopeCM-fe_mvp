@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -6,7 +7,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import {
   Select,
   SelectContent,
@@ -29,7 +29,6 @@ import {
   VisibilityState,
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
-
 import {
   Table,
   TableBody,
@@ -46,11 +45,13 @@ type FilterObj = {
   label: string;
   value: any;
 };
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchPlaceholder: string;
   filterArray: FilterObj[];
+  handleFilter?: (x: any) => void;
   showSerialNumber: boolean;
   withExport: boolean;
   exportTypes?: "Excel" | "PDF" | "All";
@@ -58,10 +59,9 @@ interface DataTableProps<TData, TValue> {
   withDate: boolean;
   searchColumn?: string;
   handleDate?: (obj: any) => void;
+  totalCount?: number;
   currentPage?: number;
-  handlePagination?: (x: any) => void;
-  handleFilter?: (x: any) => void;
-  paginationObj?: { hasNextPage: boolean };
+  apiCall?: (x: any) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -69,6 +69,7 @@ export function DataTable<TData, TValue>({
   data,
   searchPlaceholder,
   filterArray,
+  handleFilter,
   showSerialNumber = false,
   withExport = true,
   handleExport,
@@ -76,34 +77,42 @@ export function DataTable<TData, TValue>({
   withDate = true,
   searchColumn = "name",
   handleDate,
+  totalCount,
   currentPage,
-  handlePagination,
-  paginationObj,
-  handleFilter,
+  apiCall,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 50,
+  });
 
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination,
     },
+    manualPagination: true,
+    pageCount: totalCount,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    onPaginationChange: setPagination,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
   });
+
   const handleRangeChange = (range: {
     startDate: string | null;
     endDate: string | null;
@@ -118,9 +127,11 @@ export function DataTable<TData, TValue>({
     .rows.map((obj) => obj.original);
 
   return (
-    <div className="rounded-md border p-4">
+    <div className="rounded-md p-4">
+      {/* Top Filters */}
       <div className="flex items-center justify-between py-4 w-full">
         <div className="flex items-center gap-x-2">
+          {/* Search */}
           <Input
             placeholder={searchPlaceholder}
             value={
@@ -131,8 +142,13 @@ export function DataTable<TData, TValue>({
             }
             className="max-w-[12rem]"
           />
+
+          {/* Filter */}
           <Select
-            onValueChange={(value) => handleFilter && handleFilter(value)}
+            onValueChange={(value) => {
+              console.log("filter selected", value);
+              if (handleFilter) handleFilter(value);
+            }}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Filter by" />
@@ -152,11 +168,14 @@ export function DataTable<TData, TValue>({
               </SelectGroup>
             </SelectContent>
           </Select>
-          <div>
-            {withDate && <DateRangePicker onRangeChange={handleRangeChange} />}
-          </div>
+
+          {/* Date Range */}
+          {withDate && <DateRangePicker onRangeChange={handleRangeChange} />}
         </div>
+
+        {/* Column & Export */}
         <div className="flex items-center gap-x-4 w-6/12 justify-end">
+          {/* Column toggle */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
@@ -186,10 +205,11 @@ export function DataTable<TData, TValue>({
             </DropdownMenuContent>
           </DropdownMenu>
 
+          {/* Export */}
           {withExport && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="">
+                <Button variant="outline">
                   Export{" "}
                   {selectedRows.length === 0
                     ? ""
@@ -198,14 +218,12 @@ export function DataTable<TData, TValue>({
                     : selectedRows.length}
                 </Button>
               </DropdownMenuTrigger>
-              {data.length && (
+              {data.length ? (
                 <DropdownMenuContent>
                   {exportTypes == "All" && (
                     <>
                       <DropdownMenuCheckboxItem
                         className="capitalize cursor-pointer"
-                        checked={exportTypes == "All"}
-                        // onCheckedChange={(value) => ""}
                         onClick={() =>
                           handleExport &&
                           handleExport(
@@ -219,8 +237,6 @@ export function DataTable<TData, TValue>({
 
                       <DropdownMenuCheckboxItem
                         className="capitalize cursor-pointer"
-                        checked={exportTypes == "All"}
-                        // onCheckedChange={(value) => ""}
                         onClick={() =>
                           handleExport &&
                           handleExport(
@@ -236,16 +252,13 @@ export function DataTable<TData, TValue>({
                   {exportTypes == "Excel" && (
                     <DropdownMenuCheckboxItem
                       className="capitalize cursor-pointer"
-                      checked={exportTypes == "Excel"}
-                      // onCheckedChange={(value) => ""}
-                      onClick={() => {
-                        if (handleExport) {
-                          handleExport(
-                            "Excel",
-                            selectedRows.length ? selectedRows : data
-                          );
-                        }
-                      }}
+                      onClick={() =>
+                        handleExport &&
+                        handleExport(
+                          "Excel",
+                          selectedRows.length ? selectedRows : data
+                        )
+                      }
                     >
                       To Excel
                     </DropdownMenuCheckboxItem>
@@ -254,8 +267,6 @@ export function DataTable<TData, TValue>({
                   {exportTypes == "PDF" && (
                     <DropdownMenuCheckboxItem
                       className="capitalize cursor-pointer"
-                      checked={exportTypes == "PDF"}
-                      // onCheckedChange={(value) => ""}
                       onClick={() =>
                         handleExport &&
                         handleExport(
@@ -268,11 +279,15 @@ export function DataTable<TData, TValue>({
                     </DropdownMenuCheckboxItem>
                   )}
                 </DropdownMenuContent>
+              ) : (
+                <></>
               )}
             </DropdownMenu>
           )}
         </div>
       </div>
+
+      {/* Table */}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -294,15 +309,20 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row, index: number) => (
+          {table.getPaginationRowModel().rows?.length ? (
+            table.getPaginationRowModel().rows.map((row, index: number) => (
               <TableRow
-                key={row.id}
+                key={index}
                 data-state={row.getIsSelected() && "selected"}
                 className="dark:hover:bg-slate-800"
               >
                 {showSerialNumber && (
-                  <TableCell className="w-5">{index + 1}</TableCell>
+                  <TableCell className="w-5">
+                    {row.index +
+                      1 +
+                      table.getState().pagination.pageIndex *
+                        table.getState().pagination.pageSize}
+                  </TableCell>
                 )}
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -321,32 +341,52 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
 
-      <div className="flex items-center justify-between w-full">
+      {/* Footer with page size + pagination */}
+      <div className="flex items-center justify-between w-full mt-4">
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
+
+        <div className="flex items-center gap-x-2">
+          {/* Page size selector */}
+          <Select
+            value={String(table.getState().pagination.pageSize)}
+            onValueChange={(value) => table.setPageSize(Number(value))}
+          >
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Rows per page" />
+            </SelectTrigger>
+            <SelectContent>
+              {[10, 20, 50, 100].map((size) => (
+                <SelectItem key={size} value={String(size)}>
+                  Show {size}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Pagination controls */}
           <Button
             variant="outline"
             size="sm"
             onClick={() => {
-              if (currentPage && currentPage > 1 && handlePagination) {
-                handlePagination(currentPage - 1);
-              }
+              table.previousPage();
+              if (currentPage && apiCall) apiCall(currentPage - 1);
             }}
-            disabled={currentPage && currentPage > 1 ? false : true}
+            disabled={!table.getCanPreviousPage()}
           >
             Previous
           </Button>
           <Button
             variant="outline"
             size="sm"
+            // onClick={() => table.nextPage()}
             onClick={() => {
-              if (paginationObj?.hasNextPage && handlePagination)
-                handlePagination(currentPage! + 1);
+              table.nextPage();
+              if (currentPage && apiCall) apiCall(currentPage + 1);
             }}
-            disabled={!paginationObj?.hasNextPage}
+            disabled={!table.getCanNextPage()}
           >
             Next
           </Button>

@@ -6,7 +6,9 @@ import {
   Flower,
   Activity,
   UserRound,
+  Locate,
   LogOut,
+  // CalendarSync,
 } from "lucide-react";
 
 export const SidebarMenuData = [
@@ -23,6 +25,12 @@ export const SidebarMenuData = [
   // },
 
   {
+    title: "Clients",
+    Icon: Flower,
+    path: "/dashboard/clients",
+  },
+
+  {
     title: "Employees",
     Icon: Blend,
     path: "/dashboard/employees",
@@ -34,10 +42,16 @@ export const SidebarMenuData = [
     // ],
   },
 
+  // {
+  //   title: "Schedules",
+  //   Icon: CalendarSync,
+  //   path: "/dashboard/schedules",
+  // },
+
   {
-    title: "Clients",
-    Icon: Flower,
-    path: "/dashboard/clients",
+    title: "Visits",
+    Icon: Locate,
+    path: "/dashboard/visits",
   },
 
   {

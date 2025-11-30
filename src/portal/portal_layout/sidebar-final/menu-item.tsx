@@ -38,6 +38,7 @@ export default function MenuItem({
           <NavLink
             className="flex items-center gap-x-2 w-full px-2 py-4 lg:py-3"
             to={path}
+            onClick={fn}
           >
             <Icon size={16} />
             <span className="text-sm">{title}</span>
@@ -72,7 +73,7 @@ export default function MenuItem({
       {items?.length && openItems ? (
         <div className="border-l-2 border-dotted border-slate-500 p-1 ml-4">
           {items.map((obj) => (
-            <NavLink to={obj.path}>
+            <NavLink to={obj.path} onClick={fn}>
               <div
                 className={` text-white p-2 hover:bg-slate-800  text-sm transition-transform duration-300 ${
                   pathname === obj.path ? "bg-slate-800" : "bg-slate-900"

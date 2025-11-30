@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telescopecmfm
+  labels:
+    app: telescopecmfm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telescopecmfm
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: telescopecmfm
+    spec:
+      containers:
+        - name: admin
+          image: registry.digitalocean.com/quire-registry/telescopecmfm:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 100m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: telescopecmfm-service
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: telescopecmfm

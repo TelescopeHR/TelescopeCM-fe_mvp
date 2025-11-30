@@ -1,7 +1,7 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { Dot, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,18 +15,31 @@ import {
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type StudentT = {
+export type clientT = {
   id: string;
   id_: string;
   dob: string;
   status: string;
+  priorityLevel: string;
+  client: {
+    img: any;
+    name: string;
+  };
+  age: any;
+  clientId: string;
+};
+
+const getColor = (priority: string): string => {
+  if (priority === "High") return "#FA0505";
+  if (priority === "Medium") return "#E89702";
+  else return "#424242";
 };
 
 export const ClientdefColumns = (
   handleNavigation: (x: any) => void,
-  triggerDelete: (x: any) => void,
-  handleStatus: (x: any) => void
-): ColumnDef<StudentT>[] => [
+  handleStatus: (x: any) => void,
+  handleVisits: (x: any) => void
+): ColumnDef<clientT>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -53,53 +66,69 @@ export const ClientdefColumns = (
   },
 
   {
+    accessorKey: "client",
+    header: "Client",
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center gap-x-2">
+          <div className="w-8 h-8 bg-red-400 rounded-full overflow-hidden">
+            <img
+              src={row.original.client.img}
+              className="w-8 h-8 object-cover"
+            />
+          </div>
+          <span>{row.original.client.name}</span>
+        </div>
+      );
+    },
+  },
+
+  {
     accessorKey: "clientId",
     header: "Client ID",
   },
 
   {
-    accessorKey: "firstName",
-    header: "First Name",
+    accessorKey: "age",
+    header: "Age",
   },
 
   {
-    accessorKey: "middleName",
-    header: "Middle Name",
+    accessorKey: "primaryCondition",
+    header: "Primary Condition",
   },
 
   {
-    accessorKey: "lastName",
-    header: "Last Name",
+    accessorKey: "classification",
+    header: "Classification",
   },
 
   {
-    accessorKey: "gender",
-    header: "Gender",
-  },
-
-  {
-    accessorKey: "dob",
-    header: "Birth Date",
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "priorityLevel",
+    header: "Priority Level",
     cell: ({ row }) => {
-      const record = row.original;
-
-      const color =
-        record.status === "active"
-          ? "#28A745"
-          : record.status === "inactive"
-          ? "#DC3545"
-          : "#DC3545";
-
       return (
-        <span style={{ color }}>
-          <span style={{ textTransform: "capitalize" }}>{record.status}</span>
-        </span>
+        <div className="flex items-center">
+          <Dot
+            strokeWidth={4}
+            style={{ color: getColor(row.original.priorityLevel) }}
+          />
+          <span style={{ color: getColor(row.original.priorityLevel) }}>
+            {row.original.priorityLevel}
+          </span>
+        </div>
       );
     },
+  },
+
+  {
+    accessorKey: "careTeam",
+    header: "CareTeam",
+  },
+
+  {
+    accessorKey: "nextVisit",
+    header: "Next Visit",
   },
 
   {
@@ -123,7 +152,14 @@ export const ClientdefColumns = (
                 onClick={() => handleNavigation(record)}
                 className=" cursor-pointer"
               >
-                View
+                View Details
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() => handleVisits(record)}
+                className=" cursor-pointer"
+              >
+                Edit Details
               </DropdownMenuItem>
 
               <DropdownMenuItem
@@ -131,14 +167,6 @@ export const ClientdefColumns = (
                 className=" cursor-pointer"
               >
                 {record.status === "active" ? "Deactivate" : "Activate"}
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className=" cursor-pointer"
-                onClick={() => {
-                  triggerDelete(row);
-                }}
-              >
-                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

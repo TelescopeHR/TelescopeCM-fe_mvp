@@ -1,35 +1,28 @@
 import SecureLS from "secure-ls";
+const ls = new SecureLS({ encodingType: "rc4", isCompression: true });
 
-let ls: any;
-const init = () => {
-  ls = new SecureLS({ encodingType: "rc4", isCompression: true });
+export const storeUserDetails = (userpwd: any) =>
+  ls.set("telescopeUserPWD", userpwd);
+export const getUserDetails = () => ls.get("telescopeUserPWD");
+export const removeUserDetails = () => {
+  ls.remove("telescopeUserPWD");
 };
-if (global?.localStorage) init();
+export const getStoredAuthToken = () => ls.get("teleScopeAuthToken");
 
-export const getStoredAuthToken = () => ls.get("classutToken");
-
-export const getStoredRefreshToken = () => ls.get("classutRefreshToken");
-
-//@Desc: Store access token securely
-export const storeAuthToken = (token: string) => ls.set("classutToken", token);
-
-//@Desc: Store refresh token securely
-export const storeResfreshToken = (token: string) =>
-  ls.set("classutRefreshToken", token);
-
-export const getStoredClientUser = () => {
-  if (typeof window !== "undefined") {
-    return ls.get("classutUser");
-  }
-};
-export const storeClientUser = (user: string) => ls.set("classutUser", user);
-
-//@Desc: Store access token securely
-export const storeLoginUrl = (url: string) => ls.set("loginurl", url);
-export const getLoginUrl = () => ls.get("loginurl");
+export const storeAuthToken = (token: string) =>
+  ls.set("teleScopeAuthToken", token);
 
 export const removeStoredAuthToken = () => {
-  ls.remove("classutToken");
-  ls.remove("classutUser");
-  ls.remove("classutRefreshToken");
+  ls.remove("teleScopeAuthToken");
+};
+export const removePersistStore = () => {
+  ls.remove("persist:root");
+};
+
+export const getIntendedRoute = () => ls.get("mvIntendedRoute");
+export const storeIntendedRoute = (path: string) =>
+  ls.set("mvIntendedRoute", path);
+
+export const removeIntendedRoute = () => {
+  ls.remove("mvIntendedRoute");
 };
