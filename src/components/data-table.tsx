@@ -127,7 +127,7 @@ export function DataTable<TData, TValue>({
     .rows.map((obj) => obj.original);
 
   return (
-    <div className="rounded-md border p-4">
+    <div className="rounded-md p-4">
       {/* Top Filters */}
       <div className="flex items-center justify-between py-4 w-full">
         <div className="flex items-center gap-x-2">
@@ -218,7 +218,7 @@ export function DataTable<TData, TValue>({
                     : selectedRows.length}
                 </Button>
               </DropdownMenuTrigger>
-              {data.length && (
+              {data.length ? (
                 <DropdownMenuContent>
                   {exportTypes == "All" && (
                     <>
@@ -279,6 +279,8 @@ export function DataTable<TData, TValue>({
                     </DropdownMenuCheckboxItem>
                   )}
                 </DropdownMenuContent>
+              ) : (
+                <></>
               )}
             </DropdownMenu>
           )}

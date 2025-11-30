@@ -12,17 +12,15 @@ import { EmployeeLayout } from "@/portal/employees/employee-layout";
 import EmployeeHome from "@/portal/employee/page";
 import ClientHome from "@/portal/client/page";
 import EmployeeSchedule from "@/portal/schedules/employee-schedule/employee-schedule";
-import ClientSchedule from "@/portal/schedules/client-schedule/client-schedule";
-import CarePlans from "@/portal/care_plan/page";
 import { SettingsLayout } from "@/portal/settings/settings_layout";
 import OnboardEmployee from "@/portal/settings/onboard-employee/page";
 import EmployeeNote from "@/portal/employee/employee-note/employee-note";
 import OnboardClient from "@/portal/settings/onboard-client/page";
 import EmployeeScheduleVisits from "@/portal/schedules/emp-schedule-visits/emp-schedule-visits";
 import Visitspage from "@/portal/visits/page";
-import ClientAdminNotes from "@/portal/client/client-admin-notes/client-admin-notes";
 import ScheduleModule from "@/portal/schedule-module/schedule-module";
 import CreateAccountPage from "@/create-account/create-account";
+import CientUpcomingSceduleDetails from "@/portal/client/client-schedule/client-schedule-details/upcoming-details";
 
 export default function ApplicationRoutes() {
   return (
@@ -46,13 +44,16 @@ export default function ApplicationRoutes() {
           />
         </Route>
 
+        {/* ===== Client module routes =========================== */}
         <Route path="clients" element={<ClientsLayout />}>
           <Route index element={<ClientsPage />} />
           <Route path="client/:id" element={<ClientHome />} />
-          <Route path="notes/:id" element={<ClientAdminNotes />} />
-          <Route path="careplans/:clientId" element={<CarePlans />} />
-          <Route path="schedule/:clientId" element={<ClientSchedule />} />
+          <Route
+            path="client/:id/schedule/upcoming"
+            element={<CientUpcomingSceduleDetails />}
+          />
         </Route>
+        {/* ================================================== */}
 
         <Route path="schedules" element={<ScheduleModule />} />
 

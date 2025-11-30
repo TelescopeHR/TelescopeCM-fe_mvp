@@ -82,17 +82,7 @@ export default function Identification({
     return { status: false, url: "" };
   };
 
-  // const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const selectedFile = e.target.files?.[0];
-  //   if (selectedFile) {
-  //     setPreview(URL.createObjectURL(selectedFile));
-  //     const result = await uploadToCloudinary(selectedFile);
-  //     if (result.url) {
-  //       setValue("photo", result.url); // ✅ save photo to RHF state
-  //       setData((prev: any) => ({ ...prev, photo: result.url }));
-  //     }
-  //   }
-  // };
+  
 
   const handleOnSubmit = (formData: ICreateEmployee) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

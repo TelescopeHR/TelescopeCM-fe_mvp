@@ -1,7 +1,7 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { Dot, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,20 +15,31 @@ import {
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type StudentT = {
+export type clientT = {
   id: string;
   id_: string;
   dob: string;
   status: string;
+  priorityLevel: string;
+  client: {
+    img: any;
+    name: string;
+  };
+  age: any;
+  clientId: string;
+};
+
+const getColor = (priority: string): string => {
+  if (priority === "High") return "#FA0505";
+  if (priority === "Medium") return "#E89702";
+  else return "#424242";
 };
 
 export const ClientdefColumns = (
   handleNavigation: (x: any) => void,
   handleStatus: (x: any) => void,
-  handleSchedules: (x: any) => void,
-  handleVisits: (x: any) => void,
-  handleAdminNotes: (x: any) => void
-): ColumnDef<StudentT>[] => [
+  handleVisits: (x: any) => void
+): ColumnDef<clientT>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -55,54 +66,70 @@ export const ClientdefColumns = (
   },
 
   {
+    accessorKey: "client",
+    header: "Client",
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center gap-x-2">
+          <div className="w-8 h-8 bg-red-400 rounded-full overflow-hidden">
+            <img
+              src={row.original.client.img}
+              className="w-8 h-8 object-cover"
+            />
+          </div>
+          <span>{row.original.client.name}</span>
+        </div>
+      );
+    },
+  },
+
+  {
     accessorKey: "clientId",
     header: "Client ID",
   },
 
   {
-    accessorKey: "firstName",
-    header: "First Name",
+    accessorKey: "age",
+    header: "Age",
   },
-
-  // {
-  //   accessorKey: "middleName",
-  //   header: "Middle Name",
-  // },
 
   {
-    accessorKey: "lastName",
-    header: "Last Name",
+    accessorKey: "primaryCondition",
+    header: "Primary Condition",
   },
 
-  // {
-  //   accessorKey: "gender",
-  //   header: "Gender",
-  // },
+  {
+    accessorKey: "classification",
+    header: "Classification",
+  },
 
-  // {
-  //   accessorKey: "dob",
-  //   header: "Birth Date",
-  // },
-  // {
-  //   accessorKey: "status",
-  //   header: "Status",
-  //   cell: ({ row }) => {
-  //     const record = row.original;
+  {
+    accessorKey: "priorityLevel",
+    header: "Priority Level",
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center">
+          <Dot
+            strokeWidth={4}
+            style={{ color: getColor(row.original.priorityLevel) }}
+          />
+          <span style={{ color: getColor(row.original.priorityLevel) }}>
+            {row.original.priorityLevel}
+          </span>
+        </div>
+      );
+    },
+  },
 
-  //     const color =
-  //       record.status === "active"
-  //         ? "#28A745"
-  //         : record.status === "inactive"
-  //         ? "#DC3545"
-  //         : "#DC3545";
+  {
+    accessorKey: "careTeam",
+    header: "CareTeam",
+  },
 
-  //     return (
-  //       <span style={{ color }}>
-  //         <span style={{ textTransform: "capitalize" }}>{record.status}</span>
-  //       </span>
-  //     );
-  //   },
-  // },
+  {
+    accessorKey: "nextVisit",
+    header: "Next Visit",
+  },
 
   {
     id: "actions",
@@ -125,28 +152,14 @@ export const ClientdefColumns = (
                 onClick={() => handleNavigation(record)}
                 className=" cursor-pointer"
               >
-                View
-              </DropdownMenuItem>
-
-              <DropdownMenuItem
-                onClick={() => handleSchedules(record)}
-                className=" cursor-pointer"
-              >
-                Schedules
-              </DropdownMenuItem>
-
-              <DropdownMenuItem
-                onClick={() => handleAdminNotes(record)}
-                className=" cursor-pointer"
-              >
-                View Notes
+                View Details
               </DropdownMenuItem>
 
               <DropdownMenuItem
                 onClick={() => handleVisits(record)}
                 className=" cursor-pointer"
               >
-                Visits
+                Edit Details
               </DropdownMenuItem>
 
               <DropdownMenuItem
