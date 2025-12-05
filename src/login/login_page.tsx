@@ -3,6 +3,7 @@ import LoadingSkeleton from "@/components/skeleton/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/ui/passwordinput";
 import LayoutContainer from "@/public_layout/layout-container";
 import { loginService } from "@/services/portal-service/portal-service";
 import { useUserStore } from "@/store/userStore";
@@ -68,10 +69,12 @@ export default function LoginPage() {
   return (
     <>
       <LayoutContainer>
-        <div className="w-full lg:w-7/12 m-auto rounded-xl px-10 pt-10 pb-20 lg:mt-28">
+        <div className="w-full  m-auto rounded-xl pt-10 pb-20 lg:mt-20 px-10">
           <form onSubmit={handleSubmit}>
-            <h1 className=" text-4xl">Welcome</h1>
-            <p className=" text-sm mt-2">Please login to continue</p>
+            <h1 className=" text-4xl text-[#2F2F2F] font-bold">Log In</h1>
+            <p className=" text-sm mt-2 text-[#525252]">
+              Welcome back to Telescope CM
+            </p>
             <div className="flex flex-col gap-y-6 mb-10 mt-10">
               <div className="flex flex-col gap-y-3">
                 <Label htmlFor="email">Email</Label>
@@ -87,28 +90,31 @@ export default function LoginPage() {
 
               <div className="flex flex-col gap-y-3">
                 <Label htmlFor="password">Password</Label>
-                <Input
+                <PasswordInput
                   type="password"
                   value={password}
                   onChange={(e) => setpassword(e.target.value)}
                   required
                   placeholder="Your Password"
                   className=" border h-10"
+                  showToggle={true}
                 />
               </div>
               <p className=" text-right cursor-pointer text-sm -mb-2">
                 forgot password?
               </p>
             </div>
-            <Button className="w-full h-10">Login</Button>
+            <Button className="w-full h-10 bg-[#257BD2] hover:bg-[#1b61a8]">
+              Login
+            </Button>
           </form>
           <p className="text-center mt-10 text-sm">
-            Don't have an account?{" "}
+            New to Telescope CM?{" "}
             <span
-              className=" font-bold cursor-pointer"
+              className=" font-bold cursor-pointer text-[#257BD2]"
               onClick={() => navigate("/create-account")}
             >
-              Create Account
+              Sign up
             </span>
           </p>
         </div>

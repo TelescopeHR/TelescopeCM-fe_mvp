@@ -1,5 +1,5 @@
 import { useThemeStore } from "@/store/themestore";
-import { Moon, Sun, Telescope } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { ReactNode } from "react";
 
 type Props = {
@@ -11,17 +11,20 @@ export default function LayoutContainer({ children }: Props) {
   return (
     <div className="max-h-screen overflow-hidden  bg-slate-100 dark:bg-slate-900">
       <div className="flex">
-        <div className="hidden lg:block lg:w-4/12 bg-slate-900 dark:bg-slate-800">
-          <div className="flex flex-col justify-center items-center h-screen">
-            <div className="flex flex-col justify-center items-center -mt-20">
-              <div className="bg-white rounded-3xl p-2">
-                <Telescope size={80} color="#233C56" />
+        <div className="hidden lg:block lg:w-6/12 bg-[#0E2E4E] dark:bg-slate-800">
+          <div className="flex flex-col py-4 px-6 h-screen">
+            <div className="flex gap-x-2 items-center">
+              <div className="p-2">
+                <img src="/logo.svg" alt="logo" />
               </div>
-              <h1 className="text-4xl text-white mt-2">Telescope CM</h1>
+              <h1 className="text-3xl font-extrabold text-white mt-2">
+                Telescope
+              </h1>
             </div>
           </div>
         </div>
-        <div className="flex flex-col w-full lg:w-8/12">
+        {/* ---------- content area */}
+        <div className="flex flex-col w-full lg:w-6/12">
           <div className="flex items-center justify-between p-4 bg-slate-100 w-full dark:bg-slate-900">
             <div className="w-2"></div>
             <div className="pr-4">
@@ -50,7 +53,9 @@ export default function LayoutContainer({ children }: Props) {
           </div>
 
           {/* -----content */}
-          <div className=" max-h-screen overflow-scroll w-full">{children}</div>
+          <div className="max-h-screen lg:px-20 overflow-scroll w-full ">
+            {children}
+          </div>
 
           {/* ------- */}
         </div>
