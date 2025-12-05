@@ -69,7 +69,7 @@ export default function LoginPage() {
   return (
     <>
       <LayoutContainer>
-        <div className="w-full  m-auto rounded-xl pt-10 pb-20 lg:mt-20 px-10">
+        <div className="w-full  m-auto rounded-xl pt-10 pb-20 lg:mt-20 px-10 ">
           <form onSubmit={handleSubmit}>
             <h1 className=" text-4xl text-[#2F2F2F] font-bold">Log In</h1>
             <p className=" text-sm mt-2 text-[#525252]">

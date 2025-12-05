@@ -9,13 +9,13 @@ type Props = {
 export default function LayoutContainer({ children }: Props) {
   const { theme, toggleTheme } = useThemeStore();
   return (
-    <div className="max-h-screen overflow-hidden  bg-slate-100 dark:bg-slate-900">
+    <div className="max-h-screen overflow-hidden   dark:bg-slate-900">
       <div className="flex">
         <div className="hidden lg:block lg:w-6/12 bg-[#0E2E4E] dark:bg-slate-800">
           <div className="flex flex-col py-4 px-6 h-screen">
             <div className="flex gap-x-2 items-center">
               <div className="p-2">
-                <img src="/logo.svg" alt="logo" />
+                <img src="/logo.svg" alt="logo" className="w-12" />
               </div>
               <h1 className="text-3xl font-extrabold text-white mt-2">
                 Telescope
@@ -24,8 +24,8 @@ export default function LayoutContainer({ children }: Props) {
           </div>
         </div>
         {/* ---------- content area */}
-        <div className="flex flex-col w-full lg:w-6/12">
-          <div className="flex items-center justify-between p-4 bg-slate-100 w-full dark:bg-slate-900">
+        <div className="flex flex-col w-full lg:w-6/12 ">
+          <div className="flex items-center justify-between p-4  w-full dark:bg-slate-900">
             <div className="w-2"></div>
             <div className="pr-4">
               <div>
