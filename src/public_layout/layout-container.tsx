@@ -17,9 +17,13 @@ export default function LayoutContainer({ children }: Props) {
               <div className="p-2">
                 <img src="/logo.svg" alt="logo" className="w-12" />
               </div>
-              <h1 className="text-3xl font-extrabold text-white mt-2">
-                Telescope
-              </h1>
+              <h1 className="text-3xl font-extrabold text-white">Telescope</h1>
+            </div>
+
+            <div className="w-full relative">
+              <div className=" absolute -right-14 top-10">
+                <img src="/banner.svg" alt="logo" />
+              </div>
             </div>
           </div>
         </div>
