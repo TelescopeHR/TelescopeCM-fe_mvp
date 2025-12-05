@@ -39,11 +39,11 @@ jobs:
             ${{ secrets.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:v${{ github.run_number }}
           push: true
 
-      # - name: Save DigitalOcean kubeconfig with short-lived credentials
-      #   run: doctl kubernetes cluster kubeconfig save --expiry-seconds 1200 k8s-1-33-1-do-3-nyc3-telecscope
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 1200 k8s-1-33-1-do-3-nyc3-telecscope
 
-      # - name: Deploy to DigitalOcean Kubernetes
-      #   run: kubectl apply -f $GITHUB_WORKSPACE/deployment.yml
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/deployment.yml
 
-      # - name: Restart deployment
-      #   run: kubectl rollout restart deployment telescopecmfm-mvp
+      - name: Restart deployment
+        run: kubectl rollout restart deployment telescopecmfm-mvp
