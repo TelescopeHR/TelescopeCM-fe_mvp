@@ -1,7 +1,6 @@
 import LoadingSkeleton from "@/components/skeleton/skeleton";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/passwordinput";
 import LayoutContainer from "@/public_layout/layout-container";
@@ -13,8 +12,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
-export default function LoginPage() {
-  const [email, setemail] = useState<any>(undefined);
+export default function CreatePasswordPage() {
+  const [email] = useState<any>(undefined);
   const [password, setpassword] = useState<any>(undefined);
   const [isloading, setisLoading] = useState(false);
   const { setUser } = useUserStore();
@@ -71,25 +70,15 @@ export default function LoginPage() {
       <LayoutContainer>
         <div className="w-full  m-auto rounded-xl pt-10 pb-20 lg:mt-20 px-10 ">
           <form onSubmit={handleSubmit}>
-            <h1 className=" text-4xl text-[#2F2F2F] font-bold">Log In</h1>
+            <h1 className=" text-4xl text-[#2F2F2F] font-bold">
+              Create Password
+            </h1>
             <p className=" text-sm mt-2 text-[#525252]">
-              Welcome back to Telescope CM
+              Set up a new password
             </p>
             <div className="flex flex-col gap-y-6 mb-10 mt-10">
               <div className="flex flex-col gap-y-3">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setemail(e.target.value)}
-                  required
-                  placeholder="Your Email"
-                  className=" border h-10"
-                />
-              </div>
-
-              <div className="flex flex-col gap-y-3">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">New Password</Label>
                 <PasswordInput
                   type="password"
                   value={password}
@@ -100,26 +89,24 @@ export default function LoginPage() {
                   showToggle={true}
                 />
               </div>
-              <p
-                className=" text-right cursor-pointer text-sm -mb-2"
-                onClick={() => navigate("/forgot-password")}
-              >
-                forgot password?
-              </p>
+
+              <div className="flex flex-col gap-y-3">
+                <Label htmlFor="password">Confirm Password</Label>
+                <PasswordInput
+                  type="password"
+                  value={password}
+                  onChange={(e) => setpassword(e.target.value)}
+                  required
+                  placeholder="Confirm your Password"
+                  className=" border h-10"
+                  showToggle={true}
+                />
+              </div>
             </div>
             <Button className="w-full h-10 bg-[#257BD2] hover:bg-[#1b61a8]">
-              Login
+              Create Password
             </Button>
           </form>
-          <p className="text-center mt-10 text-sm">
-            New to Telescope CM?{" "}
-            <span
-              className=" font-bold cursor-pointer text-[#257BD2]"
-              onClick={() => navigate("/create-account")}
-            >
-              Sign up
-            </span>
-          </p>
         </div>
       </LayoutContainer>
       {isloading && <LoadingSkeleton />}

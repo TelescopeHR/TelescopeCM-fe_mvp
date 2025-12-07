@@ -21,15 +21,24 @@ import Visitspage from "@/portal/visits/page";
 import ScheduleModule from "@/portal/schedule-module/schedule-module";
 import CreateAccountPage from "@/create-account/create-account";
 import CientUpcomingSceduleDetails from "@/portal/client/client-schedule/client-schedule-details/upcoming-details";
+import ForgotPasswordPage from "@/forgot-password/forgotpassword";
+import VerifyEmailPage from "@/verify-email/verifyemail";
+import CreatePasswordPage from "@/create-password/create-password";
 
 export default function ApplicationRoutes() {
   return (
     <Routes>
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<LoginPage />} />
+
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/verify-email" element={<VerifyEmailPage />} />
+        <Route path="/create-password" element={<CreatePasswordPage />} />
         <Route path="/create-account" element={<CreateAccountPage />} />
         <Route path="*" element={<NotfoundPage path="/" />} />
       </Route>
+
+      {/* private routes */}
       <Route path="dashboard" element={<PortalLayout />}>
         <Route index element={<DashboardPage />} />
 

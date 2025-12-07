@@ -1,19 +1,24 @@
 import { useThemeStore } from "@/store/themestore";
 import { Moon, Sun } from "lucide-react";
 import { ReactNode } from "react";
+import { useNavigate } from "react-router";
 
 type Props = {
   children: ReactNode;
 };
 
 export default function LayoutContainer({ children }: Props) {
-  const { theme, toggleTheme } = useThemeStore();
+  const { theme } = useThemeStore();
+  const navigate = useNavigate();
   return (
     <div className="max-h-screen overflow-hidden   dark:bg-slate-900">
       <div className="flex">
         <div className="hidden lg:block lg:w-6/12 bg-[#0E2E4E] dark:bg-slate-800">
           <div className="flex flex-col py-4 px-6 h-screen">
-            <div className="flex gap-x-2 items-center">
+            <div
+              className="flex gap-x-2 items-center cursor-pointer"
+              onClick={() => navigate("/")}
+            >
               <div className="p-2">
                 <img src="/logo.svg" alt="logo" className="w-12" />
               </div>
@@ -39,7 +44,7 @@ export default function LayoutContainer({ children }: Props) {
                     className=" text-slate-900 dark:text-white cursor-pointer"
                     onClick={(event: React.MouseEvent<SVGSVGElement>) => {
                       event.stopPropagation();
-                      toggleTheme();
+                      // toggleTheme();
                     }}
                   />
                 ) : (
@@ -48,7 +53,7 @@ export default function LayoutContainer({ children }: Props) {
                     className=" text-slate-900 dark:text-white cursor-pointer"
                     onClick={(event: React.MouseEvent<SVGSVGElement>) => {
                       event.stopPropagation();
-                      toggleTheme();
+                      // toggleTheme();
                     }}
                   />
                 )}
