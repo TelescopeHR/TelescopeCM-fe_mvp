@@ -91,13 +91,11 @@ export default function LoginPage() {
               <div className="flex flex-col gap-y-3">
                 <Label htmlFor="password">Password</Label>
                 <PasswordInput
-                  type="password"
                   value={password}
                   onChange={(e) => setpassword(e.target.value)}
                   required
                   placeholder="Your Password"
                   className=" border h-10"
-                  showToggle={true}
                 />
               </div>
               <p
