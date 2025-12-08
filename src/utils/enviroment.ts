@@ -1,1 +1,1 @@
-export const base_url = "https://dev-be.launchtelescope.com/api/v2";
+export const base_url = "https://dev-mvp.launchtelescope.com";
