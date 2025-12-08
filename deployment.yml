@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: telescopecmfm
+  name: telescopecmfm-mvp
   labels:
-    app: telescopecmfm
+    app: telescopecmfm-mvp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: telescopecmfm
+      app: telescopecmfm-mvp
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -17,11 +17,11 @@ spec:
   template:
     metadata:
       labels:
-        app: telescopecmfm
+        app: telescopecmfm-mvp
     spec:
       containers:
-        - name: admin
-          image: registry.digitalocean.com/quire-registry/telescopecmfm:latest
+        - name: telescopecmfm-mvp
+          image: registry.digitalocean.com/quire-registry/telescopecmfm-mvp:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -34,7 +34,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: telescopecmfm-service
+  name: telescopecmfm-mvp-service
 spec:
   type: ClusterIP
   ports:
@@ -43,4 +43,4 @@ spec:
       port: 80
       targetPort: 80
   selector:
-    app: telescopecmfm
+    app: telescopecmfm-mvp
