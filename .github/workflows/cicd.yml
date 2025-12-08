@@ -1,11 +1,11 @@
-name: telescopeCM-fe 2025
+name: telescopeCM-fe-mvp 2025
 
 on:
   push:
     branches: [development]
 
 env:
-  IMAGE_NAME: "telescopecmfm"
+  IMAGE_NAME: "telescopecmfm-mvp"
   LATEST: "latest"
 
 jobs:
@@ -46,4 +46,4 @@ jobs:
         run: kubectl apply -f $GITHUB_WORKSPACE/deployment.yml
 
       - name: Restart deployment
-        run: kubectl rollout restart deployment telescopecmfm
+        run: kubectl rollout restart deployment telescopecmfm-mvp
