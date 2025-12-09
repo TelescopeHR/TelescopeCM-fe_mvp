@@ -4,29 +4,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import LayoutContainer from "@/public_layout/layout-container";
-import { loginService } from "@/services/portal-service/portal-service";
-import { useUserStore } from "@/store/userStore";
-import { removeStoredAuthToken, storeAuthToken } from "@/utils/ls";
+import { sendOTPService } from "@/services/portal-service/portal-service";
 
 import { useState } from "react";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 export default function ForgotPasswordPage() {
   const [email, setemail] = useState<any>(undefined);
 
   const [isloading, setisLoading] = useState(false);
-  const { setUser } = useUserStore();
-  const navigate = useNavigate();
+
+  // const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setisLoading(true);
-    //clear token if there is one already
-    removeStoredAuthToken();
-    loginService({ email, password: "" }).subscribe({
+
+    sendOTPService({ email }).subscribe({
       next: (response) => {
-        // console.log("response===>", response);
+        console.log("response===>", response);
         if (response) {
           if (response.statusCode == 422) {
             setisLoading(false);
@@ -37,21 +34,6 @@ export default function ForgotPasswordPage() {
           }
           if (response.statusCode == 200) {
             setisLoading(false);
-            //store toke securely
-            storeAuthToken(response.data.access_token);
-            //dispatch user to state
-            setUser({
-              email: response.data.user.email,
-              name: response.data.user.full_name,
-              userId: response.data.user.id,
-              avatar: response.data.user.profile_picture ?? "",
-              ...response.data.user,
-            });
-            toast.success(response.message, {
-              autoClose: 5000,
-              position: "top-center",
-            });
-            navigate("/dashboard");
           }
         }
       },
