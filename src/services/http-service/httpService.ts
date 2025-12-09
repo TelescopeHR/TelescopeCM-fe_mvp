@@ -78,6 +78,9 @@ export const handleError = (errorResponse: any) => {
   }
 
   // toast.error(errorResponse?.response.data.message);
+  if (errorResponse.message === "Network Error") {
+    toast.error(errorResponse.message);
+  }
   return throwError(() => errorResponse);
 };
 export default http;
