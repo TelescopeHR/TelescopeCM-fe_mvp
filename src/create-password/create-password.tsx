@@ -4,67 +4,57 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/passwordinput";
 import LayoutContainer from "@/public_layout/layout-container";
-import { loginService } from "@/services/portal-service/portal-service";
-import { useUserStore } from "@/store/userStore";
-import { removeStoredAuthToken, storeAuthToken } from "@/utils/ls";
+import { createPasswordService } from "@/services/portal-service/portal-service";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 export default function CreatePasswordPage() {
-  const [email] = useState<any>(undefined);
-  const [password, setpassword] = useState<any>(undefined);
+  const [email, setemail] = useState<any>(undefined);
+  const [password, setpassword] = useState<string>("");
+  const [password_confirmation, setpassword_confirmation] =
+    useState<string>("");
   const [isloading, setisLoading] = useState(false);
-  const { setUser } = useUserStore();
+
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setisLoading(true);
-    //clear token if there is one already
-    removeStoredAuthToken();
-    loginService({ email, password }).subscribe({
-      next: (response) => {
-        // console.log("response===>", response);
-        if (response) {
-          if (response.statusCode == 422) {
-            setisLoading(false);
-            toast.error(response.error);
+
+    createPasswordService({ email, password, password_confirmation }).subscribe(
+      {
+        next: (response) => {
+          if (response) {
+            if (response.statusCode == 200) {
+              setisLoading(false);
+
+              toast.success(response.message, {
+                autoClose: 5000,
+                position: "top-center",
+              });
+              navigate("/");
+            }
           }
-          if (response.statusCode == 403) {
-            setisLoading(false);
-          }
-          if (response.statusCode == 200) {
-            setisLoading(false);
-            //store toke securely
-            storeAuthToken(response.data.access_token);
-            //dispatch user to state
-            setUser({
-              email: response.data.user.email,
-              name: response.data.user.full_name,
-              userId: response.data.user.id,
-              avatar: response.data.user.profile_picture ?? "",
-              ...response.data.user,
-            });
-            toast.success(response.message, {
-              autoClose: 5000,
-              position: "top-center",
-            });
-            navigate("/dashboard");
-          }
-        }
-      },
-      error: (err) => {
-        console.log("error", err.response.data.message);
-        toast.error(err.response.data.message);
-        setisLoading(false);
-      },
-      complete: () => {
-        setisLoading(false);
-      },
-    });
+        },
+        error: () => {
+          setisLoading(false);
+        },
+        complete: () => {
+          setisLoading(false);
+        },
+      }
+    );
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem("tempEmail")) {
+      navigate(-1);
+    } else {
+      setemail(localStorage.getItem("tempEmail"));
+    }
+  }, []);
   return (
     <>
       <LayoutContainer>
@@ -80,7 +70,6 @@ export default function CreatePasswordPage() {
               <div className="flex flex-col gap-y-3">
                 <Label htmlFor="password">New Password</Label>
                 <PasswordInput
-                  type="password"
                   value={password}
                   onChange={(e) => setpassword(e.target.value)}
                   required
@@ -93,9 +82,8 @@ export default function CreatePasswordPage() {
               <div className="flex flex-col gap-y-3">
                 <Label htmlFor="password">Confirm Password</Label>
                 <PasswordInput
-                  type="password"
-                  value={password}
-                  onChange={(e) => setpassword(e.target.value)}
+                  value={password_confirmation}
+                  onChange={(e) => setpassword_confirmation(e.target.value)}
                   required
                   placeholder="Confirm your Password"
                   className=" border h-10"
@@ -103,7 +91,16 @@ export default function CreatePasswordPage() {
                 />
               </div>
             </div>
-            <Button className="w-full h-10 bg-[#257BD2] hover:bg-[#1b61a8]">
+            <Button
+              className="w-full h-10 bg-[#257BD2] hover:bg-[#1b61a8]"
+              disabled={
+                password.length > 6 &&
+                password_confirmation.length > 6 &&
+                password === password_confirmation
+                  ? false
+                  : true
+              }
+            >
               Create Password
             </Button>
           </form>

@@ -15,3 +15,17 @@ export const sendOTPService = (payload: any): Observable<any> => {
     catchError(handleError)
   );
 };
+
+export const verifyEmailService = (payload: any): Observable<any> => {
+  return from(http.post("/admin/api/v1/otp/verify", payload)).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};
+
+export const createPasswordService = (payload: any): Observable<any> => {
+  return from(http.post("/admin/api/v1/password/create", payload)).pipe(
+    map((response: any) => response),
+    catchError(handleError)
+  );
+};

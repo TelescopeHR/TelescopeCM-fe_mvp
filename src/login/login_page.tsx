@@ -56,9 +56,8 @@ export default function LoginPage() {
           }
         }
       },
-      error: (err) => {
+      error: () => {
         setisLoading(false);
-        toast.error(err.response.data.message);
       },
       complete: () => {
         setisLoading(false);
