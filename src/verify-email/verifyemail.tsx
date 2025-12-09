@@ -3,72 +3,55 @@ import LoadingSkeleton from "@/components/skeleton/skeleton";
 
 import { Button } from "@/components/ui/button";
 import LayoutContainer from "@/public_layout/layout-container";
-import { loginService } from "@/services/portal-service/portal-service";
-import { useUserStore } from "@/store/userStore";
-import { removeStoredAuthToken, storeAuthToken } from "@/utils/ls";
+import { verifyEmailService } from "@/services/portal-service/portal-service";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 export default function VerifyEmailPage() {
-  const [email] = useState<any>(undefined);
+  const [email, setemail] = useState<any>(undefined);
   const [otp, setOtp] = useState("");
 
   const [isloading, setisLoading] = useState(false);
-  const { setUser } = useUserStore();
   const navigate = useNavigate();
 
   const handleComplete = (completedOtp: string) => {
-    console.log("OTP completed:", completedOtp);
+    setOtp(completedOtp);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setisLoading(true);
-    //clear token if there is one already
-    removeStoredAuthToken();
-    loginService({ email, password: "" }).subscribe({
+    verifyEmailService({ otp, email }).subscribe({
       next: (response) => {
-        // console.log("response===>", response);
+        console.log("response===>", response);
         if (response) {
-          if (response.statusCode == 422) {
-            setisLoading(false);
-            toast.error(response.error);
-          }
-          if (response.statusCode == 403) {
-            setisLoading(false);
-          }
           if (response.statusCode == 200) {
+            toast.success("Otp verified successfully");
             setisLoading(false);
-            //store toke securely
-            storeAuthToken(response.data.access_token);
-            //dispatch user to state
-            setUser({
-              email: response.data.user.email,
-              name: response.data.user.full_name,
-              userId: response.data.user.id,
-              avatar: response.data.user.profile_picture ?? "",
-              ...response.data.user,
-            });
-            toast.success(response.message, {
-              autoClose: 5000,
-              position: "top-center",
-            });
-            navigate("/dashboard");
+            navigate("/create-password");
           }
         }
       },
-      error: (err) => {
-        console.log("error", err.response.data.message);
-        toast.error(err.response.data.message);
+      error: () => {
         setisLoading(false);
+        setOtp("");
       },
       complete: () => {
         setisLoading(false);
       },
     });
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem("tempEmail")) {
+      navigate(-1);
+    } else {
+      setemail(localStorage.getItem("tempEmail"));
+    }
+  }, []);
+
   return (
     <>
       <LayoutContainer>
@@ -81,7 +64,7 @@ export default function VerifyEmailPage() {
             <div className="flex flex-col gap-y-6 mb-10 mt-10">
               <div className="flex flex-col gap-y-3">
                 <OTPInput
-                  length={5}
+                  length={6}
                   value={otp}
                   onChange={setOtp}
                   onComplete={handleComplete}

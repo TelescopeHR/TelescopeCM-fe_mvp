@@ -7,15 +7,14 @@ import LayoutContainer from "@/public_layout/layout-container";
 import { sendOTPService } from "@/services/portal-service/portal-service";
 
 import { useState } from "react";
-// import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 export default function ForgotPasswordPage() {
   const [email, setemail] = useState<any>(undefined);
 
   const [isloading, setisLoading] = useState(false);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,23 +22,15 @@ export default function ForgotPasswordPage() {
 
     sendOTPService({ email }).subscribe({
       next: (response) => {
-        console.log("response===>", response);
         if (response) {
-          if (response.statusCode == 422) {
-            setisLoading(false);
-            toast.error(response.error);
-          }
-          if (response.statusCode == 403) {
-            setisLoading(false);
-          }
           if (response.statusCode == 200) {
+            localStorage.setItem("tempEmail", email);
+            navigate("/verify-email");
             setisLoading(false);
           }
         }
       },
-      error: (err) => {
-        console.log("error", err.response.data.message);
-        toast.error(err.response.data.message);
+      error: () => {
         setisLoading(false);
       },
       complete: () => {
