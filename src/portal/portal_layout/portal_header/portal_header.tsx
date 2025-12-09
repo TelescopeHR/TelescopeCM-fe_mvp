@@ -1,5 +1,14 @@
+import {
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import UseAuth from "@/hooks/use-auth";
 import { useSidebarStore } from "@/store/sidebarStore";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
 // import { useThemeStore } from "@/store/themestore";
 import { Search, EllipsisVertical, Bell, ChevronDown, Dot } from "lucide-react";
 
@@ -10,6 +19,7 @@ type PropT = {
 export default function PortalHeader({ setOpen, open }: PropT) {
   // const { theme, toggleTheme } = useThemeStore();
   const { currentModule } = useSidebarStore();
+  const { Logout } = UseAuth();
   return (
     <div className="w-full  h-[4.2rem] border-b  bg-white dark:bg-slate-900 px-2 py-4  flex items-center justify-between">
       <div className="cursor-pointer w-4/12" onClick={() => setOpen(!open)}>
@@ -38,10 +48,24 @@ export default function PortalHeader({ setOpen, open }: PropT) {
             <Bell fill="#257BD2" size={18} stroke="#257BD2" />
           </div>
           <div className="flex items-center bg-[#F3F5F8]h-10 gap-x-1 px-2">
-            <div className="w-8 h-8 rounded-full bg-[#257BD2] flex items-center justify-center">
-              <span className="text-xs font-bold text-white">SA</span>
-            </div>
-            <ChevronDown size={16} />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-x-2 outline-none">
+                  <div className="w-8 h-8 rounded-full bg-[#257BD2] flex items-center justify-center">
+                    <span className="text-xs font-bold text-white">SA</span>
+                  </div>
+                  <ChevronDown size={16} />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem
+                  onClick={() => Logout()}
+                  className=" cursor-pointer"
+                >
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           <div className="flex items-center bg-[#F3F5F8] h-10 gap-x-1 px-2">
