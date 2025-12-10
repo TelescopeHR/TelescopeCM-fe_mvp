@@ -35,7 +35,7 @@ export default function LayoutContainerTwo({ children }: Props) {
         <div className="hidden lg:block lg:w-6/12  dark:bg-slate-800">
           <div className="flex flex-col py-4 px-6 h-screen">
             <div className="w-full relative">
-              <div className=" absolute right-1 top-10">
+              <div className=" absolute right-1 top-20">
                 <img src="/banner.svg" alt="logo" />
               </div>
             </div>
