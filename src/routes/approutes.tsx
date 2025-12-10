@@ -19,11 +19,14 @@ import OnboardClient from "@/portal/settings/onboard-client/page";
 import EmployeeScheduleVisits from "@/portal/schedules/emp-schedule-visits/emp-schedule-visits";
 import Visitspage from "@/portal/visits/page";
 import ScheduleModule from "@/portal/schedule-module/schedule-module";
-import CreateAccountPage from "@/create-account/create-account";
+// import CreateAccountPage from "@/create-account/create-account";
 import CientUpcomingSceduleDetails from "@/portal/client/client-schedule/client-schedule-details/upcoming-details";
 import ForgotPasswordPage from "@/forgot-password/forgotpassword";
 import VerifyEmailPage from "@/verify-email/verifyemail";
 import CreatePasswordPage from "@/create-password/create-password";
+import TelescopeAccSelection from "@/create-account/telescope-acc-selection";
+import WorkflowUpgrade from "@/create-account/workflow-upgrade";
+import HRLogin from "@/create-account/hr-login";
 
 export default function ApplicationRoutes() {
   return (
@@ -34,7 +37,9 @@ export default function ApplicationRoutes() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
         <Route path="/create-password" element={<CreatePasswordPage />} />
-        <Route path="/create-account" element={<CreateAccountPage />} />
+        <Route path="/account-selection" element={<TelescopeAccSelection />} />
+        <Route path="/hr-login" element={<HRLogin />} />
+        <Route path="/upgrade-workflow" element={<WorkflowUpgrade />} />
         <Route path="*" element={<NotfoundPage path="/" />} />
       </Route>
 

@@ -111,7 +111,7 @@ export default function LoginPage() {
             New to Telescope CM?{" "}
             <span
               className=" font-bold cursor-pointer text-[#257BD2]"
-              onClick={() => navigate("/create-account")}
+              onClick={() => navigate("/account-selection")}
             >
               Sign up
             </span>
