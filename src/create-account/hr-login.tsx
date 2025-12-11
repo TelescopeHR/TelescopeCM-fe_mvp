@@ -4,14 +4,16 @@ import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/passwordinput";
 import LayoutContainerTwo from "@/public_layout/layout-container-two";
 import { useState } from "react";
-// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 export default function HRLogin() {
   const [email, setemail] = useState<any>(undefined);
   const [password, setpassword] = useState<any>(undefined);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const handleContinue = () => {};
+  const handleContinue = () => {
+    navigate("/hr-details");
+  };
   return (
     <>
       <LayoutContainerTwo>

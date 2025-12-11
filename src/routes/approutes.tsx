@@ -27,6 +27,8 @@ import CreatePasswordPage from "@/create-password/create-password";
 import TelescopeAccSelection from "@/create-account/telescope-acc-selection";
 import WorkflowUpgrade from "@/create-account/workflow-upgrade";
 import HRLogin from "@/create-account/hr-login";
+import CreateAccountPage from "@/create-account/create-account";
+import HRDetailsPage from "@/create-account/hr-details";
 
 export default function ApplicationRoutes() {
   return (
@@ -40,6 +42,8 @@ export default function ApplicationRoutes() {
         <Route path="/account-selection" element={<TelescopeAccSelection />} />
         <Route path="/hr-login" element={<HRLogin />} />
         <Route path="/upgrade-workflow" element={<WorkflowUpgrade />} />
+        <Route path="/create-account" element={<CreateAccountPage />} />
+        <Route path="/hr-details" element={<HRDetailsPage />} />
         <Route path="*" element={<NotfoundPage path="/" />} />
       </Route>
 
