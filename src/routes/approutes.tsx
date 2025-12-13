@@ -29,6 +29,7 @@ import WorkflowUpgrade from "@/create-account/workflow-upgrade";
 import HRLogin from "@/create-account/hr-login";
 import CreateAccountPage from "@/create-account/create-account";
 import HRDetailsPage from "@/create-account/hr-details";
+import CreateClient from "@/portal/clients/create-client/create-client";
 
 export default function ApplicationRoutes() {
   return (
@@ -66,6 +67,7 @@ export default function ApplicationRoutes() {
         <Route path="clients" element={<ClientsLayout />}>
           <Route index element={<ClientsPage />} />
           <Route path="client/:id" element={<ClientHome />} />
+          <Route path="create-client" element={<CreateClient />} />
           <Route
             path="client/:id/schedule/upcoming"
             element={<CientUpcomingSceduleDetails />}

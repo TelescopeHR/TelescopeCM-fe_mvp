@@ -152,7 +152,7 @@ export function ClientsPage() {
             <Button
               className=" cursor-pointer bg-[#257BD2] hover:bg-[#257BD2] flex items-center gap-x-2"
               onClick={() => {
-                navigate("/dashboard/settings/onboard/client");
+                navigate("/dashboard/clients/create-client");
               }}
             >
               <Plus />
